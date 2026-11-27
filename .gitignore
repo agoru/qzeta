@@ -1,0 +1,6 @@
+# the builds of the two Lake projects, the caches of Python and pytest, and the verdicts of passing fixtures
+.lake/
+__pycache__/
+*.pyc
+.pytest_cache/
+.memo/

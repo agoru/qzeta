@@ -3,13 +3,13 @@ message: "If you use these sources, please cite the article."
 type: software
 title: "Formal sources of \"Zeta functions and monodromy of degenerate hypersurface singularities over the positive rationals: least action and spectrum as dual readings\""
 abstract: "The Q++ modules of the article, the generator of their Lean 4 statements and proofs, the generated Lean and the fixtures."
+repository-code: "https://github.com/agoru/qzeta"
 authors:
   - family-names: Russo
     given-names: Agostino
     orcid: "https://orcid.org/0009-0004-5240-9403"
-license:
-  - Apache-2.0
-  - CC-BY-4.0
+# the code: Apache-2.0 (LICENSE); the Q++ modules and the documentation: CC-BY-4.0 (LICENSE-docs.txt)
+license: Apache-2.0
 keywords:
   - monodromy conjecture
   - topological zeta function
