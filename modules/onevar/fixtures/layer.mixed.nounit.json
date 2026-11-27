@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "p * c = q * (a * b) + 1", "note": "without the unit tie of c: a = 2, b = 3, c = 1, p = 2, q = 1, t = 2", "rows": [{"a": 2, "b": 3, "c": 1, "p": 2, "q": 1, "t": "2", "X": "3", "Fa": "21", "Fb": "9", "Fc": "63", "W": "155"}]}

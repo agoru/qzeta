@@ -1,0 +1,28 @@
+{
+ "kind": "values",
+ "note": "3 * 4, 2 * 2 * 2, and one point (the empty tuple) of the box of no coordinate",
+ "rows": [
+  {
+   "n": 2,
+   "b": [
+    2,
+    3
+   ],
+   "=": 12
+  },
+  {
+   "n": 3,
+   "b": [
+    1,
+    1,
+    1
+   ],
+   "=": 8
+  },
+  {
+   "n": 0,
+   "b": [],
+   "=": 1
+  }
+ ]
+}

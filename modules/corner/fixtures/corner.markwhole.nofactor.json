@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "F * (sum i in 1..e * k, u^i) = (sum i in 1..e, u^i)", "note": "F is not the mark of the cost", "rows": [
+ {"k": "2", "e": "3", "u": "2", "F": "1"}
+]}

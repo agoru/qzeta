@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "B = 1 + k", "note": "the share 3 is not the base 5 less 1: the step from the root 7 of x^2 + 1 up to 25 misses", "rows": [
+ {"B": 5, "k": 3, "z": 2, "u": 4, "v": 3, "a": 2, "b": 1, "t": 1, "c": 2, "M": 1}
+]}

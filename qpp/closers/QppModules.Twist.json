@@ -1,0 +1,12 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "lem_euclid_attached": {"hash":"5ed270a94e1617f7","won":{"0":[0],"1":[0],"6":[0],"7":[0],"8":[0],"9":[0],"22":[0]},"deps":"657f174147add2c4","cut":"0decb02fa918ed0f"},
+  "lem_euclid_detached": {"hash":"fcb75bbd38bc3aa8","won":{"0":[0],"1":[0],"6":[0],"7":[0],"8":[0],"9":[0],"22":[0]},"deps":"72699f36fe84adf5","cut":"ea1cc57f0e365f7c"},
+  "lem_frame_whole": {"hash":"f2efe368350663c2","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0],"6":[0],"7":[0],"8":[0],"50":[0]},"deps":"c5524508748afbab","cut":"8365ed4802666acc"},
+  "lem_twist_attached": {"hash":"e632c43da089efe2","won":{"0":[0],"1":[0]},"deps":"dd226bcd90ba888c","cut":"745aba33d1a56088"},
+  "lem_twist_detached": {"hash":"dfde81b70c8f8b93","won":{"0":[0],"1":[0]},"deps":"bcae67bfea439a33","cut":"caf1d4d5347f5ec3"},
+  "lem_twist_pair": {"hash":"14f6529ea4254cf1","won":{"0":[0],"1":[0]},"deps":"9842cfca4e0e9bd3","cut":"fbd5cbb770bd602e"}
+ }
+}

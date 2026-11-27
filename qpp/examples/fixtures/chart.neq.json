@@ -1,0 +1,49 @@
+{
+ "kind": "counterexample",
+ "drop": "K #asymp K' #on B",
+ "note": "on the model: w^4 and w^2 on [0, 1] are not comparable (w^4 is only below a multiple of w^2), and their pairs (1/4, 1) and (1/2, 1) differ; also w^2 and w^4 the other way round",
+ "rows": [
+  {
+   "n": 1,
+   "K": [
+    [
+     4
+    ]
+   ],
+   "K'": [
+    [
+     2
+    ]
+   ],
+   "B": [
+    [
+     [
+      0,
+      1
+     ]
+    ]
+   ]
+  },
+  {
+   "n": 1,
+   "K": [
+    [
+     2
+    ]
+   ],
+   "K'": [
+    [
+     4
+    ]
+   ],
+   "B": [
+    [
+     [
+      0,
+      1
+     ]
+    ]
+   ]
+  }
+ ]
+}

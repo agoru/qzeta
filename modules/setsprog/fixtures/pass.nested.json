@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "forall u in NN>=1 : forall v in NN : u < v => v <= k => 1 <= (sum l, A_(u)_(l) * A_(v)_(l)) => forall i : A_(u)_(i) <= A_(v)_(i)", "rows": [{"n": 3, "k": 2, "A": [[1, 1, 0], [0, 1, 1]], "r": ["1/2", "1/2"], "theta": [0, 1], "beta": [0, 0, 0]}], "bounds": {"u": 8, "v": 8}}

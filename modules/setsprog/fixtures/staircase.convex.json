@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "forall q in NN : q + 2 <= M => 2 * S(q + 1) <= S(q) + S(q + 2)", "rows": [{"M": 3, "g": 2, "S": [0, 3, 3, 4], "s": 1, "r": 0}], "bounds": {"q": 8, "u": 8}}

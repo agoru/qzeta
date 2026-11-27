@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x + y = 1 + b", "note": "two costs that do not tie with the third", "rows": [
+ {"x": "1/2", "y": "11/18", "u": "1/2", "w": "7/18", "b": "1/5"}
+]}

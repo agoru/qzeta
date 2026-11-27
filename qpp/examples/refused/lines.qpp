@@ -1,0 +1,11 @@
+-- Q++ 0.2
+paper refusedlines
+-- Cases of vocabulary lines with a term that the generator refuses, each reported with its reason at its line.
+
+section sec:refused Refused vocabulary lines
+
+relation (x #neardec y) := x in QQ>0, y in QQ>0, 0.5 * x <= y
+relation (x #nearexp y) := x in QQ>0, y in QQ>0, exp(x) <= y
+relation (x #nearrat y) := x in QQ>0, y in QQ>0, x^(1/2) <= y
+relation (x #neardecexp y) := x in QQ>0, y in QQ>0, x^0.5 <= y
+define half(x) := 0.5 * x

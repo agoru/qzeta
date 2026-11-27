@@ -1,0 +1,224 @@
+-- Q++ 0.2
+paper refusedpairs
+-- Cases of literal pairs (l, m) that the generator refuses, each with its reason. In a literal pair l is a
+-- nonnegative rational built without subtraction and m a count of at least 1.
+
+section sec:refused Refused literal pairs
+
+type Pair := pair
+type Point(n) := (QQ>=0)^n
+type Loss(n) := Point(n) -> QQ>=0
+type Region(n) := set(Point(n))
+context coef(K in Loss(n), B in Region(n), p in Pair)
+define half(x) := x / 2
+
+lemma lem:lbothsigns [first coordinate: a name with no sign]
+  core: x in QQ : (x, 1) <= (x, 1)
+
+proof lem:lbothsigns
+  "core" V
+
+lemma lem:lsub [first coordinate: a subtraction]
+  core: a, b in QQ>0 : (a - b, 1) <= (a, 1)
+
+proof lem:lsub
+  "core" V
+
+lemma lem:lneg [first coordinate: a minus]
+  core: a in QQ>0 : (-a, 1) <= (a, 1)
+
+proof lem:lneg
+  "core" V
+
+lemma lem:labs [first coordinate: an absolute value]
+  core: a in QQ : (|a|, 1) <= (|a|, 1)
+
+proof lem:labs
+  "core" V
+
+lemma lem:ldeficit [first coordinate: the deficit]
+  core: a, b in QQ>0 : (max(a - b, 0), 1) <= (a, 1)
+
+proof lem:ldeficit
+  "core" V
+
+lemma lem:ldefine [first coordinate: a define call]
+  core: a in QQ>0 : (half(a), 1) <= (a, 1)
+
+proof lem:ldefine
+  "core" V
+
+lemma lem:ldef [first coordinate: a name given by a difference]
+  core: a, b in QQ>0, c := a - b : (c, 1) <= (c, 1)
+
+proof lem:ldef
+  "core" V
+
+lemma lem:ldefpos [first coordinate: a name given by a sum of masses]
+  core: a, b in QQ>0, c := a + b : (c, 1) <= (c, 1)
+
+proof lem:ldefpos
+  "core" V
+
+lemma lem:lquant [first coordinate: a name bound by a quantifier]
+  core: forall x in QQ>0 : (x, 1) <= (x, 1)
+
+proof lem:lquant
+  "core" V
+
+lemma lem:lratexp [first coordinate: a rational exponent]
+  core: a in QQ>0 : (a^(1/2), 1) <= (a, 1)
+
+proof lem:lratexp
+  "core" V
+
+lemma lem:ldecexp [first coordinate: a decimal exponent]
+  core: a in QQ>0 : (a^0.5, 1) <= (a, 1)
+
+proof lem:ldecexp
+  "core" V
+
+lemma lem:lgivencore [first coordinate: a name of the given in a core row, which stands alone]
+  given: x in QQ>0
+  core: (x, 1) <= (x, 1)
+
+proof lem:lgivencore
+  "core" V
+
+lemma lem:lsum [first coordinate: a finite sum]
+  core: n in NN>=1 : ((sum k in 1..n, 1/k), 1) <= (n, 1)
+
+proof lem:lsum
+  "core" V
+
+lemma lem:mzero [multiplicity 0]
+  core: (1/2, 0) <= (1/2, 1)
+
+proof lem:mzero
+  "core" V
+
+lemma lem:mnat [multiplicity: a name in NN]
+  core: m in NN : (1/2, m) <= (1/2, 1)
+
+proof lem:mnat
+  "core" V
+
+lemma lem:mminus [multiplicity: a subtraction]
+  core: m in NN>=1 : (1/2, m - 1) <= (1/2, 1)
+
+proof lem:mminus
+  "core" V
+
+lemma lem:mminustwo [multiplicity: a subtraction from NN>=2]
+  core: m in NN>=2 : (1/2, m - 1) <= (1/2, 1)
+
+proof lem:mminustwo
+  "core" V
+
+lemma lem:mzeromul [multiplicity: zero times a count]
+  core: m in NN>=1 : (1/2, 0 * m) <= (1/2, 1)
+
+proof lem:mzeromul
+  "core" V
+
+lemma lem:mmulzero [multiplicity: a count times zero]
+  core: m in NN>=1 : (1/2, m * 0) <= (1/2, 1)
+
+proof lem:mmulzero
+  "core" V
+
+lemma lem:mnatmul [multiplicity: a count times a name in NN]
+  core: m in NN>=1, k in NN : (1/2, m * k) <= (1/2, 1)
+
+proof lem:mnatmul
+  "core" V
+
+lemma lem:mnatadd [multiplicity: a count plus a name in NN]
+  core: m in NN>=1, k in NN : (1/2, m + k) <= (1/2, 1)
+
+proof lem:mnatadd
+  "core" V
+
+lemma lem:mbinom [multiplicity: binom]
+  core: n in NN>=1, k in NN : (1/2, binom(n, k)) <= (1/2, 1)
+
+proof lem:mbinom
+  "core" V
+
+lemma lem:mrat [multiplicity: a rational name]
+  core: x in QQ>0 : (1/2, x) <= (1/2, 1)
+
+proof lem:mrat
+  "core" V
+
+lemma lem:mfrac [multiplicity: a fraction]
+  core: (1/2, 3/2) <= (1/2, 1)
+
+proof lem:mfrac
+  "core" V
+
+lemma lem:mmin [multiplicity: a min with a name in NN]
+  core: m in NN>=1, k in NN : (1/2, min(m, k)) <= (1/2, 1)
+
+proof lem:mmin
+  "core" V
+
+lemma lem:mpowzero [multiplicity: a power of a name in NN]
+  core: m in NN>=1, k in NN : (1/2, k^m) <= (1/2, 1)
+
+proof lem:mpowzero
+  "core" V
+
+lemma lem:msum [multiplicity: a sum that can be empty (0 at J = 0)]
+  core: J in NN : (1/2, sum j in 1..J, 1) <= (1/2, 1)
+
+proof lem:msum
+  "core" V
+
+lemma lem:msumone [multiplicity: a sum, even of a count]
+  core: J in NN>=1 : (1/2, sum j in 1..J, 1) <= (1/2, 1)
+
+proof lem:msumone
+  "core" V
+
+lemma lem:mdef [multiplicity: a name given by c := t]
+  core: k in NN>=1, c := k + 1 : (1/2, c) <= (1/2, 1)
+
+proof lem:mdef
+  "core" V
+
+lemma lem:mindex [multiplicity: a product whose index can be 0]
+  core: k, J in NN : (1/2, prod j in k..J, j) < (1, 1)
+
+proof lem:mindex
+  "core" V
+
+lemma lem:striple [a triple]
+  core: (1/2, 1, 1) <= (1/2, 1, 1)
+
+proof lem:striple
+  "core" V
+
+lemma lem:snested [a pair in a pair]
+  core: ((1/2, 1), 1) <= ((1/2, 1), 1)
+
+proof lem:snested
+  "core" V
+
+lemma lem:minopen [a min below a pair: no argument below it whatever the names, and no hypothesis]
+  core: a, b in QQ>0 : min((a, 1), (b, 1)) < (a + b, 1)
+
+proof lem:minopen
+  "core" V
+
+lemma lem:minneq [a min equal to a pair that is none of its arguments]
+  core: a in QQ>0 : min((a, 1), (a, 2)) = (a, 3)
+
+proof lem:minneq
+  "core" V
+
+lemma lem:ctxneq [a context pair that differs from the hypothesis's]
+  core: n in NN, K in Loss(n), B in Region(n), a in QQ>0, coef(K, B, (a, 2)) : coef(K, B, (a, 1))
+
+proof lem:ctxneq
+  "core" V

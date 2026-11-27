@@ -1,0 +1,201 @@
+% The constructs of the statement layer (qpp/README.md, "The LaTeX form"): each result holds lines that use one
+% construct, in the LaTeX that latex2qpp reads (the declarations a line takes from its result written before it),
+% with the construct in its title. latex2qpp and qpp2lean generate constructs.qpp and Constructs.lean; Lean
+% elaborates every statement it states (the results have no proof lines: they are stated only), and the file lists
+% the others with the reason.
+
+\begin{lemma}[a name declared a number multiplies a parenthesis]\label{lem:scoped}
+\begin{stmt}
+\sit{core}{k\in\N,\ \ba,\bd\in\Q^k,\ a^*,\vartheta,y\in\Q:\ \textstyle\sum_ha_h(\vartheta+y-\delta_h)\mathbf 1[\vartheta+y-\delta_h\ge\vartheta]-a^*(\vartheta+y)\mathbf 1[\vartheta+y\ge\vartheta]=\vartheta(\sum_{h:\delta_h\le y}a_h-a^*\mathbf 1[y\ge0])+\sum_ha_h(y-\delta_h)_+-a^*\max(y,0)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a quantifier in words after its claim, a binder by a chain of relations, a sum over a bound subset]\label{lem:words}
+\begin{stmt}
+\sit{(H1)}{k\in\N,\ \ba^0\in\Q^k,\ \beta_0\in\Q_{>0}:\ |\textstyle\sum_{h\in S}a^0_h|\ge\beta_0\ \text{for every}\ \varnothing\ne S\subseteq\{1,\dots,k\}}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[then, so, within]\label{lem:then}
+\begin{stmt}
+\sit{given}{c',y\in\Q,\ s\in\Z}
+\sit{(1)}{\text{if}\ y>0,\ \text{then}\ c'\ \text{within}\ 2^{-s-5}\ \text{of}\ y\Rightarrow c'>y-2^{-s-5}}
+\sit{(2)}{c'\le c'+1\ \text{so}\ c'-y\le c'-y+1}
+\sit{(3)}{c'\ge y\ \text{where}\ y\ge0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the negation, a relation at a point, near]\label{lem:near}
+\begin{stmt}
+\sit{given}{K,K'\colon\Q\to\Q,\ w_0\in\Q}
+\sit{(1)}{K\ge0\ \text{near}\ w_0,\ \neg(K'<0\ \text{at}\ w_0)\Rightarrow K'\ge0\ \text{at}\ w_0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a case definition with else and otherwise]\label{lem:cases}
+\begin{stmt}
+\sit{given}{n\in\N,\ h_1,\dots,h_n\in\Q,\ e_i:=h_i\ (h_i\ge0),\ e_i:=-h_i\ (\text{else})}
+\sit{(1)}{e_1\ge0}
+\sit{(2)}{n\ge1\Rightarrow e_n\ge0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a star below a name, a set from a bound, nested binders]\label{lem:binders}
+\begin{stmt}
+\sit{given}{M_0\in\Z,\ O_*\subseteq\Q,\ \rho_*\in\Q_{>0}}
+\sit{(1)}{\forall M\in\Z_{\ge M_0}\ \exists L\in\Z_{\ge1}:\ M+L\ge M_0}
+\sit{(2)}{\forall\rho'\in\Q_{>0}\ \exists x\in\Q,\ c\in\Q_{>0}\ \forall i\in\Z_{\ge0}:\ x+i\rho'\ge x}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a sum over a set with a condition, a union over a family, points where a relation holds]\label{lem:unions}
+\begin{stmt}
+\sit{given}{n\in\N,\ X\subseteq\Q^n,\ \ell\colon\Q^n\to\Z,\ a\colon\Q^n\to\Q,\ L\in\Z,\ U\subseteq\Z}
+\sit{(1)}{\Sigma:=\textstyle\sum\{2^{-\ell(\bx)}:\ \bx\in X,\ a(\bx)\ge L\}\Rightarrow\Sigma\ge0}
+\sit{(2)}{\textstyle\bigcup_{\bx\in X}\{\ell(\bx)\}\subseteq U\Rightarrow\{a\le2^{-L}\}\subseteq\{a\le2^{-L}\}}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the degree, the leading coefficient and the resultant in y, derivatives, values at a point]\label{lem:poly}
+\begin{stmt}
+\sit{given}{S\in\Q[y],\ t\in\Q}
+\sit{(1)}{\deg_yS\ge1,\ \mathrm{lc}_y(S)\ne0\Rightarrow\partial_yS(t)=\partial_yS(t)}
+\sit{(2)}{\mathrm{Res}_y(S,\partial_yS)\ne0\Rightarrow S(t)=S(t)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[polynomials in y with coefficients in Q[w], at a point and partly at one]\label{lem:polyw}
+\begin{stmt}
+\sit{given}{d,l\in\N,\ \bp,\bw\in\Q^d,\ g\in\Q[\bw][y],\ u\in\Q}
+\sit{(1)}{|\partial^l_yg(\bp,u)|\ge0}
+\sit{(2)}{\deg_y(g(\bp,\cdot))\le\deg_yg}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the nonzero rationals, a scaled lattice]\label{lem:lattice}
+\begin{stmt}
+\sit{given}{N\in\Z_{\ge1},\ r\in\Q^\times,\ e\in\tfrac1N\Z}
+\sit{(1)}{r^2>0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[chains with dots, a sign]\label{lem:dots}
+\begin{stmt}
+\sit{given}{m\in\N,\ W_0,\dots,W_{m+1}\in\Q,\ \sigma\in\Q,\ \sigma=\pm}
+\sit{(1)}{W_0<\dots<W_{m+1}\Rightarrow W_0<W_{m+1}}
+\sit{(2)}{\sigma^2=1}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a restriction, the interior of an interval, a factorial, an Iverson bracket, a distance]\label{lem:small}
+\begin{stmt}
+\sit{given}{n\in\N,\ F\subseteq\Q^n,\ g\colon\Q^n\to\Q,\ k,H\in\N,\ x,a,b\in\Q,\ a\le b}
+\sit{(1)}{g|_F=0\Rightarrow g\le0\ \text{on}\ F}
+\sit{(2)}{x\in\mathring{[a,b]}\Rightarrow a<x}
+\sit{(3)}{k!\,H^k\le(k+1)!\,H^k,\ 1+[k=2]\ge1,\ \dist(x,[a,b])\ge0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[references as hypotheses, with the values of their free names]\label{lem:refs}
+\begin{stmt}
+\sit{given}{t,\eta\in\Q}
+\sit{(1)}{\cref{def:law}(H3)[t,\eta],\ \cref{def:model}(H2)\Rightarrow t=t}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[dimension, subsets]\label{lem:dim}
+\begin{stmt}
+\sit{given}{n,k\in\N,\ F\subseteq\Q^n,\ T\subseteq\mathcal P(\{0,\dots,k\})}
+\sit{(1)}{\dim F\le n}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a declared map applied by juxtaposition, composition]\label{lem:maps}
+\begin{stmt}
+\sit{given}{k,m\in\N,\ \pi\colon\Q^k\to\Q^m,\ \ell\colon\Q^m\to\Q,\ \bxi\in\Q^k,\ \bx\in\Q^m}
+\sit{(1)}{\pi\bxi=\bx\Rightarrow(\ell\circ\pi)(\bxi)=\ell(\bx)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a number times an interval]\label{lem:cells}
+\begin{stmt}
+\sit{given}{z,D\in\Z_{\ge1}}
+\sit{(1)}{2^{-z}[2^{-D},2]\subseteq2^{-z}[2^{-D},2]}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the least of a set, attained]\label{lem:least}
+\begin{stmt}
+\sit{given}{S\subseteq\Z,\ \lambda\in\Z,\ \lambda=\min\{x:\ x\in S\},\ \text{attained}}
+\sit{(1)}{\lambda\in S}
+\end{stmt}
+\end{lemma}
+
+\begin{definition}[a unary word and a relational word by rows]\label{def:vocab}
+\begin{stmt}
+\sit{feasible}{R\subseteq\Q:\ R\ \text{feasible}:\iff R\ne\varnothing}
+\sit{child}{N,N'\subseteq\Q:\ N'\ \text{a child of}\ N:\iff N'\subseteq N}
+\end{stmt}
+\end{definition}
+
+\begin{lemma}[the words of the rows of def:vocab in a statement]\label{lem:vocab}
+\begin{stmt}
+\sit{given}{A,A'\subseteq\Q}
+\sit{(1)}{A\ \text{feasible},\ A'\ \text{a child of}\ A\Rightarrow A\ \text{feasible}}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[integrals against a law and over an interval]\label{lem:integrals}
+\begin{stmt}
+\sit{given}{P\in\Q[x],\ l,r\in\Q}
+\sit{(1)}{\int P^2\,dq\ge0,\ \int_l^rP^2\ge0,\ \int_0^1(\mu-(\mu l+r)_+)^2d\mu\ge0}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a family of functions over a range, its composition]\label{lem:fold}
+\begin{stmt}
+\sit{given}{L\in\N,\ g_l\colon\Q\to\Q\ \text{for}\ 1\le l\le L,\ y\in\Q}
+\sit{(1)}{(g_L\circ\dots\circ g_1)(y)=(g_L\circ\dots\circ g_1)(y)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the tropical sum of pairs, constants free of names]\label{lem:pairs}
+\begin{stmt}
+\sit{given}{J\in\N,\ \lambda_1,\dots,\lambda_J,\ m_1,\dots,m_J\in\Q,\ \lambda,m\in\Q}
+\sit{(1)}{(\lambda,m)=\textstyle\bigoplus_{j\le J}(\lambda_j,m_j)}
+\sit{(2)}{\lambda\le m\ \text{on}\ \Q,\ \text{constants free of}\ \lambda_1,m_1}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[matrices: the type, trace, transpose, products with vectors, positive definite]\label{lem:matrices}
+\begin{stmt}
+\sit{given}{p\in\N,\ G\in\Q^{p\times p},\ \bv\in\Q^p}
+\sit{(1)}{G\succ0\Rightarrow\bv^\top G\bv\ge0}
+\sit{(2)}{\tr(G)=\tr(G^\top)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[the differential of a declared map]\label{lem:diff}
+\begin{stmt}
+\sit{given}{n,N\in\N,\ \Phi\colon\Q^n\to\Q^N,\ \bw_0\in\Q^n}
+\sit{(1)}{d\Phi(\bw_0)=d\Phi(\bw_0)}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[families of functions with two indices, set-valued maps, a tuple over a set, the union of a set of sets, a kernel]\label{lem:atlas}
+\begin{stmt}
+\sit{given}{d,k\in\N,\ \Pi\subseteq\Z,\ R\in\Pi,\ \mathcal J\subseteq\Z,\ X_R\subseteq\Q^k,\ D\in\Q,\ \theta_{R,f}\colon\Q^k\to\Q\ \text{for}\ f\in\mathcal J,\ Y^+_R\colon X_R\to\mathcal P(\Q^d)}
+\sit{(U4)}{\bx,\bx'\in X_R,\ |\bx-\bx'|_\infty\le D\Rightarrow Y^+_R(\bx)\cap Y^+_R(\bx')\ne\varnothing}
+\sit{(U7)}{\exists\bv\in X_R:\ \theta_{R,f}(\bv)>0\ (f\in\mathcal J)}
+\sit{(0)}{K\asymp P((|f|)_{f\in\mathcal J})}
+\sit{(cover)}{B\subseteq\textstyle\bigcup\mathfrak F,\ \ker\pi\subseteq B}
+\end{stmt}
+\end{lemma}
+
+\begin{lemma}[a list with its range, a sign per member of a family, the terms before a dots range, a sign below a name in a context]\label{lem:lists}
+\begin{stmt}
+\sit{given}{k\in\N,\ \mathcal J\subseteq\Z,\ \sigma_f=\pm1\ (f\in\mathcal J),\ c_+,c_-,x\in\Q}
+\sit{(1)}{\mathcal L:=\{(I_j)_{j\le k}\},\ 1\le W_0<W_1<\dots<W_{k+1}\in\Z}
+\sit{(2)}{c_\pm>0,\ x>0\Rightarrow c_+x>0}
+\end{stmt}
+\end{lemma}

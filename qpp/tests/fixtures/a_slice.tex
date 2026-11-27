@@ -1,0 +1,61 @@
+% Four statements in the LaTeX that latex2qpp reads (qpp/README.md, "The LaTeX form"): lem:S (sums),
+% lem:dominance (1), (2) and lem:constants (1), with the vocabulary of the prelude, the comparison with a rational
+% power of 2 as a defined relation, and their proof words. After each statement, a comment says how it is read.
+% \FIX{id} after an item names a fixture of it, the file <id>.json (a table) or <id>.py (an algorithm) in
+% qpp/tests/fixtures/; qpp/tests/test_latex.py checks them.
+\begin{definition}[comparisons read by powers]\label{def:powers}
+A comparison with a rational power of \(2\) is read on integer powers.
+\begin{stmt}
+\sit{}{e\in\Q,\ x,c\ \text{masses}:\ x\le c2^{-e}:\iff x^q\le c^q2^{-qe}\ \text{for}\ q\in\Z_{\ge1}\ \text{with}\ qe\in\Z\ (\text{one, equivalently every})}
+\end{stmt}
+\end{definition}
+% The remark on q is a gloss; a defined order relation also reads >=, < and >.
+
+\begin{lemmaS}\label{lem:S}
+A sum of masses lies between its largest term and \(N\) times it.
+\begin{stmt}
+\sit{given}{N\in\N,\ a_1,\dots,a_N\in\Q_{\ge0},\ 1\le k\le N,\ a_i\le a_k\ (\text{a largest})}
+\sit{sums}{a_j\le\textstyle\sum_ia_i\le Na_k}\FIX{lem_S.sums}\FIX{lem_S.sums.random}
+\end{stmt}
+\end{lemmaS}
+% k is declared by its bounds; "a largest" is the formula a_i <= a_k, the words a gloss. The free indices i and j
+% range over the family, 1..N.
+
+\begin{proof}
+Term by term in the order of \(\Q\).
+\begin{expr}
+\eit{(sums)}{\alpha[a_j\le\textstyle\sum_ia_i];\ \iota_l[\textstyle\sum_{i\le l}a_i\le l\,a_k]}
+\end{expr}
+\end{proof}
+
+\begin{lemmaP}[generic scale and dominance]\label{lem:dominance}
+Among \(N\) gaps one is generic; a term above the others by a margin dominates their sum.
+\begin{stmt}
+\sit{given}{\mu\in\Q,\ \mu\ge2,\ c\le C\ \text{masses},\ N\in\Z_{\ge1}}
+\sit{(1)}{g_1,\dots,g_N\in\Q_{\ge0},\ T\in\Q,\ \textstyle\sum_ig_i=T\Rightarrow\exists i,i':\ g_i\ge T/N\ge g_{i'}}\FIX{lem_dominance.1}
+\sit{(2)}{a,b_j\ \text{masses},\ e,e_j\in\Q:\ a\ge c2^{-e},\ b_j\le C2^{-e_j},\ e_j\ge e+\beta,\ \beta\in\Z,\ 2^\beta\ge\mu NC/c\ \Rightarrow\ \textstyle\sum_{j\le N}b_j\le a/\mu}\FIX{lem_dominance.2}
+\end{stmt}
+\end{lemmaP}
+% mu and T are declared in the given.
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gV\circ\iota[g_{i'}\le g_l\le g_i]}
+\eit{(2)}{\gV_j\circ\alpha^\vee[(b_j/a)^q\le(C/c)^q2^{-q\beta}]}
+\end{expr}
+\end{proof}
+
+\begin{lemmaK}[constants]\label{lem:constants}
+Comparisons multiply.
+\begin{stmt}
+\sit{given}{x,u,v,\kappa_1,\kappa_2\ \text{masses}}
+\sit{(1)}{x\in[\kappa_1^{-1},\kappa_1]u,\ u\in[\kappa_2^{-1},\kappa_2]v\Rightarrow x\in[(\kappa_1\kappa_2)^{-1},\kappa_1\kappa_2]v}\FIX{lem_constants.1}
+\end{stmt}
+\end{lemmaK}
+% "masses" carries hypotheses, so it is a declaration of the given, not a gloss.
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\alpha[x\le\kappa_1u\le\kappa_1\kappa_2v]}
+\end{expr}
+\end{proof}

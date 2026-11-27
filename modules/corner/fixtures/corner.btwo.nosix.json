@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "3 <= p + j", "note": "(n, j) = (5, 1): 40 < 51", "rows": [
+ {"p": "1", "j": "1"}
+]}

@@ -1,0 +1,92 @@
+-- Q++ 0.2
+paper pairs
+bib references.bib
+-- The rationals in the kernel: pairs of masses up to the tie. Differences, squares, products of hypotheses, and the
+-- words read by relation.
+
+section sec:pairs Pairs
+
+-- A square of a difference, and the identity of one interval at order one.
+lemma lem:pairsq [squares of pairs]
+  given: x, y in QQ
+  (1): (x - y)^2 + 2 * x * y = x^2 + y^2
+  (2): s, b, l, r in QQ : s^2 * (r^3 - l^3) / 3 + s * b * (r^2 - l^2) + b^2 * (r - l) = (r - l) / 3 * ((s * l + b)^2 + (s * l + b) * (s * r + b) + (s * r + b)^2)
+
+-- Expansion.
+proof lem:pairsq
+  (1) eq
+  (2) eq
+
+-- Bounds by a hypothesis times a square, and by a square alone.
+lemma lem:pairbound [bounds of pairs]
+  given: l, r, P, Q in QQ, l <= r
+  (1): (r - l) / 6 * (P^2 + Q^2) <= (r - l) / 3 * (P^2 + P * Q + Q^2)
+  (2): P^2 / 2 - Q^2 <= (P + Q)^2
+
+-- The gaps are $\frac{r-l}6(P+Q)^2$ and $\frac12(P+2Q)^2$.
+proof lem:pairbound
+  (1) V[1 / 6 * h_1 * (P + Q)^2]
+  (2) V[1 / 2 * (P + 2 * Q)^2]
+
+-- The words read by relation: a positive part in a sum, a size and an indicator.
+lemma lem:pairwords [words read by relation]
+  given: k in NN, a_(1..k), d_(1..k) in QQ, x in QQ
+  (1): (sum h in 1..k, a_(h) * max(x - d_(h), 0)) = (sum h in 1..k, a_(h) * iverson(x > d_(h)) * (x - d_(h)))
+  (2): |x| >= x
+
+-- Indicator: one case each way, the certificate in each.
+proof lem:pairwords
+  (1) sum[cases V]
+  (2) cases V
+
+-- The larger and the smaller of two pairs, an indicator and a size in two clauses, and a chain.
+lemma lem:pairmax [larger and smaller]
+  given: x, y, z in QQ
+  (1): max(x, y) >= x
+  (2): x <= z, y <= z : max(x, y) <= z
+  (3): max(x, y) + min(x, y) = x + y
+  (4): x <= y : iverson(x > y) = 0; x >= 0 : |x| = x
+  (5): x <= y, y <= z : x <= y <= z
+
+-- The bounds of the words read by relation, and their cases.
+proof lem:pairmax
+  (1) V
+  (2) cases V
+  (3) cases V
+  (4) cases V; cases V
+  (5) V, V
+
+-- Sums term by term: positive parts, and a sum of squares at least 0.
+lemma lem:pairsums [sums of pairs]
+  given: k in NN>=1, a_(1..k) in QQ>=0, d_(1..k), u_(1..k) in QQ, x in QQ
+  (1): (sum h in 1..k, a_(h) * max(x - d_(h), 0)) >= 0
+  (2): (sum h in 1..k, u_(h)^2) >= 0
+  (3): (sum h in 1..k, (max(u_(h), d_(h)) + min(u_(h), d_(h)))) = (sum h in 1..k, (u_(h) + d_(h)))
+
+-- Term by term.
+proof lem:pairsums
+  (1) sum
+  (2) sum
+  (3) sum[cases V]
+
+-- Identities of sums by induction on the bound: linearity and a constant term.
+lemma lem:pairind [sums by induction]
+  given: k in NN>=1, m in NN, u_(1..k), v_(1..k), w_(1..m) in QQ, c in QQ
+  (1): (sum h in 1..k, (c * u_(h) + v_(h))) = c * (sum h in 1..k, u_(h)) + (sum h in 1..k, v_(h))
+  (2): (sum h in 1..m, (w_(h) - c)) = (sum h in 1..m, w_(h)) - m * c
+  (3): (sum h in 1..k, (u_(h) + c)) = (sum h in 1..k, u_(h)) + k * c
+
+-- Each by induction on its bound.
+proof lem:pairind
+  (1) ind
+  (2) ind
+  (3) ind
+
+-- Powers with a variable exponent and a positive factor: the power-mean step of a heavy cluster.
+lemma lem:pairpow [powers]
+  given: N, P, q in QQ>=0, j in NN>=1
+  (1): q < 1, N^j <= q * P^j : N <= P, (N = P => P = 0)
+
+-- Compare the powers; for the tie, cancel the factor $1-q$.
+proof lem:pairpow
+  (1) pow[j], pow[j; div[1 - q]]

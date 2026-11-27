@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "B = 1 + k", "note": "the base 3 is not 1 + 1: 1 + 1 * (1 + 3) = 5, not 9", "rows": [
+ {"B": 3, "k": 1, "M": 1}
+]}

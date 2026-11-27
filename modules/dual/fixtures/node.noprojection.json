@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "St.N * s = (sum j, St.M_(j))", "rows": [
+ {"k": 2, "s": 2, "St": {"N": 2, "nu": 1, "M": [1, 1], "mu": [1, 1]}}
+]}

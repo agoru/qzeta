@@ -1,0 +1,17 @@
+{
+ "kind": "counterexample",
+ "drop": "K * s = K1",
+ "note": "K1 = 2 against K s = 1: s x = 1/2 against y = 1",
+ "rows": [
+  {
+   "x": "1/2",
+   "y": 1,
+   "u": 1,
+   "s": 1,
+   "K": 1,
+   "K1": 2,
+   "l": 1,
+   "R": 1
+  }
+ ]
+}

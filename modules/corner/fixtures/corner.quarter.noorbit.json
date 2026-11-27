@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "2 <= g", "note": "g = 1 is no orbit of the strict transform below the tie", "rows": [
+ {"g": "1", "kappa": "1", "rho": "1", "n": "2", "k": "1", "M": "2"}
+]}

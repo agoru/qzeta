@@ -1,0 +1,5 @@
+{"kind": "counterexample", "drop": "a <= S", "note": "a silent cell at p = 1, 2, 0: a unit of weight 0 at 1/2 leaves the partial sum of the cell from the site to it at 0, and its term, the square of the remainder of the unit at -dl, bounds no power of its gap", "rows": [
+ {"p": 1, "eta": 0, "c": 1, "a": "1/2", "x": "1/2", "e": "1/2", "S": 0, "Y": "1/20000", "Lp": 96},
+ {"p": 2, "eta": 1, "c": "1/2", "a": "1/2", "x": "1/2", "e": "1/2", "S": 0, "Y": "1504003/24000000000000", "Lp": 5760},
+ {"p": 0, "eta": 0, "c": 1, "a": "1/2", "x": "1/2", "e": "1/2", "S": 0, "Y": 0, "Lp": 2}
+]}

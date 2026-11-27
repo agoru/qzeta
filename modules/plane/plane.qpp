@@ -1,0 +1,27 @@
+-- Q++ 0.2
+module plane
+uses table
+
+subsection sec:plane The plane
+
+-- Units at points of \(\Q^2\) about a true unit: the centred chart carries the total weight and the first moment at the
+-- pair \((\frac32,1)\), and where the centred form of the weights is indefinite the plane has a sizes program of its
+-- own. At three units its least cost is \(1\), on an edge, and at four units \(\frac{17}{12}\), at one point, so with
+-- the chart the values are \(\frac52\) and \(\frac{35}{12}\). The programs are stated here; that they are the content
+-- of the cluster is not.
+lemma lem:planeprog [the programs of the plane]
+  (three): prog(x, t_1, t_2 in QQ>=0, 4 * x + 2 * t_1 >= 1, 4 * x + 2 * t_2 >= 1, 6 * x >= 1 : 4 * x + t_1 + t_2) = (1, 2)
+  fix (three) plane3.core
+  (typeone): prog(v_s, v_alpha, v_beta, v_kappa in QQ>=0, 4 * v_s + 2 * v_alpha >= 1, 4 * v_s + 2 * v_beta >= 1, 4 * v_s + 4 * v_kappa >= 1, 6 * v_s >= 1 : 6 * v_s + v_alpha + v_beta + v_kappa) = (17 / 12, 1)
+  fix (typeone) planetypes.model
+  (typetwo): prog(v_s, v_alpha, v_beta, v_kappa, v_gamma in QQ>=0, 4 * v_s + 2 * v_alpha >= 1, 4 * v_s + 2 * v_beta >= 1, 4 * v_s + 4 * v_kappa >= 1, 6 * v_s + 2 * v_gamma >= 1 : 6 * v_s + v_alpha + v_beta + v_kappa + v_gamma) = (17 / 12, 1)
+  fix (typetwo) planetypes.model
+  origin: ?{\text{elementary}}
+
+-- At three units the two rows of the second moment carry the price one half each, and the row of the third moment
+-- is tight at one end of the edge. At four units the prices \((\frac12,\frac12,\frac14,\frac16)\) are positive, so
+-- the four rows are tight at every optimum; for type II the reduced cost of \(v_\gamma\) is \(\frac23\).
+proof lem:planeprog
+  (three) prog[1 / 2, 1 / 2, 0; x := 1 / 4; x := 1 / 6, t_1 := 1 / 6, t_2 := 1 / 6]
+  (typeone) prog[1 / 2, 1 / 2, 1 / 4, 1 / 6; v_s := 1 / 6, v_alpha := 1 / 6, v_beta := 1 / 6, v_kappa := 1 / 12]
+  (typetwo) prog[1 / 2, 1 / 2, 1 / 4, 1 / 6; v_s := 1 / 6, v_alpha := 1 / 6, v_beta := 1 / 6, v_kappa := 1 / 12]

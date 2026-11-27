@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "Z0 * (e + 1) = X1 * X2 * Y0", "note": "the curve over the collision at 0 read at a cost that is not the sum of the three costs through it less one: 184 against 180", "rows": [
+ {"e": "2", "d": "1", "X1": "3/2", "X2": "4/3", "X3": "3/2", "Y0": "2", "Y2": "2", "Z0": "3/2", "Z2": "4/3", "x1": "1/4", "x2": "1/6", "x3": "1/4", "y0": "1/2", "y2": "1/2", "z0": "1/4", "z2": "1/6", "y1": "1"}
+]}

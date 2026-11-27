@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "B = 1 + k", "note": "the zoom of 1/3 at 10 exceeds it by 3, but 10 is not 1 + 5", "rows": [
+ {"B": 10, "k": 5, "S": 3, "q": "1/3"}
+]}

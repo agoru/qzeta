@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall i : d_(i) = c_(i) + (sum j, (T_(i)_(j) + T_(j)_(i))))", "note": "d_(1) = 9 is not 1 + 2 + 5: the sides are 499/36 and 481/36", "rows": [
+ {"k": 2, "o": 1, "K": 11, "x": ["1/2", "1/3"], "y": ["1/2", "2/3"], "c": [1, 2], "d": [9, 9], "T": [[1, 2], [3, 1]]}
+]}

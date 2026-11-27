@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "F = m * h", "note": "the denominator 2 does not divide 1: the mass 3/2 lies inside the child 4/3 to 5/3", "rows": [
+ {"F": 1, "A": 1, "Z": 3, "d": 1, "m": 2, "h": 1, "n": 3}
+]}

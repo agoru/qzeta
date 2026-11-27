@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "lem:omega(pairsum) at its member: zB = 1, a = N, b = sigma", "rows": [{"a": 1, "b": 2, "N": 1, "sigma": 2, "zB": 1, "y": "5/2", "pa": "21/4", "pb": "609/16", "pN": "21/4", "psig": "609/16"}, {"a": 2, "b": 3, "N": 2, "sigma": 3, "zB": 1, "y": "3", "pa": "80", "pb": "728", "pN": "80", "psig": "728"}]}

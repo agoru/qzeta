@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "1 <= p", "note": "degree 0: a step is 1 on its window, so its stability says nothing", "rows": [{"p": 0, "c": 0, "I": 1, "J": 1, "Y": 2}, {"p": 0, "c": 1, "I": 5, "J": 1, "Y": 6}]}

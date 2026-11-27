@@ -1,0 +1,19 @@
+{
+ "kind": "counterexample",
+ "drop": "N = 2 * alpha",
+ "note": "off the tie the optimal face is one vertex: at N = 3 alpha the pair is (alpha/2, 1), not (alpha/2, 2); at N = alpha it is (alpha/4, 1)",
+ "rows": [
+  {
+   "alpha": 1,
+   "N": 3
+  },
+  {
+   "alpha": 2,
+   "N": 6
+  },
+  {
+   "alpha": 1,
+   "N": 1
+  }
+ ]
+}

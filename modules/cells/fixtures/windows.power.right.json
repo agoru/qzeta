@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "b <= a", "note": "an interval of the same length to the right", "rows": [{"eta": 1, "a": 0, "b": 1, "l": 1, "Th": 1}, {"eta": 3, "a": "1/4", "b": 2, "l": "1/2", "Th": 2}]}

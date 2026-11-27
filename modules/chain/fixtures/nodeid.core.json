@@ -1,0 +1,69 @@
+{
+ "kind": "witness",
+ "rename": {
+  "varepsilon[]": "e[]"
+ },
+ "map": {
+  "muP[]": "pos(mu[])",
+  "muN[]": "neg(mu[])",
+  "mP[]": "pos(m[])",
+  "mN[]": "neg(m[])"
+ },
+ "note": "the weights mu and the node values m as their positive parts and deficits",
+ "rows": [
+  {
+   "r": 3,
+   "e[]": [
+    1,
+    "1/2",
+    2
+   ],
+   "s[]": [
+    0,
+    1,
+    "1/3"
+   ],
+   "muP[]": [
+    1,
+    0,
+    3
+   ],
+   "muN[]": [
+    0,
+    2,
+    0
+   ],
+   "mP[]": [
+    0,
+    2,
+    0
+   ],
+   "mN[]": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "r": 1,
+   "e[]": [
+    3
+   ],
+   "s[]": [
+    2
+   ],
+   "muP[]": [
+    0
+   ],
+   "muN[]": [
+    "1/2"
+   ],
+   "mP[]": [
+    1
+   ],
+   "mN[]": [
+    0
+   ]
+  }
+ ]
+}

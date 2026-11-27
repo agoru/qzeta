@@ -1,0 +1,407 @@
+-- Q++ 0.2
+module onevar
+uses theory
+
+subsection sec:onevar One variable without zero
+
+-- The q-number in sum form, \(S_l=\sum_{i=1}^lt^i=t[l]_t\), for every \(t\) in \(\mathbb Q_{>0}\): lengths add,
+-- \(S_{l+m}=S_l+t^lS_m\) (add), a tie of three positive masses, the whole and its two parts; at \(t=1\)
+-- it is the count \(l\) (count), and one more letter is the geometric tie \(t+tS_M=S_M+t^{M+1}\) (shift). Lengths
+-- multiply: \(b\) blocks of length \(a\) are one block and the sum at the letter \(t^a\), \(t^aS_{ab}=S_aS_b(t^a)\)
+-- (scale), that is \([ab]_t=[a]_t[b]_{t^a}\).
+-- The rows are read at \(t=1\), where they are ties of counts, and in a frame: at the letters \(t^l\) in the frame
+-- \(q=t^K\), the masses of \cref{lem:qnumber} are \(S_l/S_K\) above \(1\) and \(t^{-l}S_l/S_K\) below, and each of its
+-- four legs is (add) at two lengths, with a power of \(t\), divided by \(S_K\); so (add) with (shift) is the frame form
+-- at letters that are powers of one \(t\), and unlike the frame form it has a value at \(t=1\).
+lemma lem:qsum [the q-number in sum form]
+  (add): l, m in NN>=1, t in QQ>0 : (sum i in 1..l + m, t^i) = (sum i in 1..l, t^i) + t^l * (sum i in 1..m, t^i)
+  fix (add) qsum.add
+  (count): l in NN>=1, t in QQ>0, t = 1 : (sum i in 1..l, t^i) = l
+  fix (count) qsum.count
+  neqfix (count) qsum.count.offcount
+  (shift): M in NN>=1, t in QQ>0 : t + t * (sum i in 1..M, t^i) = (sum i in 1..M, t^i) + t^(M + 1)
+  fix (shift) qsum.shift
+  (swap): l, m in NN>=1, t in QQ>0 : (sum i in 1..l, t^i) + t^l * (sum i in 1..m, t^i) = (sum i in 1..m, t^i) + t^m * (sum i in 1..l, t^i)
+  fix (swap) qsum.swap
+  (common): a, b, c in NN>=1, t in QQ>0 : (sum i in 1..a + b, t^i) * (sum i in 1..a + c, t^i) = (sum i in 1..a, t^i) * (sum i in 1..a + b + c, t^i) + t^a * (sum i in 1..b, t^i) * (sum i in 1..c, t^i)
+  fix (common) qsum.common
+  (star): a, b, c in NN>=1, t in QQ>0 : t^(a + b + c) * (sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) + (sum i in 1..a + b + c, t^i) * ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) + (sum i in 1..a, t^i) * (sum i in 1..c, t^i) + (sum i in 1..b, t^i) * (sum i in 1..c, t^i)) = 2 * (sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) + (sum i in 1..b + c, t^i) * (sum i in 1..a + c, t^i) * (sum i in 1..a + b, t^i)
+  fix (star) qsum.star
+  (scale): a, b in NN>=1, t in QQ>0 : t^a * (sum i in 1..a * b, t^i) = (sum i in 1..a, t^i) * (sum j in 1..b, (t^a)^j)
+  fix (scale) qsum.scale
+  origin: ?{\text{elementary, proved here: the additive law of the q-integers \(S_l=t[l]_t\), their value at \(t=1\), the geometric tie and the law of a block of blocks; (swap), (common) and (star): the additive law in the other order, \(S_l+t^lS_m=S_m+t^mS_l\), by induction on \(m\), each step one (shift) times \(t^m\); the tie of two lengths added to a common one, \(S_{a+b}S_{a+c}=S_aS_{a+b+c}+t^aS_bS_c\), by (add) three times and one (swap), whose case \(b=c\) is the identity of Catalan and \(b=c=1\) that of Cassini for q-integers; and the star of three lengths that add up to \(K\), \(t^KS_aS_bS_c+S_K(S_aS_b+S_aS_c+S_bS_c)=2S_aS_bS_c+S_{b+c}S_{a+c}S_{a+b}\), by (add) four times and (shift) at \(a\), \(b\) and \(K\). On the line of \cref{lem:qline}, a mark of cost \(l/K\) has the value \(S_K/S_l\) and the inverse mark \(t^lS_K/S_l\); the wall is (swap) at \(l\) and \(K\), the end at the cost \(1-l/K\) is (add) at \(K\) and \(l\), for \(l<K\) the product of the two values exceeds \(q\) by \(t^lS_{K-l}S_{K+l}/S_l^2\), (common) at \(a=K-l\) and \(b=c=l\), which is \(K^2/l^2-1\) at \(t=1\), and for three marks with \(a+b+c=K\), \(q\) plus their values is \(2\) plus \(S_{b+c}S_{a+c}S_{a+b}/(S_aS_bS_c)\) (star)}}
+
+-- The range \(1..l+m\) splits at \(l\), and its second part is \(S_m\) shifted by \(l\), that is \(t^lS_m\) (add); at
+-- \(t=1\) every term is \(1\), one more on each side (count); (shift) by induction on \(M\), each step adds
+-- \(t^{M+2}\) to both sides; (scale) by induction on \(b\), each step one more block of length \(a\) by (add), shifted
+-- by \(t^{ab}\), so that \(t^at^{ab}=(t^a)^{b+1}\).
+proof lem:qsum
+  (add) with[(sum i in 1..l + m, t^i) = (sum i in 1..l, t^i) + (sum i in l + 1..l + m, t^i) by sum; with[(sum i in 1..m, t^(l + i)) = sum i in l + 1..l + m, t^i by sum; with[t^l * (sum i in 1..m, t^i) = sum i in 1..m, t^(l + i) by chain[t^l * (sum i in 1..m, t^i) = sum i in 1..m, t^l * t^i by eq; = sum i in 1..m, t^(l + i) by sum[eq]]; V[1 * hw1 | 1 * hw2, 1 * hw3]]]]
+  (count) ind[l; with[(sum i in 1..1, t^i) = t^1 by sum; V[1 * hw1, 1 * h_1]]; with[(sum i in 1..l + 1, t^i) = (sum i in 1..l, t^i) + t^(l + 1) by sum; with[(sum i in 1..l, t^i) = l by V; with[t^(l + 1) = 1 by eq; V[1 * hw2, 1 * hw3, 1 * hw4]]]]]
+  (shift) ind[M; with[(sum i in 1..1, t^i) = t^1 by sum; V[t * hw1 | 1 * hw1]]; with[(sum i in 1..M + 1, t^i) = (sum i in 1..M, t^i) + t^(M + 1) by sum; with[t + t * (sum i in 1..M, t^i) = (sum i in 1..M, t^i) + t^(M + 1) by V; V[t * hw2, 1 * hw3 | 1 * hw2]]]]
+  (swap) ind[m; with[(sum i in 1..1, t^i) = t^1 by sum; with[t + t * (sum i in 1..l, t^i) = (sum i in 1..l, t^i) + t^(l + 1) by lem:qsum(shift)[M := l, t := t]; V[t^l * hw1 | 1 * hw1, 1 * hw2]]]; with[(sum i in 1..m + 1, t^i) = (sum i in 1..m, t^i) + t^(m + 1) by sum; with[(sum i in 1..l, t^i) + t^l * (sum i in 1..m, t^i) = (sum i in 1..m, t^i) + t^m * (sum i in 1..l, t^i) by V; with[t + t * (sum i in 1..l, t^i) = (sum i in 1..l, t^i) + t^(l + 1) by lem:qsum(shift)[M := l, t := t]; V[1 * hw4, t^l * hw3 | t^m * hw5, 1 * hw3]]]]]
+  (common) with[(sum i in 1..a + b, t^i) = (sum i in 1..a, t^i) + t^a * (sum i in 1..b, t^i) by lem:qsum(add)[l := a, m := b, t := t]; with[(sum i in 1..a + c, t^i) = (sum i in 1..a, t^i) + t^a * (sum i in 1..c, t^i) by lem:qsum(add)[l := a, m := c, t := t]; with[1 <= a + b by V[hp(a)]; with[(sum i in 1..a + b + c, t^i) = (sum i in 1..a + b, t^i) + t^(a + b) * (sum i in 1..c, t^i) by lem:qsum(add)[l := a + b, m := c, t := t]; with[(sum i in 1..b, t^i) + t^b * (sum i in 1..a, t^i) = (sum i in 1..a, t^i) + t^a * (sum i in 1..b, t^i) by lem:qsum(swap)[l := b, m := a, t := t]; V[(sum i in 1..a + b, t^i) * hw2, (t^a * (sum i in 1..c, t^i)) * hw1 | (sum i in 1..a, t^i) * hw4, (t^a * (sum i in 1..c, t^i)) * hw5]]]]]]
+  (star) with[(sum i in 1..a + b, t^i) = (sum i in 1..a, t^i) + t^a * (sum i in 1..b, t^i) by lem:qsum(add)[l := a, m := b, t := t]; with[(sum i in 1..a + c, t^i) = (sum i in 1..a, t^i) + t^a * (sum i in 1..c, t^i) by lem:qsum(add)[l := a, m := c, t := t]; with[(sum i in 1..b + c, t^i) = (sum i in 1..b, t^i) + t^b * (sum i in 1..c, t^i) by lem:qsum(add)[l := b, m := c, t := t]; with[1 <= a + b by V[hp(a)]; with[(sum i in 1..a + b + c, t^i) = (sum i in 1..a + b, t^i) + t^(a + b) * (sum i in 1..c, t^i) by lem:qsum(add)[l := a + b, m := c, t := t]; with[t + t * (sum i in 1..a, t^i) = (sum i in 1..a, t^i) + t^(a + 1) by lem:qsum(shift)[M := a, t := t]; with[t + t * (sum i in 1..b, t^i) = (sum i in 1..b, t^i) + t^(b + 1) by lem:qsum(shift)[M := b, t := t]; with[1 <= a + b + c by V[hp(a)]; with[t + t * (sum i in 1..a + b + c, t^i) = (sum i in 1..a + b + c, t^i) + t^(a + b + c + 1) by lem:qsum(shift)[M := a + b + c, t := t]; V[((sum i in 1..a, t^i) * (sum i in 1..b, t^i)) * hw5, ((sum i in 1..a, t^i) * (sum i in 1..c, t^i)) * hw5, ((sum i in 1..b, t^i) * (sum i in 1..c, t^i)) * hw5, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i)) * hw5, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i)) * hw1, ((sum i in 1..a, t^i) * (sum i in 1..c, t^i)) * hw1, ((sum i in 1..b, t^i) * (sum i in 1..c, t^i)) * hw1, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i)) * hw1, ((sum i in 1..b, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) * t^a / t) * hw6, ((sum i in 1..b, t^i) * (sum i in 1..c, t^i) * (sum i in 1..c, t^i) * t^a * t^b / t) * hw6, ((sum i in 1..a, t^i) * (sum i in 1..a, t^i) * (sum i in 1..c, t^i) / t) * hw7 | ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) / t) * hw9, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) / t) * hw5, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * (sum i in 1..c, t^i) / t) * hw1, ((sum i in 1..a + c, t^i) * (sum i in 1..b + c, t^i)) * hw1, ((sum i in 1..a, t^i) * (sum i in 1..b + c, t^i)) * hw2, ((sum i in 1..b, t^i) * (sum i in 1..b + c, t^i) * t^a) * hw2, ((sum i in 1..a, t^i) * (sum i in 1..a, t^i)) * hw3, ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * t^a) * hw3, ((sum i in 1..a, t^i) * (sum i in 1..c, t^i) * t^a) * hw3, ((sum i in 1..b, t^i) * (sum i in 1..c, t^i) * t^a * t^a) * hw3]]]]]]]]]]
+  (scale) ind[b; with[(sum i in 1..a * 1, t^i) = (sum i in 1..a, t^i) by sum; with[(sum j in 1..1, (t^a)^j) = (t^a)^1 by sum; V[t^a * hw1 | (sum i in 1..a, t^i) * hw2]]]; with[(sum i in 1..a * (b + 1), t^i) = (sum i in 1..a * b + a, t^i) by sum; with[1 <= a * b by V[b * hp(a), 1 * hp(b)]; with[(sum i in 1..a * b + a, t^i) = (sum i in 1..a * b, t^i) + t^(a * b) * (sum i in 1..a, t^i) by lem:qsum(add)[l := a * b, m := a, t := t]; with[(sum j in 1..b + 1, (t^a)^j) = (sum j in 1..b, (t^a)^j) + (t^a)^(b + 1) by sum; with[t^a * (sum i in 1..a * b, t^i) = (sum i in 1..a, t^i) * (sum j in 1..b, (t^a)^j) by V; V[t^a * hw3, t^a * hw5, 1 * hw7 | (sum i in 1..a, t^i) * hw6]]]]]]]
+
+-- Polynomials in one variable as ties of two positive sides. Modulo a binomial \(1-x\) a tie of two sides is certified
+-- by a quotient side \(H\), \(A+Hx=A'+H\); sides multiply (product), reduce (reduce), have explicit inverses (unit),
+-- and act on counts by levels (action, actiontie).
+lemma lem:onevar [sides in one variable: their assembly, a monomial modulo a binomial, the unit law]
+  (product): r, s in NN>=1, c_(1..r), d_(1..s) in QQ>0, e_(1..r), f_(1..s) in NN>=1, y in QQ>0 : (sum i in 1..r, c_(i) * y^(e_(i))) * (sum j in 1..s, d_(j) * y^(f_(j))) = sum i in 1..r, sum j in 1..s, c_(i) * d_(j) * y^(e_(i) + f_(j))
+  fix (product) onevarproduct
+  (reduce): N, e in NN>=1, a, q, y in QQ>0 : a * q * y^(e + N) + q * y^e = q * y^e + a * y^N * (q * y^e)
+  fix (reduce) onevarreduce
+  core geometric: M in NN>=1, t in QQ>0 : (sum i in 1..M, t^i) + t^(M + 1) = t + sum i in 1..M, t^(i + 1)
+  fix core geometric onevargeometric
+  (unit): N, e in NN>=1, t, x, k in QQ>0, t^N = k * x^e : (sum i in 1..N, t^i) + t * k + (t * k / x * (sum j in 1..e, x^j)) * x = t + t * (sum i in 1..N, t^i) + t * k / x * (sum j in 1..e, x^j)
+  fix (unit) onevarunit
+  neqfix (unit) onevarunit.nolaw
+  (action): r, m, L, K in NN>=1, c_(1..r), g_(1..m), Z_(1..K) in QQ>0, e_(1..r), h_(1..m) in NN>=1 : (sum k in 1..m, g_(k) * (sum i in 1..r, c_(i) * Z_(L + h_(k) + e_(i)))) = sum k in 1..m, sum i in 1..r, g_(k) * c_(i) * Z_(L + h_(k) + e_(i))
+  fix (action) onevaraction
+  (actiontie): r, s, m, L, K in NN>=1, c_(1..r), d_(1..s), g_(1..m), Z_(1..K) in QQ>0, e_(1..r), f_(1..s), h_(1..m) in NN>=1, (forall M in NN>=1 : (sum i in 1..r, c_(i) * Z_(M + e_(i))) = sum j in 1..s, d_(j) * Z_(M + f_(j))) : (sum k in 1..m, g_(k) * (sum i in 1..r, c_(i) * Z_(L + h_(k) + e_(i)))) = sum k in 1..m, g_(k) * (sum j in 1..s, d_(j) * Z_(L + h_(k) + f_(j)))
+  fix (actiontie) onevaractiontie
+  neqfix (actiontie) onevaractiontie.notie
+  (pairs): P_1, M_1, P_2, M_2, P_3, M_3, P_4, M_4 in QQ>0, P_4 = M_4 : (P_1 * P_2 + M_1 * M_2) * (P_3 * P_4 + M_3 * M_4) + (P_1 * M_2 + M_1 * P_2) * (P_3 * M_4 + M_3 * P_4) = (P_1 * P_2 + M_1 * M_2) * (P_3 * M_4 + M_3 * P_4) + (P_1 * M_2 + M_1 * P_2) * (P_3 * P_4 + M_3 * M_4)
+  fix (pairs) onevarpairs
+  neqfix (pairs) onevarpairs.untied
+  origin: ?{\text{elementary, proved here; (unit) is the inverse of a binomial modulo a binomial in closed form, by one geometric sum}}
+
+-- Each row is a ring identity, the geometric tie of \cref{lem:qsum}, or a tie of counts summed.
+proof lem:onevar
+  (product) chain[(sum i in 1..r, c_(i) * y^(e_(i))) * (sum j in 1..s, d_(j) * y^(f_(j))) = sum i in 1..r, c_(i) * y^(e_(i)) * (sum j in 1..s, d_(j) * y^(f_(j))) by eq; = sum i in 1..r, sum j in 1..s, c_(i) * y^(e_(i)) * (d_(j) * y^(f_(j))) by sum[eq]; = sum i in 1..r, sum j in 1..s, c_(i) * d_(j) * y^(e_(i) + f_(j)) by sum[sum[eq]]]
+  (reduce) eq
+  "core geometric" with[t + t * (sum i in 1..M, t^i) = (sum i in 1..M, t^i) + t^(M + 1) by lem:qsum(shift)[M := M, t := t]; with[t * (sum i in 1..M, t^i) = sum i in 1..M, t^(i + 1) by chain[t * (sum i in 1..M, t^i) = sum i in 1..M, t * t^i by eq; = sum i in 1..M, t^(i + 1) by sum[eq]]; V[1 * hw2 | 1 * hw1]]]
+  (unit) with[t + t * (sum i in 1..N, t^i) = (sum i in 1..N, t^i) + t^(N + 1) by lem:qsum(shift)[M := N, t := t]; with[x + x * (sum j in 1..e, x^j) = (sum j in 1..e, x^j) + x^(e + 1) by lem:qsum(shift)[M := e, t := x]; V[1 * hw1, (t * k / x) * hw2, t * h_1]]]
+  (action) sum[chain[g_(k) * (sum i in 1..r, c_(i) * Z_(L + h_(k) + e_(i))) = sum i in 1..r, g_(k) * (c_(i) * Z_(L + h_(k) + e_(i))) by eq; = sum i in 1..r, g_(k) * c_(i) * Z_(L + h_(k) + e_(i)) by sum[eq]]]
+  (actiontie) sum[with[L <= L + h_(k) by V; with[1 <= L + h_(k) by V; with[(sum i in 1..r, c_(i) * Z_(L + h_(k) + e_(i))) = sum j in 1..s, d_(j) * Z_(L + h_(k) + f_(j)) by h_1[M := L + h_(k)]; V[g_(k) * hw3]]]]]
+  (pairs) V[(P_1 * P_2 + M_1 * M_2) * P_3 * h_1, (P_1 * P_2 + M_1 * M_2) * M_3 * h_1, (P_1 * M_2 + M_1 * P_2) * P_3 * h_1, (P_1 * M_2 + M_1 * P_2) * M_3 * h_1]
+
+-- Ties in a layer. Two sides tie in the layer of a sum \(S\) when they differ by \(S\) times a side, \(A+MS=B+M'S\),
+-- a congruence modulo \(S\), with \(M\) and \(M'\) polynomials in \(t\), in sums and in letters whose ties divide only by powers of \(t\) and by
+-- units of the layer; at each non-zero root of \(S\), where the powers of \(t\) are units, the tie reads \(A=B\).
+-- Write \(S_l(x)=\sum_{j=1}^lx^j=x[l]_x\), whose non-zero roots are the roots of \([l]_x\). The unit tie of
+-- Euclid lifts to sums: \(ac=be+1\) gives \(t^eS_cS_a(t^c)=t^{c+1}(t^e+S_eS_b(t^e))\), that is
+-- \([c]_t[a]_{t^c}=1+t[e]_t[b]_{t^e}\), so \(S_c\) is a unit modulo \(S_e\) (unit). A sum of \(b\) powers of \(x\) is
+-- \(b\) modulo the binomial \(1-x\): \(xS_b(x)+H=bx+xH\), \(H=\sum_{j=1}^bS_j(x)\) (count). The factor of a cost,
+-- \(F=S_{gn}/S_{ga}\), is \(FS_a(x)=S_n(x)\) at the letter \(x=t^g\) (factor); it is \(0\) modulo \(S_n(x)\) when
+-- \(ua=vn+1\) (coprime), and \(n/a\) modulo \(1-x\) (whole). On the line with three marks \(a\), \(b\), \(c\) in the
+-- frame \(K=ab\), with the factors \(t^aF_a=S_b(t^a)\), \(t^bF_b=S_a(t^b)\), \(F_cS_c=S_K\) and the value
+-- \(W+2=t^K+F_a+F_b+F_c\), the sum \(W+1\) is \(b\) in the layer of \(a\) when \(b\) and \(c\) are units modulo \(a\)
+-- (mark), and \(0\) in the mixed layer \(XS_aS_b=tS_{ab}\) when \(c\) is a unit modulo \(ab\) (mixed).
+lemma lem:layer [ties in the layer of a sum]
+  (unit): a, c, b, e in NN>=1, t in QQ>0, a * c = b * e + 1 : t^e * (sum i in 1..c, t^i) * (sum j in 1..a, (t^c)^j) = t^(c + 1) * (t^e + (sum i in 1..e, t^i) * (sum j in 1..b, (t^e)^j))
+  fix (unit) layer.unit
+  neqfix (unit) layer.unit.notie
+  (count): b in NN>=1, x in QQ>0 : x * (sum j in 1..b, x^j) + (sum j in 1..b, (sum i in 1..j, x^i)) = b * x + x * (sum j in 1..b, (sum i in 1..j, x^i))
+  fix (count) layer.count
+  (factor): g, a, n in NN>=1, t, F in QQ>0, F * (sum i in 1..g * a, t^i) = (sum i in 1..g * n, t^i) : F * (sum j in 1..a, (t^g)^j) = (sum j in 1..n, (t^g)^j)
+  fix (factor) layer.factor
+  neqfix (factor) layer.factor.nofactor
+  (coprime): a, n, u, v in NN>=1, x, F in QQ>0, u * a = v * n + 1, F * (sum j in 1..a, x^j) = (sum j in 1..n, x^j) : x^(a + n + 1) * F + x^(a + 1) * (sum j in 1..n, x^j) * (sum j in 1..v, (x^n)^j) * F = x^n * (sum j in 1..n, x^j) * (sum j in 1..u, (x^a)^j)
+  fix (coprime) layer.coprime
+  neqfix (coprime) layer.coprime.nounit
+  (whole): a, n in NN>=1, x, F in QQ>0, F * (sum j in 1..a, x^j) = (sum j in 1..n, x^j) : a * x * F + (sum j in 1..n, (sum i in 1..j, x^i)) + x * F * (sum j in 1..a, (sum i in 1..j, x^i)) = n * x + x * (sum j in 1..n, (sum i in 1..j, x^i)) + F * (sum j in 1..a, (sum i in 1..j, x^i))
+  fix (whole) layer.whole
+  neqfix (whole) layer.whole.nofactor
+  (mark): a, b, c, u, v, p, q in NN>=1, t, Fa, Fb, Fc, W in QQ>0, u * b = v * a + 1, p * c = q * a + 1, t^a * Fa = (sum j in 1..b, (t^a)^j), t^b * Fb = (sum j in 1..a, (t^b)^j), Fc * (sum i in 1..c, t^i) = (sum i in 1..a * b, t^i), W + 2 = t^(a * b) + Fa + Fb + Fc : (W + 1) * t^a * t^a * t^b * t^c * t + (sum i in 1..a, t^i) * ((sum j in 1..b, (t^a)^j) * t^a * t^b * t^c + (sum j in 1..b, (sum i in 1..j, (t^a)^i)) * t^b * t^c + b * t^a * t^b * t^c * t + t * (sum j in 1..v, (t^a)^j) * (sum j in 1..a, (t^b)^j) * t^a * t^c + Fc * t^c * t * (sum j in 1..q, (t^a)^j) * t^a * t^b) = b * t^a * t^a * t^b * t^c * t + (sum i in 1..a, t^i) * ((sum j in 1..b, (t^a)^j) * t^a * t^b * t^c * t + (sum j in 1..b, (sum i in 1..j, (t^a)^i)) * t^b * t^c * t + b * t^a * t^b * t^c + (sum j in 1..u, (t^b)^j) * (sum j in 1..b, (t^a)^j) * t^a * t^c + (sum j in 1..b, (t^a)^j) * (sum j in 1..p, (t^c)^j) * t^a * t^b)
+  fix (mark) layer.mark
+  neqfix (mark) layer.mark.nounit
+  (mixed): a, b, c, p, q in NN>=1, t, X, Fa, Fb, Fc, W in QQ>0, p * c = q * (a * b) + 1, X * (sum i in 1..a, t^i) * (sum i in 1..b, t^i) = t * (sum i in 1..a * b, t^i), t^a * Fa = (sum j in 1..b, (t^a)^j), t^b * Fb = (sum j in 1..a, (t^b)^j), Fc * (sum i in 1..c, t^i) = (sum i in 1..a * b, t^i), W + 2 = t^(a * b) + Fa + Fb + Fc : (W + 1) * t^(a * b) * t^c * t^2 + X * ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * t^(a * b) * t^c + (sum i in 1..a, t^i) * (sum i in 1..b, t^i) * Fc * t^c * t * (sum j in 1..q, (t^(a * b))^j)) = X * ((sum i in 1..a, t^i) * (sum i in 1..b, t^i) * t^(a * b) * t^c * t + ((sum i in 1..a, t^i) + (sum i in 1..b, t^i)) * t^(a * b) * t^c * t + (sum i in 1..a, t^i) * (sum i in 1..b, t^i) * t^(a * b) * (sum j in 1..p, (t^c)^j))
+  fix (mixed) layer.mixed
+  neqfix (mixed) layer.mixed.nounit
+  origin: ?{\text{elementary, proved here: the B\'ezout identity of the q-integers for a unit tie, a sum of powers modulo a binomial, and the values at the roots of unity of the factor of a cost and of the line with three marks, as ties modulo sums}}
+
+-- (unit) by (scale) at \(c,a\) and at \(e,b\), the length \(ca=eb+1\) written two ways and (shift) at \(eb\); (count)
+-- by induction on \(b\), each step one (shift); (factor) by (scale) twice, divided by \(S_g\); (coprime) is (unit) at
+-- the letter \(x\) times \(F\); (whole) is (count) at \(a\) and at \(n\); (mark) and (mixed) by (scale), (shift),
+-- (count) and (unit), with \(S_b(t^a)\) and \(S_a(t^b)\) read through \(X\) after a division by \(S_a\) and \(S_b\).
+proof lem:layer
+  (unit) with[1 <= c * a by V[a * hp(c), 1 * hp(a)]; with[1 <= e * b by V[b * hp(e), 1 * hp(b)]; with[c * a = e * b + 1 by V[1 * h_1]; with[t^c * (sum i in 1..c * a, t^i) = (sum i in 1..c, t^i) * (sum j in 1..a, (t^c)^j) by lem:qsum(scale)[a := c, b := a, t := t]; with[t^e * (sum i in 1..e * b, t^i) = (sum i in 1..e, t^i) * (sum j in 1..b, (t^e)^j) by lem:qsum(scale)[a := e, b := b, t := t]; with[(sum i in 1..c * a, t^i) = (sum i in 1..e * b + 1, t^i) by eq; with[(sum i in 1..e * b + 1, t^i) = (sum i in 1..e * b, t^i) + t^(e * b + 1) by sum; with[t + t * (sum i in 1..e * b, t^i) = (sum i in 1..e * b, t^i) + t^(e * b + 1) by lem:qsum(shift)[M := e * b, t := t]; V[t^(c + 1) * hw5, (t^e * t^c) * hw6, (t^e * t^c) * hw7 | t^e * hw4, (t^e * t^c) * hw8]]]]]]]]]
+  (count) ind[b; with[(sum j in 1..1, (sum i in 1..j, x^i)) = (sum i in 1..1, x^i) by sum; with[(sum i in 1..1, x^i) = x^1 by sum; V[1 * hw1, 1 * hw2 | x * hw1]]]; with[(sum j in 1..b + 1, x^j) = (sum j in 1..b, x^j) + x^(b + 1) by sum; with[(sum j in 1..b + 1, (sum i in 1..j, x^i)) = (sum j in 1..b, (sum i in 1..j, x^i)) + (sum i in 1..b + 1, x^i) by sum; with[x + x * (sum i in 1..b, x^i) = (sum i in 1..b, x^i) + x^(b + 1) by lem:qsum(shift)[M := b, t := x]; with[x * (sum j in 1..b, x^j) + (sum j in 1..b, (sum i in 1..j, x^i)) = b * x + x * (sum j in 1..b, (sum i in 1..j, x^i)) by V; V[1 * hw3, 1 * hw4, 1 * hw6 | x * hw4, 1 * hw5]]]]]]
+  (factor) with[t^g * (sum i in 1..g * a, t^i) = (sum i in 1..g, t^i) * (sum j in 1..a, (t^g)^j) by lem:qsum(scale)[a := g, b := a, t := t]; with[t^g * (sum i in 1..g * n, t^i) = (sum i in 1..g, t^i) * (sum j in 1..n, (t^g)^j) by lem:qsum(scale)[a := g, b := n, t := t]; with[(sum i in 1..g, t^i) * (F * (sum j in 1..a, (t^g)^j)) = (sum i in 1..g, t^i) * (sum j in 1..n, (t^g)^j) by V[1 * hw2, t^g * h_1 | F * hw1]; div[(sum i in 1..g, t^i)]]]]
+  (coprime) with[x^n * (sum i in 1..a, x^i) * (sum j in 1..u, (x^a)^j) = x^(a + 1) * (x^n + (sum i in 1..n, x^i) * (sum j in 1..v, (x^n)^j)) by lem:layer(unit)[a := u, c := a, b := v, e := n, t := x; u * a = v * n + 1 by V[1 * h_1]]; V[(x^n * (sum j in 1..u, (x^a)^j)) * h_2 | F * hw1]]
+  (whole) with[x * (sum j in 1..a, x^j) + (sum j in 1..a, (sum i in 1..j, x^i)) = a * x + x * (sum j in 1..a, (sum i in 1..j, x^i)) by lem:layer(count)[b := a, x := x]; with[x * (sum j in 1..n, x^j) + (sum j in 1..n, (sum i in 1..j, x^i)) = n * x + x * (sum j in 1..n, (sum i in 1..j, x^i)) by lem:layer(count)[b := n, x := x]; V[1 * hw2, x * h_1 | F * hw1]]]
+  (mark) with[1 <= a * b by V[b * hp(a), 1 * hp(b)]; with[t^a * (sum i in 1..a * b, t^i) = (sum i in 1..a, t^i) * (sum j in 1..b, (t^a)^j) by lem:qsum(scale)[a := a, b := b, t := t]; with[t^b * (sum i in 1..b * a, t^i) = (sum i in 1..b, t^i) * (sum j in 1..a, (t^b)^j) by lem:qsum(scale)[a := b, b := a, t := t]; with[(sum i in 1..b * a, t^i) = (sum i in 1..a * b, t^i) by sum; with[t + t * (sum i in 1..a * b, t^i) = (sum i in 1..a * b, t^i) + t^(a * b + 1) by lem:qsum(shift)[M := a * b, t := t]; with[t + t * (sum i in 1..a, t^i) = (sum i in 1..a, t^i) + t^(a + 1) by lem:qsum(shift)[M := a, t := t]; with[t^a * (sum j in 1..b, (t^a)^j) + (sum j in 1..b, (sum i in 1..j, (t^a)^i)) = b * t^a + t^a * (sum j in 1..b, (sum i in 1..j, (t^a)^i)) by lem:layer(count)[b := b, x := t^a]; with[t^a * (sum i in 1..b, t^i) * (sum j in 1..u, (t^b)^j) = t^(b + 1) * (t^a + (sum i in 1..a, t^i) * (sum j in 1..v, (t^a)^j)) by lem:layer(unit)[a := u, c := b, b := v, e := a, t := t; u * b = v * a + 1 by V[1 * h_1]]; with[t^a * (sum i in 1..c, t^i) * (sum j in 1..p, (t^c)^j) = t^(c + 1) * (t^a + (sum i in 1..a, t^i) * (sum j in 1..q, (t^a)^j)) by lem:layer(unit)[a := p, c := c, b := q, e := a, t := t; p * c = q * a + 1 by V[1 * h_2]]; V[t * t^b * t^c * t^a * t^a * h_6, (t^a * ((sum j in 1..p, (t^c)^j) * t^b + (sum j in 1..u, (t^b)^j) * t^c + t * t^b * t^c)) * hw2, t * t^a * t^b * t^c * h_3, t * t^b * t^c * hw7, b * t^a * t^b * t^c * hw6, t * t^c * t^a * t^a * h_4, (sum j in 1..u, (t^b)^j) * t^c * t^a * t^a * hw4, (sum j in 1..p, (t^c)^j) * t^b * t^a * t^a * h_5 | t^b * t^c * t^a * t^a * hw5, t^a * t^b * t^c * hw2, (sum j in 1..b, (sum i in 1..j, (t^a)^i)) * t^b * t^c * hw6, ((sum j in 1..u, (t^b)^j) * t^c * t^a * t^a / t^b) * hw3, ((sum j in 1..a, (t^b)^j) * t^a * t^c / t^b) * hw8, Fc * t^a * t^b * hw9]]]]]]]]]]
+  (mixed) with[1 <= a * b by V[b * hp(a), 1 * hp(b)]; with[t^a * (sum i in 1..a * b, t^i) = (sum i in 1..a, t^i) * (sum j in 1..b, (t^a)^j) by lem:qsum(scale)[a := a, b := b, t := t]; with[t^b * (sum i in 1..b * a, t^i) = (sum i in 1..b, t^i) * (sum j in 1..a, (t^b)^j) by lem:qsum(scale)[a := b, b := a, t := t]; with[(sum i in 1..b * a, t^i) = (sum i in 1..a * b, t^i) by sum; with[t * (sum j in 1..b, (t^a)^j) = t^a * X * (sum i in 1..b, t^i) by with[(sum i in 1..a, t^i) * (t * (sum j in 1..b, (t^a)^j)) = (sum i in 1..a, t^i) * (t^a * X * (sum i in 1..b, t^i)) by V[ | t * hw2, t^a * h_2]; div[(sum i in 1..a, t^i)]]; with[t * (sum j in 1..a, (t^b)^j) = t^b * X * (sum i in 1..a, t^i) by with[(sum i in 1..b, t^i) * (t * (sum j in 1..a, (t^b)^j)) = (sum i in 1..b, t^i) * (t^b * X * (sum i in 1..a, t^i)) by V[(t * t^b) * hw4 | t * hw3, t^b * h_2]; div[(sum i in 1..b, t^i)]]; with[t + t * (sum i in 1..a * b, t^i) = (sum i in 1..a * b, t^i) + t^(a * b + 1) by lem:qsum(shift)[M := a * b, t := t]; with[t^(a * b) * (sum i in 1..c, t^i) * (sum j in 1..p, (t^c)^j) = t^(c + 1) * (t^(a * b) + (sum i in 1..a * b, t^i) * (sum j in 1..q, (t^(a * b))^j)) by lem:layer(unit)[a := p, c := c, b := q, e := a * b, t := t; p * c = q * (a * b) + 1 by V[1 * h_1]]; V[t^(a * b) * t^c * t^2 * h_6, (t^c * (Fc * (sum j in 1..q, (t^(a * b))^j) * t + t^(a * b))) * h_2, (t * t^(a * b) * t^c / t^a) * hw5, (t^(a * b) * t^c * t^2 / t^a) * h_3, (t * t^(a * b) * t^c / t^b) * hw7, (t^(a * b) * t^c * t^2 / t^b) * h_4, (sum j in 1..p, (t^c)^j) * t * t^(a * b) * h_5 | (t^(a * b) * ((sum j in 1..p, (t^c)^j) + t * t^c)) * h_2, t * t^(a * b) * t^c * hw9, Fc * t * hw10]]]]]]]]]
+
+-- A tie of two positive sides with one change of side, read at the power \(x^k\) where the side changes. A point above
+-- \(x\) is \(tx\) with \(t\ge1\): the side \(A\) of the higher degrees grows at least by \(t^{k+1}\) and the side \(B\)
+-- of the lower degrees at most by \(t^k\) (core rise, core fall), so that \(f(x)=xB(x)/A(x)\) does not rise from \(x\)
+-- to \(tx\) (decrease). The frame is one separation, not two sides with a gap: the chamber \(A<B\) is closed downwards
+-- and \(B<A\) upwards, a point of the tie above a point of the tie is the same point, \(f\) carries each chamber to the
+-- other side of the wall (swap: \(f(x)=tx\); swapup: \(f(tx)=x\)), and both chambers are inhabited.
+lemma lem:cut [a wall is one separation]
+  core rise: r, k in NN>=1, a_(1..r) in QQ>0, d_(1..r) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), x, t in QQ>0, 1 <= t : (sum i in 1..r, a_(i) * x^(d_(i))) * t^(k + 1) <= (sum i in 1..r, a_(i) * (t * x)^(d_(i)))
+  fix core rise cut.rise
+  neqfix core rise cut.rise.noside
+  core fall: s, k in NN>=1, b_(1..s) in QQ>0, g_(1..s) in NN>=1, (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, 1 <= t : (sum j in 1..s, b_(j) * (t * x)^(g_(j))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * t^k
+  fix core fall cut.fall
+  core inside: p, q in QQ>0 : q / (p + q) <= 1, p * (q / (p + q)) < q
+  fix core inside cut.inside
+  core outside: p, q in QQ>0 : 1 <= 1 + q / p, q < p * (1 + q / p)
+  fix core outside cut.outside
+  (decrease): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, 1 <= t : t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i)))
+  fix (decrease) cut.decrease
+  neqfix (decrease) cut.decrease.noorder
+  (lower): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, 1 <= t, (sum i in 1..r, a_(i) * (t * x)^(d_(i))) < (sum j in 1..s, b_(j) * (t * x)^(g_(j))) : (sum i in 1..r, a_(i) * x^(d_(i))) < (sum j in 1..s, b_(j) * x^(g_(j)))
+  fix (lower) cut.lower
+  neqfix (lower) cut.lower.noorder
+  (upper): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, 1 <= t, (sum j in 1..s, b_(j) * x^(g_(j))) < (sum i in 1..r, a_(i) * x^(d_(i))) : (sum j in 1..s, b_(j) * (t * x)^(g_(j))) < (sum i in 1..r, a_(i) * (t * x)^(d_(i)))
+  fix (upper) cut.upper
+  (point): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, 1 <= t, (sum i in 1..r, a_(i) * x^(d_(i))) = (sum j in 1..s, b_(j) * x^(g_(j))), (sum i in 1..r, a_(i) * (t * x)^(d_(i))) = (sum j in 1..s, b_(j) * (t * x)^(g_(j))) : t = 1
+  fix (point) cut.point
+  (swap): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, (sum i in 1..r, a_(i) * x^(d_(i))) < (sum j in 1..s, b_(j) * x^(g_(j))), t * (sum i in 1..r, a_(i) * x^(d_(i))) = (sum j in 1..s, b_(j) * x^(g_(j))) : (sum j in 1..s, b_(j) * (t * x)^(g_(j))) <= (sum i in 1..r, a_(i) * (t * x)^(d_(i)))
+  fix (swap) cut.swap
+  (swapup): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x, t in QQ>0, (sum j in 1..s, b_(j) * (t * x)^(g_(j))) < (sum i in 1..r, a_(i) * (t * x)^(d_(i))), t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) = (sum i in 1..r, a_(i) * (t * x)^(d_(i))) : (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j)))
+  fix (swapup) cut.swapup
+  (below): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x in QQ>0, x <= 1, (sum i in 1..r, a_(i)) * x < (sum j in 1..s, b_(j)) : (sum i in 1..r, a_(i) * x^(d_(i))) < (sum j in 1..s, b_(j) * x^(g_(j)))
+  fix (below) cut.below
+  (above): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k), x in QQ>0, 1 <= x, (sum j in 1..s, b_(j)) < (sum i in 1..r, a_(i)) * x : (sum j in 1..s, b_(j) * x^(g_(j))) < (sum i in 1..r, a_(i) * x^(d_(i)))
+  fix (above) cut.above
+  (lowerat): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k) : (sum i in 1..r, a_(i) * ((sum j in 1..s, b_(j)) / ((sum i in 1..r, a_(i)) + (sum j in 1..s, b_(j))))^(d_(i))) < (sum j in 1..s, b_(j) * ((sum j in 1..s, b_(j)) / ((sum i in 1..r, a_(i)) + (sum j in 1..s, b_(j))))^(g_(j)))
+  fix (lowerat) cut.lowerat
+  (upperat): r, s, k in NN>=1, a_(1..r), b_(1..s) in QQ>0, d_(1..r), g_(1..s) in NN>=1, (forall i in NN>=1 : i <= r => k + 1 <= d_(i)), (forall j in NN>=1 : j <= s => g_(j) <= k) : (sum j in 1..s, b_(j) * (1 + (sum j in 1..s, b_(j)) / (sum i in 1..r, a_(i)))^(g_(j))) < (sum i in 1..r, a_(i) * (1 + (sum j in 1..s, b_(j)) / (sum i in 1..r, a_(i)))^(d_(i)))
+  fix (upperat) cut.upperat
+  origin: ?{\text{elementary, proved here: the part of Descartes' rule of signs at one change of side that holds over the positive rationals, with no intermediate value, so at most one point}}
+
+-- Term by term, \(t^{k+1}\le t^{d_i}\) and \(t^{g_j}\le t^k\) at \(t\ge1\) (core rise, core fall), and (decrease) is
+-- their product. (lower), (upper), (point), (swap) and (swapup) divide (decrease) by a positive side. (below) and
+-- (above) compare each side with its power next to the change, \(x^{k+1}\) or \(x^k\), and (lowerat) and (upperat) read
+-- them at \(q/(p+q)\) and \(1+q/p\), where \(p\) and \(q\) are the sums of the coefficients of the two sides (core
+-- inside, core outside).
+proof lem:cut
+  "core rise" with[(sum i in 1..r, a_(i) * x^(d_(i)) * t^(k + 1)) <= sum i in 1..r, a_(i) * (t * x)^(d_(i)) by sum[with[t^(k + 1) <= t^(d_(i)) by mono; with[(t * x)^(d_(i)) = t^(d_(i)) * x^(d_(i)) by eq; V[(a_(i) * x^(d_(i))) * hw2 | a_(i) * hw3]]]]; with[(sum i in 1..r, a_(i) * x^(d_(i))) * t^(k + 1) = sum i in 1..r, a_(i) * x^(d_(i)) * t^(k + 1) by eq; V[1 * hw1, 1 * hw4]]]
+  "core fall" with[(sum j in 1..s, b_(j) * (t * x)^(g_(j))) <= sum j in 1..s, b_(j) * x^(g_(j)) * t^k by sum[with[t^(g_(j)) <= t^k by mono; with[(t * x)^(g_(j)) = t^(g_(j)) * x^(g_(j)) by eq; V[(b_(j) * x^(g_(j))) * hw2, b_(j) * hw3]]]]; with[(sum j in 1..s, b_(j) * x^(g_(j))) * t^k = sum j in 1..s, b_(j) * x^(g_(j)) * t^k by eq; V[1 * hw1 | 1 * hw4]]]
+  "core inside" (div[p + q; V[0]], div[p + q; V[0]])
+  "core outside" (V[0], V[0])
+  (decrease) with[(sum i in 1..r, a_(i) * x^(d_(i))) * t^(k + 1) <= (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(core rise)[r := r, k := k, a := a, d := d, x := x, t := t]; with[(sum j in 1..s, b_(j) * (t * x)^(g_(j))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * t^k by lem:cut(core fall)[s := s, k := k, b := b, g := g, x := x, t := t]; V[(sum j in 1..s, b_(j) * x^(g_(j))) * hw1, (t * (sum i in 1..r, a_(i) * x^(d_(i)))) * hw2]]]
+  (lower) with[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(decrease)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := x, t := t]; div[(sum j in 1..s, b_(j) * (t * x)^(g_(j))); V[((sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i)))) * h_3, 1 * hw1, (sum j in 1..s, b_(j) * x^(g_(j))) * h_4]]]
+  (upper) with[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(decrease)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := x, t := t]; div[(sum i in 1..r, a_(i) * x^(d_(i))); V[((sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i)))) * h_3, 1 * hw1, (sum i in 1..r, a_(i) * (t * x)^(d_(i))) * h_4]]]
+  (point) with[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(decrease)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := x, t := t]; div[(sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))); V[1 * hw1, (sum i in 1..r, a_(i) * x^(d_(i))) * h_5 | (sum i in 1..r, a_(i) * (t * x)^(d_(i))) * h_4]]], V[1 * h_3]
+  (swap) with[1 <= t by div[(sum i in 1..r, a_(i) * x^(d_(i))); V[1 * h_3 | 1 * h_4]]; with[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(decrease)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := x, t := t]; div[t * (sum i in 1..r, a_(i) * x^(d_(i))); V[1 * hw2 | (sum i in 1..r, a_(i) * (t * x)^(d_(i))) * h_4]]]]
+  (swapup) with[1 <= t by div[(sum j in 1..s, b_(j) * (t * x)^(g_(j))); V[1 * h_3 | 1 * h_4]]; with[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))) * (sum i in 1..r, a_(i) * x^(d_(i))) <= (sum j in 1..s, b_(j) * x^(g_(j))) * (sum i in 1..r, a_(i) * (t * x)^(d_(i))) by lem:cut(decrease)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := x, t := t]; div[t * (sum j in 1..s, b_(j) * (t * x)^(g_(j))); V[1 * hw2 | (sum j in 1..s, b_(j) * x^(g_(j))) * h_4]]]]
+  (below) with[(sum i in 1..r, a_(i) * x^(d_(i))) <= (sum i in 1..r, a_(i) * x^(k + 1)) by sum[mono]; with[(sum i in 1..r, a_(i) * x^(k + 1)) = (sum i in 1..r, a_(i)) * x^(k + 1) by eq; with[(sum j in 1..s, b_(j)) * x^k = (sum j in 1..s, b_(j) * x^k) by eq; with[(sum j in 1..s, b_(j) * x^k) <= (sum j in 1..s, b_(j) * x^(g_(j))) by sum[mono]; with[(sum i in 1..r, a_(i)) * x * x^k < (sum j in 1..s, b_(j)) * x^k by mono; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5]]]]]]
+  (above) with[(sum j in 1..s, b_(j) * x^(g_(j))) <= (sum j in 1..s, b_(j) * x^k) by sum[mono]; with[(sum j in 1..s, b_(j) * x^k) = (sum j in 1..s, b_(j)) * x^k by eq; with[(sum i in 1..r, a_(i)) * x^(k + 1) = (sum i in 1..r, a_(i) * x^(k + 1)) by eq; with[(sum i in 1..r, a_(i) * x^(k + 1)) <= (sum i in 1..r, a_(i) * x^(d_(i))) by sum[mono]; with[(sum j in 1..s, b_(j)) * x^k < (sum i in 1..r, a_(i)) * x * x^k by mono; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5]]]]]]
+  (lowerat) with[0 < (sum i in 1..r, a_(i)) by mono; with[0 < (sum j in 1..s, b_(j)) by mono; with[((sum j in 1..s, b_(j)) / ((sum i in 1..r, a_(i)) + (sum j in 1..s, b_(j))) <= 1, (sum i in 1..r, a_(i)) * ((sum j in 1..s, b_(j)) / ((sum i in 1..r, a_(i)) + (sum j in 1..s, b_(j)))) < (sum j in 1..s, b_(j))) by lem:cut(core inside)[p := (sum i in 1..r, a_(i)), q := (sum j in 1..s, b_(j))]; lem:cut(below)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := (sum j in 1..s, b_(j)) / ((sum i in 1..r, a_(i)) + (sum j in 1..s, b_(j)))]]]]
+  (upperat) with[0 < (sum i in 1..r, a_(i)) by mono; with[0 < (sum j in 1..s, b_(j)) by mono; with[(1 <= 1 + (sum j in 1..s, b_(j)) / (sum i in 1..r, a_(i)), (sum j in 1..s, b_(j)) < (sum i in 1..r, a_(i)) * (1 + (sum j in 1..s, b_(j)) / (sum i in 1..r, a_(i)))) by lem:cut(core outside)[p := (sum i in 1..r, a_(i)), q := (sum j in 1..s, b_(j))]; lem:cut(above)[r := r, s := s, k := k, a := a, b := b, d := d, g := g, x := 1 + (sum j in 1..s, b_(j)) / (sum i in 1..r, a_(i))]]]]
+
+-- The masses of letters in a frame. For a mass \(e\) and a letter \(T\), the mass \([T]\) of \(T\) is tied to it by
+-- \(e[T]+1=T\) when \(T\) is above \(1\) (detached) and by \(e[T]+T=1\) when it is below (attached); above \(1\),
+-- \([T]\) is \((T-1)/e\), and at \(e=t-1\) and \(T=t^l\) it is the q-integer \([l]_t=1+t+\dots+t^{l-1}\). The leg below
+-- is the leg above read at \(1/T\), as \(e\frac{[T]}{T}+1=\frac1T\). Two letters and their product form a block of
+-- three masses: \(e[T]\), \(Te[U]\) and \(e[TU]\) are the gaps between the points \(1\), \(T\) and \(TU\), and the gap
+-- of the two outer points is the sum of the other two. With \(T\) between, \([TU]=[T]+T[U]\) (detached, attached); with
+-- \(T\) above \(1\) and \(U\) below, \(T[U]=[T]+[TU]\) when \(1\) is between (crossing) and \([T]=[TU]+T[U]\) when
+-- \(TU\) is (crossover). Three letters tie their pairs, \([T_1T_2][T_1T_3]=[T_1T_2T_3][T_1]+T_1[T_2][T_3]\) (product,
+-- productstar), each of these by three blocks. At the letters \(t^l\) in the frame \(q=t^K\) the masses are \(S_l/S_K\)
+-- above \(1\) and \(t^{-l}S_l/S_K\) below, with the sums of \cref{lem:qsum}, and the four legs are its (add).
+lemma lem:qnumber [the masses of letters in a frame]
+  (detached): e, T, U, u, w, v in QQ>0, u * e + 1 = T, w * e + 1 = U, v * e + 1 = T * U : v = u + T * w
+  fix (detached) qnumber.detached
+  neqfix (detached) qnumber.detached.nosum
+  (attached): e, T, U, u, w, v in QQ>0, u * e + T = 1, w * e + U = 1, v * e + T * U = 1 : v = u + T * w
+  fix (attached) qnumber.attached
+  neqfix (attached) qnumber.attached.nosum
+  (crossing): e, T, U, u, w, v in QQ>0, u * e + 1 = T, w * e + U = 1, v * e + T * U = 1 : T * w = u + v
+  fix (crossing) qnumber.crossing
+  neqfix (crossing) qnumber.crossing.nosum
+  (crossover): e, T, U, u, w, v in QQ>0, u * e + 1 = T, w * e + U = 1, v * e + 1 = T * U : u = v + T * w
+  fix (crossover) qnumber.crossover
+  neqfix (crossover) qnumber.crossover.nosum
+  (product): e, T1, T2, T3, A, B, C, r, m1, m in QQ>0, A * e + 1 = T1, B * e + 1 = T2, C * e + 1 = T3, r * e + 1 = T1 * T2, m1 * e + 1 = T1 * T3, m * e + 1 = T1 * T2 * T3 : r * m1 = m * A + T1 * C * B
+  fix (product) qnumber.product
+  neqfix (product) qnumber.product.nowhole
+  (productstar): e, T1, T2, T3, A, B, C, r, m1, m in QQ>0, A * e + T1 = 1, B * e + T2 = 1, C * e + T3 = 1, r * e + T1 * T2 = 1, m1 * e + T1 * T3 = 1, m * e + T1 * T2 * T3 = 1 : r * m1 = m * A + T1 * C * B
+  fix (productstar) qnumber.productstar
+  neqfix (productstar) qnumber.productstar.nowhole
+  origin: ?{\text{form proved: the q-numbers of a sum of exponents and the three-letter tie of their products, in a frame \(e\), on both sides of \(1\)}}
+
+-- Each leg is the tie \(e[TU]=e[T]+Te[U]\) of three masses, divided by \(e\); a product is three such blocks,
+-- \([T_1T_2]=[T_2]+T_2[T_1]\), \([T_1T_3]=[T_1]+T_1[T_3]\) and \([T_1T_2T_3]=[T_1T_2]+T_1T_2[T_3]\).
+proof lem:qnumber
+  (detached) V[(1 / e) * h_3 | (1 / e) * h_1, (T / e) * h_2]
+  (attached) V[(1 / e) * h_3 | (1 / e) * h_1, (T / e) * h_2]
+  (crossing) V[(T / e) * h_2 | (1 / e) * h_1, (1 / e) * h_3]
+  (crossover) V[(1 / e) * h_1 | (1 / e) * h_3, (T / e) * h_2]
+  (product) with[r = B + T2 * A by lem:qnumber(detached)[e := e, T := T2, U := T1, u := B, w := A, v := r; r * e + 1 = T2 * T1 by V[1 * h_4]]; with[m1 = A + T1 * C by lem:qnumber(detached)[e := e, T := T1, U := T3, u := A, w := C, v := m1]; with[m = r + T1 * T2 * C by lem:qnumber(detached)[e := e, T := T1 * T2, U := T3, u := r, w := C, v := m]; V[r * hw2, (C * T1) * hw1 | A * hw3]]]]
+  (productstar) with[r = B + T2 * A by lem:qnumber(attached)[e := e, T := T2, U := T1, u := B, w := A, v := r; r * e + T2 * T1 = 1 by V[1 * h_4]]; with[m1 = A + T1 * C by lem:qnumber(attached)[e := e, T := T1, U := T3, u := A, w := C, v := m1]; with[m = r + T1 * T2 * C by lem:qnumber(attached)[e := e, T := T1 * T2, U := T3, u := r, w := C, v := m]; V[r * hw2, (C * T1) * hw1 | A * hw3]]]]
+
+-- The line with marks. At \(q=e+1\) a mark is a letter \(T\) above \(1\), and its value is \(1/[T]\). A mark and the
+-- mark of the inverse letter cancel against the frame, \(e+\frac1{[T]}=\frac1{[1/T]}\), with \([1/T]\) the mass
+-- below \(1\) (wall); two marks merge into the mark of their product, \(\frac1{[T]}\frac1{[U]}=\frac1{[TU]}\big(\frac1{[T]}+
+-- \frac1{[U]}+e\big)\) (mediant); and three marks whose letters multiply to \(q\) tie their masses to those of the
+-- complements \(q/T_i\) (star). A mark and the mark of its inverse letter collide in the product of the two, which is
+-- the frame letter \(q\) exactly at the unit \(T=q\) (collision), above \(q\) when \(T\) lies below \(q\)
+-- (collisionbelow), and below \(q\) when \(T\) lies above \(q\) (collisionabove), by the gap
+-- \(x((e+1)[T]+1)/[T]^2\), where \(x\) is the gap of \([T]\) to \(1\). For \(T\) above \(q\) the masses of \(T/q\),
+-- \(T\) and \(qT\) tie as the three consecutive q-numbers of Cassini's identity, \([T]^2=[T/q][qT]+T/q\) (cassini).
+-- On the projective space of dimension \(k\) with two hyperplanes of letters \(T\) and \(U\), the strata are
+-- counted by \(q^{k-1}e\), \(q^{k-1}\), \(q^{k-1}\) and \([k-1]_q\); with \(P=q^{k-1}\) of mass \(m=[k-1]_q\), on the tie
+-- \(PTU=1\) the strata cancel, the open part and the hyperplane of \(T\) against the hyperplane of \(U\) and their
+-- meet, for \(T\) above \(1\) and \(U\) below (bundle) and for both below (bundlebelow); both above cannot meet the
+-- tie, as \(TU=1/P\) lies below \(1\). On the line the two hyperplanes are two points that do not meet, and the
+-- same cancellation is the wall.
+-- At the cost \(1-a\) the mark takes the letter \(q/T\), and the masses \([T]\), \([1/T]\) and \([q/T]\) tie:
+-- \(\frac1{[T][1/T][q/T]}=\frac q{[q/T]}+\frac{q+1/[T]}{[1/T]}\) for \(T\) between \(1\) and \(q\) (endbelow); the
+-- same tie with \([q/T]\) the mass below \(1\) for \(T\) above \(q\) (endabove); and with \(1/T\) above \(1\) and
+-- \(T\) below for \(T\) below \(1\) (endinverse). Read on values, the value of the inverse mark times \(q\) plus the
+-- value of the mark is the value at \(q/T\) times \(q\) plus the product of the two values.
+-- At the letters \(t^l\) in the frame \(q=t^K\) these are rows of \cref{lem:qsum}: the wall is (swap), the
+-- mediant is the split of \cref{lem:cone}, the collisions and (cassini) are (common) at \(b=c\), the star is (star)
+-- and the end is (add).
+lemma lem:qline [the line law of marks in a frame]
+  (wall): e, T, U, u, w in QQ>0, u * e + 1 = T, T * U = 1, w * e + U = 1 : e + 1 / u = 1 / w
+  fix (wall) qline.wall
+  neqfix (wall) qline.wall.noinverse
+  (mediant): e, T, U, u, w, v in QQ>0, u * e + 1 = T, w * e + 1 = U, v * e + 1 = T * U : 1 / u * (1 / w) = 1 / v * (1 / u + 1 / w + e)
+  fix (mediant) qline.mediant
+  neqfix (mediant) qline.mediant.nosum
+  (star): e, T1, T2, T3, A, B, C, F, G, K in QQ>0, T1 * T2 * T3 = e + 1, A * e + 1 = T1, B * e + 1 = T2, C * e + 1 = T3, F * e + 1 = T2 * T3, G * e + 1 = T1 * T3, K * e + 1 = T1 * T2 : e * A * B * C + B * C + A * C + A * B = A * B * C + F * G * K
+  fix (star) qline.star
+  neqfix (star) qline.star.noframe
+  (collision): e, T, U, u, w in QQ>0, u * e + 1 = T, T * U = 1, w * e + U = 1, u = 1 : 1 / u * (1 / w) = e + 1
+  fix (collision) qline.collision
+  neqfix (collision) qline.collision.nounit
+  (collisionbelow): e, T, U, u, w, x in QQ>0, u * e + 1 = T, T * U = 1, w * e + U = 1, u + x = 1 : e + 1 + x * ((e + 1) * u + 1) / u^2 = 1 / u * (1 / w)
+  fix (collisionbelow) qline.collisionbelow
+  neqfix (collisionbelow) qline.collisionbelow.nounit
+  (collisionabove): e, T, U, u, w, x in QQ>0, u * e + 1 = T, T * U = 1, w * e + U = 1, u = 1 + x : 1 / u * (1 / w) + x * ((e + 1) * u + 1) / u^2 = e + 1
+  fix (collisionabove) qline.collisionabove
+  neqfix (collisionabove) qline.collisionabove.nounit
+  (cassini): e, T, u, a, b in QQ>0, u * e + 1 = T, a * e * (e + 1) + e + 1 = T, b * e + 1 = (e + 1) * T : (e + 1) * u^2 = (e + 1) * a * b + T
+  fix (cassini) qline.cassini
+  neqfix (cassini) qline.cassini.noshift
+  (bundle): e, T, U, P, u, w, m in QQ>0, u * e + 1 = T, w * e + U = 1, m * e + 1 = P, P * T * U = 1 : P * e + P / u = P / w + m / (u * w)
+  fix (bundle) qline.bundle
+  neqfix (bundle) qline.bundle.notie
+  (bundlebelow): e, T, U, P, v, w, m in QQ>0, v * e + T = 1, w * e + U = 1, m * e + 1 = P, P * T * U = 1 : P * e + m / (v * w) = P / v + P / w
+  fix (bundlebelow) qline.bundlebelow
+  neqfix (bundlebelow) qline.bundlebelow.notie
+  (endbelow): e, T, U, Q, u, w, v in QQ>0, u * e + 1 = T, w * e + U = 1, T * U = 1, v * e + 1 = Q, Q * T = e + 1 : 1 / (u * w * v) = (e + 1) / v + (e + 1 + 1 / u) / w
+  fix (endbelow) qline.endbelow
+  neqfix (endbelow) qline.endbelow.noend
+  (endabove): e, T, U, Q, u, w, z in QQ>0, u * e + 1 = T, w * e + U = 1, T * U = 1, z * e + Q = 1, Q * T = e + 1 : (e + 1 + 1 / u) / w + 1 / (u * w * z) = (e + 1) / z
+  fix (endabove) qline.endabove
+  neqfix (endabove) qline.endabove.noend
+  (endinverse): e, T, U, u, w, y in QQ>0, u * e + 1 = U, w * e + T = 1, U * T = 1, y * e + 1 = (e + 1) * U : (e + 1) / u + 1 / (u * w * y) = (e + 1) / y + 1 / (u * w)
+  fix (endinverse) qline.endinverse
+  neqfix (endinverse) qline.endinverse.noend
+  origin: ?{\text{elementary, proved here: the values of a line with marks over a finite field, in the masses of their letters; the star is the value of the beta integral at a prime; the bundle is the count of a projective space with two hyperplanes}}
+
+-- The wall is the frame tie of \(T\) over \([T]\); the mediant is the detached leg with \(T=e[T]+1\); in the star the
+-- frame letter \(q\) has mass \(1\), so the detached leg gives \(1=A+T_1F\) and \(F=B+T_2C\), and the product of three
+-- sections at the mass \(1\) gives \(KG=A+T_1CB\) (\cref{lem:qnumber}(product)); then \(FGK+ABC=AF+BC\), which is the
+-- star, with no division.
+proof lem:qline
+  (wall) V[(1 / u) * h_1, (T / (e * u * w)) * h_3, (1 / (e * u * w)) * h_1 | (1 / (e * u * w)) * h_2]
+  (mediant) with[v = u + T * w by lem:qnumber(detached)[e := e, T := T, U := U, u := u, w := w, v := v]; V[(1 / (u * v * w)) * hw1 | (1 / (u * v)) * h_1]]
+  (star) with[1 = A + T1 * F by lem:qnumber(detached)[e := e, T := T1, U := T2 * T3, u := A, w := F, v := 1; 1 * e + 1 = T1 * (T2 * T3) by V[1 * h_1]]; with[F = B + T2 * C by lem:qnumber(detached)[e := e, T := T2, U := T3, u := B, w := C, v := F]; with[K * G = 1 * A + T1 * C * B by lem:qnumber(product)[e := e, T1 := T1, T2 := T2, T3 := T3, A := A, B := B, C := C, r := K, m1 := G, m := 1; 1 * e + 1 = T1 * T2 * T3 by V[1 * h_1]]; V[(C * B) * hw1, (A * C) * h_3 | F * hw3, A * hw2]]]]
+  (collision) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := T, U := U, u := u, w := w]; V[(1 / u) * hw1, (((e + 1) * u + 1) / u^2) * h_4]]
+  (collisionbelow) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := T, U := U, u := u, w := w]; V[| (1 / u) * hw1, (((e + 1) * u + 1) / u^2) * h_4]]
+  (collisionabove) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := T, U := U, u := u, w := w]; V[(1 / u) * hw1, (((e + 1) * u + 1) / u^2) * h_4]]
+  (cassini) V[(((e + 1) * u + 1) / e) * h_2, ((e + 1) * a / e) * h_3 | ((e + 1) * (a * (e + 1) + 1 + u) / e) * h_1]
+  (bundle) with[T * w = u + m / P by lem:qnumber(crossing)[e := e, T := T, U := U, u := u, w := w, v := m / P; m / P * e + T * U = 1 by V[(1 / P) * h_3, (1 / P) * h_4]]; V[(P / u) * h_1, (P / (u * w)) * hw1]]
+  (bundlebelow) with[m / P = v + T * w by lem:qnumber(attached)[e := e, T := T, U := U, u := v, w := w, v := m / P; m / P * e + T * U = 1 by V[(1 / P) * h_3, (1 / P) * h_4]]; V[(P / v) * h_1, (P / (v * w)) * hw1]]
+  (endbelow) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := T, U := U, u := u, w := w]; with[v * T + u = 1 by V[(T / e) * h_4, (1 / e) * h_5, (1 / e) * h_1]; V[(1 / u) * hw1, 1 * hw1, e * hw1 | (1 / (u * v)) * hw1, (1 / (u^2 * v)) * hw2, (1 / (u * v)) * hw2, (e / (u * v)) * hw2, (1 / u^2) * h_1, (1 / u) * h_1, (e / u) * h_1]]]
+  (endabove) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := T, U := U, u := u, w := w]; with[u = z * T + 1 by V[(1 / e) * h_5, (1 / e) * h_1 | (T / e) * h_4]; V[(1 / u^2) * h_1, (1 / u) * h_1, (e / u) * h_1 | (1 / (u * z)) * hw1, (1 / u) * hw1, 1 * hw1, e * hw1, (1 / (u^2 * z)) * hw2, (1 / (u * z)) * hw2, (e / (u * z)) * hw2]]]
+  (endinverse) with[e + 1 / u = 1 / w by lem:qline(wall)[e := e, T := U, U := T, u := u, w := w]; with[y = (e + 1) * u + 1 by V[(1 / e) * h_4 | (1 / e) * h_1, 1 * h_1]; V[(1 / u) * hw1, (1 / (u * y)) * hw2 | (1 / (u * y)) * hw1, (1 / (u^2 * y)) * hw2]]]
+
+-- The product of two lines with three marks each. On the square of two lines, the sections \(t=0,u,\infty\) have the
+-- letters \(X_1,X_2,X_3\), with \(X_1X_2X_3=q\), and the fibres \(u=0,1,\infty\) have \(Y_0,Y_1,Y_2\); the two points
+-- where three marks meet are blown up, and their curves have the letters \(Z_0\) and \(Z_2\) of the costs added less
+-- one. Counted by its strata, with \(d=q-2\) points on a line less three marks, the value of the surface is the value
+-- of the star of the sections times that of the star \(Z_0,Y_1,Z_2\) (three): the two collisions are two mediants.
+-- The marks \(X_2\) and \(Y_1\), and the count \(d\), enter both sides alike. Where two marks of costs \(c_i,c_j\)
+-- collide on a fibre of cost \(c\), the line through the collision is the merged line, with the mark of letter \(A\) of
+-- cost \(c_i+c_j-1\), plus the blown-up curve of letter \(AY\), a star with the marks \(c_i\), \(c_j\) and the
+-- inverse letter \(1/A\): the fibre mark times the curve mark, with the curve mark times the mark of \(1/A\), is the
+-- fibre mark times the merged mark, for \(A\) above \(1\) (collide), and the same tie with the two sides of \(A\)
+-- exchanged for \(A\) below \(1\) and \(AY\) above it (collidebelow). With four sections \(t=0,u,1,\infty\), and
+-- \(d=q-2\), \(g=q-3\), the value counted on the strata is \(d\) times the value of the line with four marks plus, at
+-- each collision, the fibre mark times the merged line and the curve mark times its star, all three merged letters
+-- above \(1\) (four).
+lemma lem:qproduct [the product law of sections]
+  (three): e, d, X1, X2, X3, Y0, Y2, Z0, Z2, x1, x2, x3, y0, y1, y2, z0, z2 in QQ>0, X1 * X2 * X3 = e + 1, x1 * e + 1 = X1, x3 * e + 1 = X3, y0 * e + 1 = Y0, y2 * e + 1 = Y2, z0 * e + 1 = Z0, z2 * e + 1 = Z2, Z0 * (e + 1) = X1 * X2 * Y0, Z2 * (e + 1) = X2 * X3 * Y2 : d^2 + d * (1 / x1 + 1 / x2 + 1 / x3 + 1 / y1 + 1 / z0 + 1 / z2) + e * (1 / y0 + 1 / y2) + 1 / z0 * (1 / x1 + 1 / x2 + 1 / y0) + 1 / z2 * (1 / x3 + 1 / x2 + 1 / y2) + 1 / x1 * (1 / y1 + 1 / y2) + 1 / x3 * (1 / y0 + 1 / y1) + 1 / x2 * (1 / y1) = (d + 1 / x1 + 1 / x2 + 1 / x3) * (d + 1 / z0 + 1 / y1 + 1 / z2)
+  fix (three) qproduct.three
+  neqfix (three) qproduct.three.noblowup
+  (collide): e, A, Y, U, a, y, z, w in QQ>0, a * e + 1 = A, y * e + 1 = Y, z * e + 1 = A * Y, A * U = 1, w * e + U = 1 : 1 / y * (1 / z) + 1 / z * (1 / w) = 1 / y * (1 / a)
+  fix (collide) qproduct.collide
+  neqfix (collide) qproduct.collide.noblowup
+  (collidebelow): e, A, Y, V, a, b, y, z in QQ>0, a * e + A = 1, A * V = 1, b * e + 1 = V, y * e + 1 = Y, z * e + 1 = A * Y : 1 / y * (1 / z) + 1 / y * (1 / a) = 1 / z * (1 / b)
+  fix (collidebelow) qproduct.collidebelow
+  neqfix (collidebelow) qproduct.collidebelow.noblowup
+  (four): e, d, g, x0, xu, x1, x2, Y0, Y1, Y2, A0, A1, A2, U0, U1, U2, a0, a1, a2, y0, y1, y2, z0, z1, z2, w0, w1, w2 in QQ>0, a0 * e + 1 = A0, a1 * e + 1 = A1, a2 * e + 1 = A2, y0 * e + 1 = Y0, y1 * e + 1 = Y1, y2 * e + 1 = Y2, z0 * e + 1 = A0 * Y0, z1 * e + 1 = A1 * Y1, z2 * e + 1 = A2 * Y2, A0 * U0 = 1, A1 * U1 = 1, A2 * U2 = 1, w0 * e + U0 = 1, w1 * e + U1 = 1, w2 * e + U2 = 1 : d * g + d * (1 / x0 + 1 / xu + 1 / x1 + 1 / x2) + d * (1 / y0 + 1 / y1 + 1 / y2) + d * (1 / z0 + 1 / z1 + 1 / z2) + 1 / y0 * (1 / x1 + 1 / x2) + 1 / y1 * (1 / x0 + 1 / x2) + 1 / y2 * (1 / x0 + 1 / x1) + 1 / z0 * (1 / x0 + 1 / xu + 1 / y0) + 1 / z1 * (1 / x1 + 1 / xu + 1 / y1) + 1 / z2 * (1 / x2 + 1 / xu + 1 / y2) + 1 / z0 * (1 / w0) + 1 / z1 * (1 / w1) + 1 / z2 * (1 / w2) = d * (g + 1 / x0 + 1 / xu + 1 / x1 + 1 / x2) + 1 / y0 * (d + 1 / a0 + 1 / x1 + 1 / x2) + 1 / y1 * (d + 1 / a1 + 1 / x0 + 1 / x2) + 1 / y2 * (d + 1 / a2 + 1 / x0 + 1 / x1) + 1 / z0 * (d + 1 / x0 + 1 / xu) + 1 / z1 * (d + 1 / x1 + 1 / xu) + 1 / z2 * (d + 1 / x2 + 1 / xu)
+  fix (four) qproduct.four
+  neqfix (four) qproduct.four.noblowup
+  origin: ?{\text{elementary, proved here: the value of a blown-up product of two lines over a finite field, counted on its strata}}
+
+-- The letters give \(Z_0X_3=Y_0\) and \(Z_2X_1=Y_2\), and the strata sum less the product of the stars is the two
+-- mediants of \cref{lem:qline} at these letters. A collision is the mediant of \(A\) and \(Y\) with the wall of \(A\)
+-- (collide), or the crossover leg of \cref{lem:qnumber} with the wall of \(1/A\) (collidebelow); with four sections
+-- the strata sum less the assembly is the three collisions.
+proof lem:qproduct
+  (three) with[(e + 1) * (Z0 * X3) = (e + 1) * Y0 by V[X3 * h_8, Y0 * h_1]; with[Z0 * X3 = Y0 by div[e + 1]; with[(e + 1) * (Z2 * X1) = (e + 1) * Y2 by V[X1 * h_9, Y2 * h_1]; with[Z2 * X1 = Y2 by div[e + 1]; with[1 / z0 * (1 / x3) = 1 / y0 * (1 / z0 + 1 / x3 + e) by lem:qline(mediant)[e := e, T := Z0, U := X3, u := z0, w := x3, v := y0; y0 * e + 1 = Z0 * X3 by V[1 * h_4 | 1 * hw2]]; with[1 / z2 * (1 / x1) = 1 / y2 * (1 / z2 + 1 / x1 + e) by lem:qline(mediant)[e := e, T := Z2, U := X1, u := z2, w := x1, v := y2; y2 * e + 1 = Z2 * X1 by V[1 * h_5 | 1 * hw4]]; V[| 1 * hw5, 1 * hw6]]]]]]]
+  (collide) with[1 / a * (1 / y) = 1 / z * (1 / a + 1 / y + e) by lem:qline(mediant)[e := e, T := A, U := Y, u := a, w := y, v := z]; with[e + 1 / a = 1 / w by lem:qline(wall)[e := e, T := A, U := U, u := a, w := w]; V[1 * hw1, (1 / z) * hw2]]]
+  (collidebelow) with[y = z + Y * a by lem:qnumber(crossover)[e := e, T := Y, U := A, u := y, w := a, v := z; z * e + 1 = Y * A by V[1 * h_5]]; with[e + 1 / b = 1 / a by lem:qline(wall)[e := e, T := V, U := A, u := b, w := a; V * A = 1 by V[1 * h_2]]; V[(1 / z) * hw2, (1 / (y * z * a)) * hw1 | (1 / (y * z)) * h_4]]]
+  (four) with[1 / y0 * (1 / z0) + 1 / z0 * (1 / w0) = 1 / y0 * (1 / a0) by lem:qproduct(collide)[e := e, A := A0, Y := Y0, U := U0, a := a0, y := y0, z := z0, w := w0]; with[1 / y1 * (1 / z1) + 1 / z1 * (1 / w1) = 1 / y1 * (1 / a1) by lem:qproduct(collide)[e := e, A := A1, Y := Y1, U := U1, a := a1, y := y1, z := z1, w := w1]; with[1 / y2 * (1 / z2) + 1 / z2 * (1 / w2) = 1 / y2 * (1 / a2) by lem:qproduct(collide)[e := e, A := A2, Y := Y2, U := U2, a := a2, y := y2, z := z2, w := w2]; V[| 1 * hw1, 1 * hw2, 1 * hw3]]]]
+
+-- The cone of two rays. Counted on its open lattice points with the weight \(t\) to the minus cost, in the square of
+-- the frame, a cone of index \(b\) whose rays cost \(c\) and \(d\) has the value \(b/(cd)\) at \(t=1\); a ray that
+-- splits it into cones of index \(b_1\) and \(b_2\) costs \(w\) with \(bw=b_2c+b_1d\), and the values of the two parts
+-- add up to the whole (countsplit); the tie holds for any positive weights, and along a string each cell is one such
+-- split. The apex. Let a facet of a Newton polyhedron have the normal \(R\), and let its compact part be an edge
+-- \([P,Q]\) whose apex \(Q\) is \(t^qv\), with the variable \(v\) of weight \(1\), and whose base \(P\) is free of \(v\):
+-- the facet is B1 for \(v\) \cite[Definition~1.4.2]{LarsonPayneStapledon2026}. A cone \(C'\) of the dual cone of the
+-- edge, of index \(\mu\), whose rays have costs of product \(X\), spans with the ray \(e_v\) a cone \(C\) of the same
+-- index. At the cost of \(P\) the ray \(e_v\) costs \(1\) and the term of \(C\) is \(\mu/X\); at the cost of \(Q\) it
+-- costs \(V=1+s\); and the term of \(C\) at \(P\) ties with its term at \(Q\) and the share \(s\mu/(VX)\) that the edge
+-- takes back (apex). So the terms of the cones through \(R\) add up to terms free of the cost \(\sigma_R\) of \(R\), and
+-- \(R\) gives no pole: the elimination of the B1 faces \cite[Lemma~5.4.1]{LarsonPayneStapledon2026} and
+-- \cite[Lemma~3.2]{EsterovLemahieuTakeuchi2013} (\cref{fact:apex}), read on whole terms and at the weights of the form,
+-- of which only the weight \(1\) of \(v\) enters. When \(R\) lies in a face of dimension two of the orthant, with two
+-- nonzero coordinates, the cones of \(Q\) and \(C\) through it share their other rays and merge by (countsplit) at the
+-- cost of \(Q\); with more nonzero coordinates the removal of \(R\) is the independence of the subdivision
+-- \cite[Theorem~5.3]{DenefLoeser1992}. At a good prime \(p\) the face polynomial of the edge is linear in \(v\), and the
+-- factor \(F=(1-T)/(1-p^{-1}T)\) of the vertex and the term \((p-1)T/(p-T)\) of the edge add up to \(1\): at \(q=p\),
+-- with \(e+1=q\), \(a+T=1\), \(b+T=q\) and \(Fb=qa\), the tie \(F+eT/b=1\) (qapex).
+lemma lem:cone [the cone of two rays, its split and its apex]
+  (split): l, m in NN>=1, t in QQ>0 : t / ((sum i in 1..l, t^i) * (sum i in 1..m, t^i)) + 1 / (sum i in 1..l + m, t^i) = t / ((sum i in 1..l, t^i) * (sum i in 1..l + m, t^i)) + t / (sum i in 1..l + m, t^i) + t / ((sum i in 1..m, t^i) * (sum i in 1..l + m, t^i))
+  fix (split) cone.split
+  (count): l, m in NN>=1 : 1 / (l * (l + m)) + 1 / ((l + m) * m) = 1 / (l * m)
+  fix (count) cone.count
+  (countsplit): b, b1, b2, c, d, w in QQ>0, b * w = b2 * c + b1 * d : b1 / (c * w) + b2 / (w * d) = b / (c * d)
+  fix (countsplit) cone.countsplit
+  neqfix (countsplit) cone.countsplit.notie
+  (apex): mu, X, s, V in QQ>0, V = 1 + s : mu / X = mu / (V * X) + s * mu / (V * X)
+  fix (apex) cone.apex
+  neqfix (apex) cone.apex.noweight
+  neqfix (apex) cone.apex.nosquare
+  fix (apex) cone.apex.uface
+  (qapex): q, e, T, a, b, F in QQ>0, e + 1 = q, a + T = 1, b + T = q, F * b = q * a : F + e * T / b = 1
+  fix (qapex) cone.qapex
+  neqfix (qapex) cone.qapex.noweight
+  origin: ?{\text{elementary, proved here: the split of a cone of any index at \(t=1\), whose value there is its index over the product of the costs of its rays, the term of a two-dimensional cone in the formula on the Newton polyhedron \cite[Theorem~5.3]{DenefLoeser1992}; (split) and (count): a unimodular cone whose rays cost \(l\) and \(m\), counted on its open lattice points, has the value \(1/([l][m])\), and the ray of the sum of the two rays, of cost \(l+m\), splits it into two unimodular cones and the open ray, whose value stands as \(t/[l+m]\) on one side and \(1/[l+m]\) on the other (split); in the masses \(S_l=t[l]\) this holds at every \(t\) in \(\mathbb Q_{>0}\), above \(1\) as the mediant of \cref{lem:qline} at the letters \(t^l\) and \(t^m\), with \(A=S_l\), \(B=S_m\), \(C=S_{l+m}\) as \(tC+AB=tA+tB+tAB\), the additive law \(C=A+t^lB\) and the shift \(t+tA=A+t^{l+1}\) times \(B\); and at \(t=1\), where \(S_l=l\) and the two terms of the ray tie, it is the split of two counts, \(\frac1{l(l+m)}+\frac1{(l+m)m}=\frac1{lm}\) (count), the case \(b=b_1=b_2=1\) of (countsplit); (apex) and (qapex): elementary, proved here: the tie of the terms of the cone \(C\) at the base and at the apex of a B1 face, the mechanism of \cref{fact:apex} read on whole terms at the weights of the form, with the cost \(V=1+s\) of \(e_v\) at the apex, and at a good prime its reading by the factor \(F\) of the vertex and the term \(eT/b\) of the edge}}
+
+-- (countsplit) is the tie \(bw=b_2c+b_1d\) divided by \(cwd\). At \(t=1\) the value of a cone, its index over the
+-- product of the costs of its rays, is the term of a two-dimensional cone in the formula on the Newton polyhedron
+-- \cite[Theorem~5.3]{DenefLoeser1992}. (apex) is the tie \(V=1+s\) times \(\mu/(VX)\), and (qapex) is \(Fb=qa\) with
+-- the tie \(qa+eT=b\), read as \(qa+eT+T=q(a+T)=q=b+T\), divided by \(b\).
+proof lem:cone
+  (split) with[(sum i in 1..l + m, t^i) = (sum i in 1..l, t^i) + t^l * (sum i in 1..m, t^i) by lem:qsum(add)[l := l, m := m, t := t]; with[t + t * (sum i in 1..l, t^i) = (sum i in 1..l, t^i) + t^(l + 1) by lem:qsum(shift)[M := l, t := t]; with[1 <= l + m by V[hp(l)]; V[(t / ((sum i in 1..l, t^i) * (sum i in 1..m, t^i) * (sum i in 1..l + m, t^i))) * hw1 | (1 / ((sum i in 1..l, t^i) * (sum i in 1..l + m, t^i))) * hw2]]]]
+  (count) with[1 <= l + m by V[hp(l)]; with[1 / ((sum i in 1..l, 1^i) * (sum i in 1..m, 1^i)) + 1 / (sum i in 1..l + m, 1^i) = 1 / ((sum i in 1..l, 1^i) * (sum i in 1..l + m, 1^i)) + 1 / (sum i in 1..l + m, 1^i) + 1 / ((sum i in 1..m, 1^i) * (sum i in 1..l + m, 1^i)) by lem:cone(split)[l := l, m := m, t := 1]; with[(sum i in 1..l, 1^i) = l by lem:qsum(count)[l := l, t := 1]; with[(sum i in 1..m, 1^i) = m by lem:qsum(count)[l := m, t := 1]; with[(sum i in 1..l + m, 1^i) = l + m by lem:qsum(count)[l := l + m, t := 1]; V[1 * hw2, (1 / ((sum i in 1..l, 1^i) * l * m)) * hw3, (1 / ((sum i in 1..l, 1^i) * (sum i in 1..m, 1^i) * m)) * hw4 | (1 / ((sum i in 1..l, 1^i) * (sum i in 1..l + m, 1^i) * l)) * hw3, (1 / ((sum i in 1..m, 1^i) * (sum i in 1..l + m, 1^i) * m)) * hw4, (1 / ((sum i in 1..l + m, 1^i) * l * m)) * hw5]]]]]]
+  (countsplit) V[(1 / (c * w * d)) * h_1]
+  (apex) V[(mu / (V * X)) * h_1]
+  (qapex) V[(1 / b) * h_4, (q / b) * h_2, (T / b) * h_1, (1 / b) * h_3]
+
+-- Let \(f\) be non-degenerate with respect to its Newton polyhedron, and let a face \(F\) of it, a polytope, be B1 with
+-- apex \(A\), base \(G\) and base direction \(e_\ell^*\): \(F\) is spanned by \(G\) and \(A\), with
+-- \(\langle e_\ell^*,A\rangle=1\) and \(\langle e_\ell^*,V\rangle=0\) for every other generator \(V\) of \(F\). For a
+-- cone \(C'\) of the dual cone of \(F\) and the cone \(C\) spanned by \(C'\) and \(e_\ell^*\), which lies in the dual
+-- cone of \(G\), the terms of the open cones \(C\) and \(C'\) in the formula on the Newton polyhedron add up to the term
+-- of the open cone \(C\) read at the apex, for the form \(dx\) \cite[Lemma~5.4.1]{LarsonPayneStapledon2026}; for the
+-- topological zeta function and a B1 segment this is \cite[Lemma~3.2]{EsterovLemahieuTakeuchi2013}.
+cit fact:apex [the apex of a B1 face]
+  doi: 10.1090/cams/68
+  stmt: Lemma 5.4.1, of arXiv:2209.03553v3
+  origin: ?{\text{cited: \cite[Definition~1.4.2 and Lemmas~5.2.2 and~5.4.1]{LarsonPayneStapledon2026}, numbered as in its arXiv version 2209.03553v3, and \cite[Definition~3.1 and Lemma~3.2]{EsterovLemahieuTakeuchi2013}, numbered as in its arXiv version 1309.0630v5; the bridge to \cref{lem:cone}(apex) and (qapex): the apex}\ A\ \text{is}\ Q=t^qv\text{, the base}\ G\ \text{is the vertex}\ P\text{, the base direction}\ e_\ell^*\ \text{is}\ e_v\text{, the face}\ F\ \text{is the edge}\ [P,Q]\text{, of lattice length}\ 1\text{, and the cones}\ C'\ \text{and}\ C\ \text{are those of (apex), of the same index}\ \mu\ \text{since the box of}\ C\ \text{is}\ e_v\ \text{plus the box of}\ C'\text{; the term of}\ C\ \text{at}\ G\text{, the term of the edge, which \cite[Theorem~5.3]{DenefLoeser1992} subtracts with the factor}\ s/(1+s)\text{, and the term of}\ C\ \text{read at the apex are}\ \mu/X\text{, the share}\ s\mu/(VX)\ \text{and}\ \mu/(VX)\text{, with}\ V=1+s\ \text{the cost of}\ e_v\ \text{at}\ Q\text{; at a good prime}\ p\ \text{the edge has}\ (p-1)^{n-1}\ \text{points, as its face polynomial is linear in}\ v\text{, and the reading at the apex is (qapex) at}\ q=p\text{, with}\ F\ \text{the factor of the vertex and}\ eT/b\ \text{the term of the edge; the sources state the form}\ dx\text{, and the weights}\ (n,\nu_x,1)\ \text{of the form enter (apex) only through the weight}\ 1\ \text{of}\ e_v}}

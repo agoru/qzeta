@@ -1,0 +1,7 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "lem_sides_sep": {"hash":"68d234e171803112","won":{"0":[0]},"deps":"30309f208f808eb5","cut":"a255667db3ab459b"}
+ }
+}

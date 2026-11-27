@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "a < b", "note": "without the order the powers need not keep it", "rows": [
+ {"c": 2, "a": "3/2", "b": "1"}
+]}

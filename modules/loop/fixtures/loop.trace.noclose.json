@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "x_(M + 3) = x_(2)", "note": "the chains (3, 2, 2) and (3, 3, 3), whose words have traces 5 and 18: an open string comes back to its first mass but not to its second", "bounds": {"j": 9}, "rows": [
+ {"M": 2, "b[]": [3, 2, 2], "x[]": [5, 3, 4, 5, 6], "d[]": [1, 3, 5, 7], "e[]": [1, 2, 3]},
+ {"M": 2, "b[]": [3, 3, 3], "x[]": [2, 1, 1, 2, 5], "d[]": [1, 3, 8, 21], "e[]": [1, 3, 8]}
+]}

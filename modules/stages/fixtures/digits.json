@@ -1,0 +1,8 @@
+{"kind": "model", "note": "the count A of the digits of x in the base b: 1 in base 2, 5 = 101 in base 2, 7 and 1000 in base 10, 27 = 1000 in base 3, 48 = 66 in base 7", "rows": [
+ {"b": 2, "x": 1, "A": 1},
+ {"b": 2, "x": 5, "A": 3},
+ {"b": 10, "x": 7, "A": 1},
+ {"b": 10, "x": 1000, "A": 4},
+ {"b": 3, "x": 27, "A": 4},
+ {"b": 7, "x": 48, "A": 2}
+]}

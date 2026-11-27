@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "m * e + T1 * T2 * T3 = 1", "note": "m is not the mass of T1 T2 T3", "rows": [
+ {"e": "1/2", "T1": "1/2", "T2": "1/4", "T3": "1/2", "A": "1", "B": "3/2", "C": "1", "r": "7/4", "m1": "3/2", "m": "2"}
+]}

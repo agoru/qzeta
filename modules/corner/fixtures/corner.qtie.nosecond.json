@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "A = c + h", "note": "a second gap that is not the gap of A and c", "rows": [
+ {"a": "1/2", "c": "1/3", "A": "3/4", "B": "2/9", "g": "1/4", "h": "1/2"}
+]}

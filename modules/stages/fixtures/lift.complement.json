@@ -1,0 +1,5 @@
+{"kind": "witness", "note": "the root 2 of x^2 + 1 = 5 completed by 5 to 7 and, as 4/2, by 47 to 2 * 49; the root 3 of x^2 + 1 = 10 completed by 22 to 25", "rows": [
+ {"N": 7, "m": 1, "n": 2, "a": 1, "b": 5, "D": 5, "w": 1, "c": 3},
+ {"N": 49, "m": 2, "n": 4, "a": 1, "b": 5, "D": 47, "w": 2, "c": 45},
+ {"N": 25, "m": 1, "n": 3, "a": 1, "b": 10, "D": 22, "w": 1, "c": 19}
+]}

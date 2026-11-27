@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "F * (sum i in 1..g * a, t^i) = (sum i in 1..g * n, t^i)", "note": "without the tie of the factor: g = a = 1, n = 2, t = 2, F = 1, the sides are 2 and 20", "rows": [{"g": 1, "a": 1, "n": 2, "t": "2", "F": "1"}]}

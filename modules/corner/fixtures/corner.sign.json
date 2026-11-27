@@ -1,0 +1,9 @@
+{"kind": "witness", "note": "k1 = k0 - 1, e = delta - 1, m = n - delta, with N = k0 delta and D = N + 1: the masses A, B, C of the sign of Q at d = 1, with C above A + B, at (n, delta, k0) = (4, 2, 2), (4, 3, 2), (5, 4, 2), (6, 5, 2), (5, 2, 10), (10, 3, 3), (9, 8, 4)", "rows": [
+ {"k1": 1, "e": 1, "m": 2},
+ {"k1": 1, "e": 2, "m": 1},
+ {"k1": 1, "e": 3, "m": 1},
+ {"k1": 1, "e": 4, "m": 1},
+ {"k1": 9, "e": 1, "m": 3},
+ {"k1": 2, "e": 2, "m": 7},
+ {"k1": 3, "e": 7, "m": 1}
+]}

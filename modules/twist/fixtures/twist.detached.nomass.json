@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x * b = 1", "note": "x = 2 is not the mass 1 of the cost -1: 2 is not 1 + 2", "rows": [
+ {"b": 1, "x": 2, "y": 2}
+]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "q * N = m", "note": "m = 9 is not 8/17 * 17: the tie 2040 = 2295 fails", "rows": [
+ {"c": 8, "e": 17, "q": "8/17", "N": 17, "m": 9, "u": 15, "v": 7}
+]}

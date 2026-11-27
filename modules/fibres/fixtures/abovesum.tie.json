@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "forall j in NN>=1 : j <= n => forall x in NN : x < d => P_(j)(x) = Q_(j)(x)", "rows": [{"n": 2, "d": 1, "c": 2, "P": [[1, 3], [0, 1]], "Q": [[0, 1], [0, 1]], "a": [2, 0], "b": [0, 0], "S": [1, 4, 0], "T": [0, 2, 0]}]}

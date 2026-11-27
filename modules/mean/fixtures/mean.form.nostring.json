@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall i : (sum j, P_(i)_(j) * x_(j)) = b_(i) * x_(i)", "note": "two cells that meet once at the weights a half: the cross terms 2 are above the form 1", "rows": [
+ {"n": 2, "P": [[0, 1], [1, 0]], "b": ["1/2", "1/2"], "x": [1, 1], "u": [1, 1]}
+]}

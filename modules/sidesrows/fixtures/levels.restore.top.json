@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "s <= M + eps", "note": "the largest size s of the witness far above M + eps", "rows": [{"m": 1, "t": 1, "s": 10, "M": 1, "K": 1, "e": 1, "D": 5, "eps": 0}, {"m": "1/2", "t": "1/3", "s": 4, "M": "1/2", "K": 2, "e": "1/4", "D": 3, "eps": "1/6"}]}

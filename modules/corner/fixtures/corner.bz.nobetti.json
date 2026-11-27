@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "c * (c + 2) * b + 2 = 2 * (c + 1)^2 * x + c^2", "note": "b is not the primitive Betti number", "rows": [
+ {"c": "3", "b": "1", "x": "4"}
+]}

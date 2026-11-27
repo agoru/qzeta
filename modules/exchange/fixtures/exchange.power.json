@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "powers of two masses in order keep their order", "rows": [
+ {"c": 1, "a": "1/2", "b": "2/3"},
+ {"c": 2, "a": "4/3", "b": "3/2"},
+ {"c": 3, "a": "1", "b": "7/5"},
+ {"c": 5, "a": "9/10", "b": "1"}
+]}

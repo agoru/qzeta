@@ -1,0 +1,31 @@
+{
+ "kind": "counterexample",
+ "drop": "t_(0) = 0",
+ "note": "both masses 1 at every node: S = O, so G = 0 and the lower bound fails",
+ "bounds": {
+  "p": 4,
+  "q": 4
+ },
+ "rows": [
+  {
+   "P": 1,
+   "Q": 1,
+   "N": 1,
+   "L[]": [
+    "10/3",
+    "19/36"
+   ],
+   "r[]": [
+    "40/23"
+   ],
+   "s[]": [
+    "1",
+    "1"
+   ],
+   "t[]": [
+    "1",
+    "1"
+   ]
+  }
+ ]
+}

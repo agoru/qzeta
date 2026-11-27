@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "y + w = 1", "note": "a second spoke whose two masses do not tie to one", "rows": [
+ {"x": "1/2", "y": "11/18", "u": "1/2", "w": "1/3", "b": "1/9"}
+]}

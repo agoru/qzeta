@@ -1,0 +1,11 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "fact_gap_core.holds": {"hash":"da106b5a5e75b01a","won":{"0":[0]},"deps":"97caa3fb65f6c564","cut":"ec392ab2f2aced44"},
+  "fact_gap_core.toMath": {"hash":"59292962f9c8d414","won":{"0":[0],"1":[0]},"deps":"e64cb3ddef232b16","cut":"4b5c3a3b1b5734fa"},
+  "fact_gap_mass.holds": {"hash":"6bacdbdf445c3e06","won":{"0":[0]},"deps":"b5018c13b3fea55c","cut":"5d62d4312d505f6a"},
+  "fact_gap_mass.toMath": {"hash":"84e027e0f6fa918b","won":{"0":[0],"1":[0]},"deps":"f438cd89edac7d18","cut":"a39b1854d20c8d45"},
+  "lem_slack_tie": {"hash":"9f4c423f91287281","won":{"0":[0],"1":[0],"2":[0],"3":[0]},"deps":"56f16a0bf65bffb4","cut":"a4ce0dd9e8c79918"}
+ }
+}

@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "C + 1 <= t", "note": "a level below the mass: e = 1, C = 9, t = 2, the rest is 18 against the top 8", "rows": [{"e": 1, "C": "9", "t": "2"}]}

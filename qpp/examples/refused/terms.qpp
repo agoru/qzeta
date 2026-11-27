@@ -1,0 +1,55 @@
+-- Q++ 0.2
+paper refusedterms
+-- Cases of ordinary terms that the generator refuses, each with its reason. A power is natural: a decimal exponent
+-- is no primitive.
+
+section sec:refused Refused terms
+
+lemma lem:decexp [a decimal exponent]
+  core: a in QQ>0 : a^0.5 <= a + 1
+
+proof lem:decexp
+  "core" V
+
+lemma lem:ratexp [a rational exponent]
+  core: a in QQ>0 : a^(1/2) <= a + 1
+
+proof lem:ratexp
+  "core" V
+
+-- Two references in one word, where the goal is one inequality (neither a conjunction nor an equation read by
+-- le_antisymm): a reason, never a traceback (the word is read before its references are looked up).
+lemma lem:tworefs [two references in one word]
+  core: a, b in QQ>0, a <= b : a <= b
+
+proof lem:tworefs
+  "core" fact:mono[C := B], fact:mono[C := B, p := q, q := p]
+
+-- A region by a predicate, {w in X : P}, is written only in a proof, as the witness of take (take[R := {w in X : P};
+-- W]): a statement, a given, a definition, a relation or a context takes a region variable with its characterizing
+-- hypothesis (forall w in B : P, and the membership of a point exists v in B : forall i : v_(i) = w_(i)).
+type Point(n) := (QQ>=0)^n
+type Region(n) := set(Point(n))
+define unitbox(n) := {w in Point(n) : forall i : w_(i) <= 1}
+relation (B #unit) := n in NN, B in Region(n), B = {w in Point(n) : forall i : w_(i) <= 1}
+
+lemma lem:setofrow [a region by a predicate in a statement]
+  core: n in NN : exists B in Region(n) : B = {w in Point(n) : forall i : w_(i) <= 1}
+
+proof lem:setofrow
+  "core" take[B := {w in Point(n) : forall i : w_(i) <= 1}; V]
+
+lemma lem:setofgiven [a region by a predicate in a given]
+  given: n in NN, B in Region(n), B = {w in Point(n) : forall i : w_(i) <= 1}
+  (1): n <= n + 1
+
+proof lem:setofgiven
+  "1" V
+
+-- A mark of a clause that exists, iverson(exists q in NN : ...), has no decidable instance in Lean: the clause is
+-- written as a relation row, or the mark as the count of its witnesses (sum q in 0..t, iverson(t = q * d)).
+lemma lem:ivexists [a mark of an existence]
+  core: p, A in NN : iverson(exists q in NN : A = q * p) <= 1
+
+proof lem:ivexists
+  "core" V

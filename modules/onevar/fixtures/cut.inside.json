@@ -1,0 +1,5 @@
+{"kind": "witness", "note": "q/(p+q) is at most 1 and p times it is below q", "rows": [
+ {"p": 1, "q": 1},
+ {"p": "2/3", "q": 5},
+ {"p": 7, "q": "1/4"}
+]}

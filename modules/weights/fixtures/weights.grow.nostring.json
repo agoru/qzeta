@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall j in NN>=1 : j <= N => x_(j) + x_(j + 2) = t * x_(j + 1))", "note": "1, 2, 1 is no string at the weight 2", "rows": [
+ {"N": 1, "n": 2, "t": 2, "x[]": [1, 2, 1]}
+]}

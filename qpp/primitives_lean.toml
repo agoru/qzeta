@@ -1,0 +1,308 @@
+# The Lean constants of each primitive of Q++ (the rows of PRIMITIVES in qpp/kernel.py, printed in qpp/README.md):
+# the names that the Lean form of the row elaborates to, instances left out (they follow from the types). The audit
+# of the generated statements (tools/statement_constants.lean, tools/check_statements.py, unit lean-modules) fails
+# on any constant of a statement that no row lists. `python3 -m qpp.modules check` fails unless the rows here are
+# exactly the rows of PRIMITIVES, so that no constant is admitted without a primitive. The casts are the reading of a
+# natural number or of an NNRat value in Rat.
+#
+# The kernel target of the modules: `kernel` gives the constants of each primitive over the kernel words
+# (qpp/lean/QppKernel/Words.lean) and Lean core, against which the statements of the modules (QppModules, namespace
+# Qpp.Modules) are checked; `constants` stays the table of the statements over Mathlib (the examples, QppExamples).
+# A numeral of Lean is a literal of `Nat` read as a count or a mass (`OfNat`), and a numeral exponent is `NatPow`
+# (qpp/lean/QppKernel/Words.lean). A row with no `kernel` key is not yet over the kernel.
+
+[[row]]
+qpp = "x in NN"
+constants = ["Nat", "Nat.cast"]
+kernel = ["Qpp.Count0"]
+
+[[row]]
+qpp = "x in NN>=k"
+constants = ["Nat", "LE.le", "OfNat.ofNat", "Nat.cast"]
+kernel = ["Qpp.Count", "Qpp.Count0.of", "LE.le", "OfNat.ofNat", "Qpp.Mass.ofCount"]
+
+[[row]]
+qpp = "x in QQ>=0"
+constants = ["Rat", "LE.le", "OfNat.ofNat"]
+kernel = ["Qpp.Mass0"]
+
+[[row]]
+qpp = "x in QQ>0"
+constants = ["Rat", "LT.lt", "OfNat.ofNat"]
+kernel = ["Qpp.Mass", "Qpp.Mass0.of"]
+
+[[row]]
+qpp = "x in {0, 1}"
+constants = ["Rat", "Eq", "Or", "OfNat.ofNat"]
+
+[[row]]
+qpp = "a_(1..k) in S"
+constants = ["Nat"]
+
+[[row]]
+qpp = "c := t (in a context)"
+constants = ["Eq"]
+
+[[row]]
+qpp = "QQ>=0"
+constants = ["NNRat"]
+kernel = ["Qpp.Mass0"]
+
+[[row]]
+qpp = "QQ>0 (the positive rationals)"
+constants = ["Subtype", "Rat", "LT.lt", "OfNat.ofNat"]
+kernel = ["Qpp.Mass", "Qpp.Mass0.of"]
+
+[[row]]
+qpp = "NN>=1 (the positive counts, as coordinates: (NN>=1)^n, ((NN>=1)^n)^k, and a part of a bundle)"
+constants = ["Subtype", "Nat", "LT.lt", "OfNat.ofNat"]
+kernel = ["Qpp.Count", "Qpp.Count0.of"]
+
+[[row]]
+qpp = "NN"
+constants = ["Nat"]
+kernel = ["Qpp.Count0", "Qpp.Mass0.ofCount0"]
+
+[[row]]
+qpp = "X^n"
+constants = ["Fin", "Nat"]
+kernel = ["Qpp.Idx"]
+
+[[row]]
+qpp = "(X^n)^k (a tuple of tuples: k rows of n coordinates, X one of NN, NN>=1, QQ>=0, QQ>0)"
+constants = ["Fin", "Nat"]
+kernel = ["Qpp.Idx"]
+
+[[row]]
+qpp = "(X -> Y)"
+constants = []
+kernel = []
+
+[[row]]
+qpp = "(X -> QQ>0), (X -> NN>=1) (a function with positive values)"
+constants = ["Subtype", "Rat", "Nat", "LT.lt", "OfNat.ofNat"]
+kernel = ["Qpp.Mass", "Qpp.Count", "Qpp.Mass0.of", "Qpp.Count0.of"]
+
+[[row]]
+qpp = "set(X)"
+constants = ["Set"]
+
+[[row]]
+qpp = "pair"
+constants = ["WithTop", "Lex", "Prod", "NNRat", "OrderDual", "Nat"]
+kernel = ["Qpp.PairLM"]
+
+[[row]]
+qpp = "0, 1, 2, ..."
+constants = ["OfNat.ofNat"]
+kernel = ["OfNat.ofNat", "Nat"]
+
+[[row]]
+qpp = "a + b, a * b, a / b"
+constants = ["HAdd.hAdd", "HMul.hMul", "HDiv.hDiv"]
+kernel = ["HAdd.hAdd", "HMul.hMul", "HDiv.hDiv"]
+
+[[row]]
+qpp = "a^e (e a numeral or a natural number)"
+constants = ["HPow.hPow"]
+kernel = ["HPow.hPow", "Nat"]
+
+[[row]]
+qpp = "iverson(P)"
+constants = ["ite"]
+kernel = ["Qpp.iverson", "Qpp.iversonN"]
+
+[[row]]
+qpp = "min(a, b, ...), max(a, b, ...)"
+constants = ["Min.min", "Max.max"]
+kernel = ["Min.min", "Max.max"]
+
+[[row]]
+qpp = "max(a - b, 0) (the deficit: the one subtraction of a positive source)"
+constants = ["Max.max", "HSub.hSub", "OfNat.ofNat"]
+kernel = ["Qpp.Count0.deficit", "Qpp.Mass0.deficit"]
+
+[[row]]
+qpp = "binom(n, k)"
+constants = ["Nat.choose"]
+kernel = ["Qpp.Count0.binom"]
+
+[[row]]
+qpp = "bidetP(T, U), bidetM(T, U); bidetP(A), bidetM(A) (the two halves of the bideterminant: of a couple of square tables T, U of ((QQ>=0)^n)^n standing for T - U, or of one table A; only in a tie, a comparison or a deficit that reads each couple through det(T - U) alone, invariant under one mass added to both halves)"
+constants = ["QppMathlib.bidetP", "QppMathlib.bidetM", "NNRat", "NNRat.cast", "Fin", "OfNat.ofNat"]
+kernel = ["Qpp.bidetP", "Qpp.bidetM", "Qpp.Idx", "Qpp.Mass0", "OfNat.ofNat"]
+
+[[row]]
+qpp = "sum k in a..b, t; prod k in a..b, t"
+constants = ["Finset.sum", "Finset.prod", "Finset.Icc"]
+kernel = ["Qpp.rangeSum", "Qpp.rangeProd"]
+
+[[row]]
+qpp = "a_(i)"
+constants = []
+
+[[row]]
+qpp = "f(x, y) (a define row)"
+constants = []
+
+[[row]]
+qpp = "x_(i), a_(j)_(i), f_(iota)_(i) (x a tuple of X^n, X one of NN, NN>=1, QQ>=0, QQ>0; a_(j) a member of a family a_(1..k) of such tuples; f a tuple of tuples (X^n)^k; i, iota bound over their coordinates)"
+constants = ["Fin", "NNRat.cast", "Subtype.val", "Nat.cast"]
+
+[[row]]
+qpp = "sum i, t; prod i, t (i over the coordinates of the tuples it indexes)"
+constants = ["Finset.sum", "Finset.prod", "Finset.univ", "Fin"]
+kernel = ["Qpp.Idx", "Qpp.Idx.sum", "Qpp.Idx.prod"]
+
+[[row]]
+qpp = "sum u <= b, t (b a tuple of NN^n: the lattice points u of the box [0, b], cut by rows through iverson)"
+constants = ["Finset.sum", "Finset.Icc", "OfNat.ofNat"]
+kernel = ["Qpp.boxSum"]
+
+[[row]]
+qpp = "sum k in a..b : C_1, ..., C_J, t; sum i : C_1, ..., C_J, t; sum u : C_1, ..., C_J, t; sum u in T : C_1, ..., C_J, t (the points of the range at which every clause holds; on the lattice the points of (NN>=1)^n, or of NN^n when T is a tuple type of NN^n, the first clause bounding the content by a level)"
+constants = ["Finset.sum", "Finset.filter", "Finset.Icc", "Finset.univ", "Fin", "OfNat.ofNat", "And"]
+kernel = ["Qpp.rangeSum", "Qpp.Idx", "Qpp.Idx.sum", "Qpp.boxSum", "Qpp.iverson", "Qpp.iversonN", "And"]
+
+[[row]]
+qpp = "=, !=, <, <=, >, >= (chains)"
+constants = ["Eq", "Ne", "LT.lt", "LE.le", "GT.gt", "GE.ge", "And"]
+kernel = ["Eq", "Ne", "LT.lt", "LE.le", "GT.gt", "GE.ge", "And"]
+
+[[row]]
+qpp = "P, Q; P or Q; P => Q; P <=> Q; not(P)"
+constants = ["And", "Or", "Not", "Iff"]
+kernel = ["And", "Or", "Iff", "Not"]
+
+[[row]]
+qpp = "forall x in S : P; exists x in S : P"
+constants = ["Exists", "And"]
+kernel = ["Exists"]
+
+[[row]]
+qpp = "forall i : P; exists i : P (i over the coordinates of the tuples it indexes)"
+constants = ["Exists", "Fin"]
+kernel = ["Qpp.Idx", "Exists"]
+
+[[row]]
+qpp = "i = j, i < j, i <= j (an index over the coordinates of tuples and an index or a count: indices are counts, with their order and equality)"
+constants = ["Eq", "LT.lt", "LE.le", "Fin", "Fin.val", "Nat", "HAdd.hAdd", "OfNat.ofNat"]
+kernel = ["Eq", "LT.lt", "LE.le", "Qpp.Idx", "Subtype.val", "Qpp.Count", "Qpp.Count0", "Qpp.Count0.of"]
+
+[[row]]
+qpp = "forall K in Loss(n) : P; exists p in Pair : P (over a type row)"
+constants = ["Exists"]
+kernel = ["Exists"]
+
+[[row]]
+qpp = "(x #word y) (a relation row)"
+constants = []
+kernel = []
+
+[[row]]
+qpp = "coef(K, B, p) (a context row)"
+constants = []
+
+[[row]]
+qpp = "prog(v, w_(1..L) in QQ>=0, ROWS : COST) = P (an atom, P a pair; with families of scales and universal rows)"
+constants = ["IsLeast", "Set.image", "Set.ofPred", "vectorSpan", "Submodule", "Module.finrank"]
+kernel = ["Qpp.IsProg", "Qpp.Idx", "Qpp.Idx.extend", "Qpp.Mass0", "Qpp.Count", "And", "True", "Option.elim"]
+
+[[row]]
+qpp = "Pr.P (the part P of a bundle Pr)"
+constants = []
+kernel = []
+
+[[row]]
+qpp = "K(w)"
+constants = ["NNRat.cast"]
+kernel = []
+
+[[row]]
+qpp = "forall w in B : P; exists w in B : P"
+constants = ["Membership.mem", "Exists", "And"]
+
+[[row]]
+qpp = "join(x, y) (two tuples of one type row)"
+constants = ["Fin.append"]
+kernel = ["Qpp.Idx.join"]
+
+[[row]]
+qpp = "B times C (two sets of tuples)"
+constants = ["Set.image2", "Fin.append"]
+
+[[row]]
+qpp = "B cup C, B cap C, B subseteq C, emptyset"
+constants = ["Union.union", "Inter.inter", "HasSubset.Subset", "EmptyCollection.emptyCollection"]
+
+[[row]]
+qpp = "union j in a..b, P_(j); inter j in a..b, P_(j)"
+constants = ["Set.iUnion", "Set.iInter", "Finset", "Finset.Icc", "Membership.mem"]
+
+[[row]]
+qpp = "oplus j in a..b, p_(j) (or min j in a..b, ...)"
+constants = ["Finset.inf", "Finset", "Finset.Icc"]
+kernel = ["Qpp.infUpTo", "Qpp.infFrom1"]
+
+[[row]]
+qpp = "top; p + q; min(p, q); p <= q (pairs)"
+constants = ["Top.top", "HAdd.hAdd", "Min.min", "LE.le"]
+kernel = ["Qpp.PairLM.top", "HAdd.hAdd", "Min.min", "LE.le"]
+
+[[row]]
+qpp = "(l, m) (a literal pair, where type NAME := pair is in scope)"
+constants = ["Rat.toNNRat", "Nat.cast", "HSub.hSub"]
+kernel = ["Qpp.PairLM.mk", "Qpp.Count", "OfNat.ofNat"]
+
+[[row]]
+qpp = "type NAME := pair"
+constants = ["WithTop.some", "DFunLike.coe", "Equiv", "toLex", "Prod.mk", "OrderDual.toDual"]
+kernel = ["Qpp.PairLM"]
+
+[[row]]
+qpp = "word w(K in X, ...) : Y; define w(K, ...)(x) := t"
+constants = []
+kernel = []
+
+[[row]]
+qpp = "word w(N in NN, ...) : Y (an argument in NN, which Y may name) and define w(N, ...)(u)_(j) := t (a result whose values are tuples, at a coordinate; read by proofs only)"
+constants = []
+
+[[row]]
+qpp = "define w(K, K')(x, y) := t (two points)"
+constants = ["Fin.castAdd", "Fin.natAdd", "Fin.append"]
+kernel = ["Qpp.Idx.fst", "Qpp.Idx.snd", "Qpp.Idx.join"]
+
+[[row]]
+qpp = "define f(x, y) := t"
+constants = ["Rat"]
+
+[[row]]
+qpp = "type NAME(k, n) := {P, N in X, op in Y} (a bundle: named parts of different types, each a tuple, an object of a type row or in NN)"
+constants = []
+kernel = []
+
+[[row]]
+qpp = "relation (x #word y) := clauses"
+constants = ["Decidable", "Classical.propDecidable"]
+kernel = ["Decidable", "Classical.propDecidable"]
+
+[[row]]
+qpp = "context NAME(x in X, ...)"
+constants = []
+
+[[row]]
+qpp = "x in QQ"
+constants = ["Rat"]
+
+[[row]]
+qpp = "QQ"
+constants = ["Rat"]
+
+[[row]]
+qpp = "a - b, -a"
+constants = ["HSub.hSub", "Neg.neg"]
+
+[[row]]
+qpp = "|a|"
+constants = ["abs"]

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "n^2 + a * m^2 < N", "note": "the mass 2 agrees with the root 7 of x^2 + 1 = 0 up to 5, but 2^2 + 2 = 6 is not below 5", "rows": [
+ {"N": 5, "m": 1, "n": 2, "a": 2, "b": 1, "D": 7, "w": 1, "c": 10}
+]}

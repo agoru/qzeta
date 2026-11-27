@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "z * e + 1 = A * Y", "note": "a mass that is not that of the letter AY", "rows": [{"e": "1", "A": "1/2", "Y": "4", "V": "2", "a": "1/2", "b": "1", "y": "3", "z": "2"}]}

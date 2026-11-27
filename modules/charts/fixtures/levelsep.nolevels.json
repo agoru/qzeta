@@ -1,0 +1,1 @@
+{"kind": "counterexample", "rows": [{"n": 2, "k": 2, "P": [[1, 1], [1, 1]], "N": [[0, 0], [0, 0]], "zeta": [[1, 0], [0, 1]], "lam": [0, 0], "d": [1, 1], "u": [1, 0], "w": [0, 1]}], "drop": "(forall alpha : forall i : lam_(alpha) <= lam_(i) => (sum iota, zeta_(alpha)_(iota) * P_(iota)_(i)) = d_(i) * iverson(alpha = i) + (sum iota, zeta_(alpha)_(iota) * N_(iota)_(i)))"}

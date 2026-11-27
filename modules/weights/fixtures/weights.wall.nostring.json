@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall j in NN>=1 : j <= N => x_(j) + x_(j + 2) = 2 * x_(j + 1))", "note": "1, 2, 5 is no string at the wall: 1 + 5 is not 4", "rows": [
+ {"N": 1, "n": 2, "x[]": [1, 2, 5]}
+]}

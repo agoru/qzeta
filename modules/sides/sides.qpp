@@ -1,0 +1,16 @@
+-- Q++ 0.2
+module sides
+uses theory
+
+subsection sec:sides Sides
+
+-- By summation by parts each form at the nodes is a sum over the gaps of a partial sum times an increment. A member
+-- that rises only where the partial sum is on the side of \(P\), falls only where it is on the side of \(N\), and moves
+-- somewhere makes its form no tie, so the forms do not vanish.
+lemma lem:sides [a separating member]
+  (sep): n in NN, SP, SN, DP, DN in Point(n), (forall g : SP_(g) * DN_(g) = 0, SN_(g) * DP_(g) = 0), 0 < sum g, (SP_(g) * DP_(g) + SN_(g) * DN_(g)) : (sum g, (SP_(g) * DN_(g) + SN_(g) * DP_(g))) < sum g, (SP_(g) * DP_(g) + SN_(g) * DN_(g))
+  fix (sep) separate
+  origin: ?{\text{elementary}}
+
+proof lem:sides
+  (sep) with[(sum g, (SP_(g) * DN_(g) + SN_(g) * DP_(g))) <= 0 by sum[V]; V[1 * h_2, 1 * hw1]]

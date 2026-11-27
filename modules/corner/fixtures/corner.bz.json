@@ -1,0 +1,8 @@
+{"kind": "witness", "note": "the primitive Betti number of a smooth complete intersection of type (2, e) and even dimension m, with c = e - 2 and x = (e - 1)^(m + 1), at (e, m) = (5, 0), (5, 2), (7, 2), (9, 4), (6, 2), (3, 2)", "rows": [
+ {"c": "3", "b": "9", "x": "4"},
+ {"c": "3", "b": "137", "x": "64"},
+ {"c": "5", "b": "445", "x": "216"},
+ {"c": "7", "b": "66577", "x": "32768"},
+ {"c": "4", "b": "261", "x": "125"},
+ {"c": "1", "b": "21", "x": "8"}
+]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(e + 1) * b = e^(2 * j) + e", "note": "a count b that is not the Betti number", "rows": [
+ {"j": 1, "e": 3, "b": 1}
+]}

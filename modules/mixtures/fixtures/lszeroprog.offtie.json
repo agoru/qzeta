@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "alpha = 1", "note": "off the threshold the face is smaller: at alpha = 1/2 the pair is (1/4, 1), at alpha = 2 it is (1/2, 2)", "rows": [{"alpha": "1/2"}, {"alpha": 2}]}

@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "at y^2 = T + 1 the larger top coefficient wins: 24 < 32", "rows": [{"m": 2, "c": "1", "e": "2", "T": "3", "y": "2", "L": "24", "R": "32"}]}

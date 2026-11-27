@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall k : M <= (sum i, w_(i) * z_(k)_(i)))", "note": "the level 18 is above the face", "rows": [
+ {"n": 3, "r": 3, "z": [[0, 0, 17], [1, 2, 6], [1, 3, 2]], "c": [1, 1, 1], "p": [2, 5, 25], "w": [3, 4, 1], "M": 18, "t": 3}
+]}

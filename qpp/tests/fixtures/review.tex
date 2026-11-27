@@ -1,0 +1,72 @@
+% Statements that use the constructs of the LaTeX form (qpp/README.md, "The LaTeX form"): a clause
+% with \pm read twice, a set \{\pm1\}, half-open intervals, a listing and the integers \{1,\dots,N\}, the least element
+% of a set, a sum over the indices that satisfy a condition, a count \#, unbraced bold Greek, a relation symbol
+% defined by a row, a context row read whole, and an index free in a hypothesis only. latex2qpp and qpp2lean
+% generate review.qpp and Review.lean; Lean checks the statements and the proofs (the results without proof lines
+% are stated only).
+\begin{stmt}
+\sit{context}{n\in\Z_{\ge1},\ \rho\in\Q,\ 0<\rho\le1\ (\text{a scale})}
+\sit{}{x,y\in\Q:\ x\preceq y:\iff x\le2y}
+\end{stmt}
+
+\begin{lemma}[half-open intervals]\label{lem:halfopen}
+\begin{stmt}
+\sit{given}{x\in(0,1],\ y\in[0,1),\ \bu\in(\tfrac12,1]^n}
+\sit{(1)}{y<x+1}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq[h_4+h_7]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[a clause with a sign is read twice]\label{lem:pm}
+\begin{stmt}
+\sit{given}{P_+,P_-\in\Q,\ P_\pm\ge0}
+\sit{(1)}{P_+-P_-\le P_+}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq[h_2]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[a relation symbol defined by a row; hypotheses named by content]\label{lem:preceq}
+\begin{stmt}
+\sit{given}{x,y,z\in\Q,\ x\preceq y,\ y\preceq z}
+\sit{(1)}{x\le4z}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq[(x\preceq y)+2(y\preceq z)]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[a context row is read whole; its hypothesis named by content]\label{lem:context}
+\begin{stmt}
+\sit{(1)}{2\rho\le1+\rho}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq[(\rho\le1)]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[signs, listings, the least element, a conditioned sum, a count]\label{lem:sets}
+\begin{stmt}
+\sit{given}{N\in\Z_{\ge1},\ a_1,\dots,a_N,g_1,\dots,g_N,s_1,\dots,s_N\in\Q,\ \boldsymbol\varsigma\in\{\pm1\}^n,\ \bz\in\Z^n,\ m\in\{1,2\}}
+\sit{(1)}{\varsigma_iz_i\le|z_i|\ \text{for}\ i\le n}
+\sit{(2)}{g_N\ge0,\ k:=\min\{k:\ g_k\ge0\}\Rightarrow g_k\ge0,\ \#\{k:\ g_k\ge0\}\ge1}
+\sit{(3)}{\textstyle\sum_{s_r>0}g_r\le\sum_{r\le N}|g_r|}
+\sit{(4)}{a_j\le m\ \text{for}\ j\le N\Rightarrow\textstyle\sum_ja_j\le2N;\ a_j\le m\Rightarrow\textstyle\sum_ja_j\le2N\ \ (\text{the same: } j\ \text{free in the hypothesis only})}
+\sit{(5)}{j\in\{1,\dots,n\}\Rightarrow j\le n}
+\end{stmt}
+\end{lemma}

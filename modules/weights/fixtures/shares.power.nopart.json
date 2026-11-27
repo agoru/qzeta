@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x * N = 1", "note": "the half is no third: 2 steps of 1/2 make one turn, and 2 is not 3", "rows": [
+ {"k": 2, "N": 3, "j": 1, "x": "1/2"}
+]}

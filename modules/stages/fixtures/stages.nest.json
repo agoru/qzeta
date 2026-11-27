@@ -1,0 +1,5 @@
+{"kind": "witness", "note": "the next stage is the zoomed stage and one digit: 1 + 10 + 100 = 1 + 10 * (1 + 10)", "rows": [
+ {"B": 10, "M": 1},
+ {"B": 2, "M": 3},
+ {"B": 7, "M": 2}
+]}

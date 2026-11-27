@@ -1,0 +1,49 @@
+-- Q++ 0.2
+module dual
+uses theory
+
+subsection sec:dual The labelled dual graph
+
+-- A star: an exceptional curve of a log resolution of a plane curve germ with its labels \((N,\nu)\), and the curves
+-- that meet it with theirs. It is plane when the projection tie \(Ns=\sum_jM_j\) and the adjunction tie \(\nu
+-- s+k=2+\sum_j\mu_j\) hold.
+type Star(k) := {N, nu in NN>=1, M, mu in (NN>=1)^k}
+
+-- Every exceptional curve of a log resolution of a reduced plane curve germ by point blow-ups is the centre of a plane
+-- star: the projection tie is \cite[Ch.~V, Proposition~3.2]{Hartshorne1977}, and the adjunction tie is \cite[Ch.~V,
+-- Propositions~1.5 and~3.3]{Hartshorne1977}.
+cit fact:planestar [the two ties of a star]
+  doi: 10.1007/978-1-4757-3849-0
+  stmt: Ch. V, Propositions 1.5, 3.2 and 3.3
+  origin: ?{\text{cited: the adjunction formula \cite[Ch.~V, Proposition~1.5]{Hartshorne1977} at genus~0 and the projection formula}\ h^*\mathrm{div}f\cdot E_0=0\text{, the curves of the total transform meeting transversally, each pair once}}
+
+-- At the price \(\nu/N\) of its centre the reduced costs of the spokes sum to \(k-2\), so a centre that no spoke
+-- undercuts has at least three spokes or all its spokes tie: the least sits at a node or on a plateau of a chain.
+lemma lem:node [the least at a node]
+  core star: k, s in NN>=1, St in Star(k), St.N * s = (sum j, St.M_(j)), St.nu * s + k = 2 + (sum j, St.mu_(j)) : St.N * (sum j, St.mu_(j)) + 2 * St.N = k * St.N + St.nu * (sum j, St.M_(j))
+  fix core star node.star
+  core below: k in NN>=1, St in Star(k), (forall j : St.nu * St.M_(j) <= St.N * St.mu_(j)) : St.nu * (sum j, St.M_(j)) <= St.N * (sum j, St.mu_(j))
+  core spokes: k in NN>=1, St in Star(k), (forall j : St.nu * St.M_(j) <= St.N * St.mu_(j)), St.N * (sum j, St.mu_(j)) <= St.nu * (sum j, St.M_(j)) : forall i : St.nu * St.M_(i) = St.N * St.mu_(i)
+  (1): k, s in NN>=1, St in Star(k), St.N * s = (sum j, St.M_(j)), St.nu * s + k = 2 + (sum j, St.mu_(j)), (forall j : St.nu * St.M_(j) <= St.N * St.mu_(j)) : 3 <= k or (forall j : St.nu * St.M_(j) = St.N * St.mu_(j))
+  fix (1) node
+  neqfix (1) node.noprojection
+  neqfix (1) node.noadjunction
+  neqfix (1) node.nolocal
+  (2): k, s in NN>=1, St in Star(k), St.N * s = (sum j, St.M_(j)), St.nu * s + k = 2 + (sum j, St.mu_(j)), (forall j : St.nu * St.M_(j) <= St.N * St.mu_(j)), k <= 2 : k = 2, forall j : St.nu * St.M_(j) = St.N * St.mu_(j)
+  fix (2) node.plateau
+  origin: ?{\text{form proved, from the two ties of \cref{fact:planestar}; the tie (star) is the relation of the two ties at the price of the centre, \cite[Lemma~4.1(3)]{Veys2024}, derived there from its (1), the intersection of \(E_0\) with the principal divisor \(\mathrm{div}(h^*f)\), and its (2), the intersection of \(E_0\) with \(K_Y\) and the adjunction formula, with the first proof for all plane curves credited to \cite{Loeser1988}; and that the least of the weight on the dual graph of a plane curve is reached at a rupture curve or a branch is classical \cite[Remark~6.2]{CassouNoguesVeys2013}}}
+
+-- Eliminating \(s\) between the two ties gives (core star). A centre that no spoke undercuts has
+-- \(\nu\sum_jM_j\le N\sum_j\mu_j\), summed over the spokes (core below); at \(k\le2\) the tie (core star) gives the
+-- reverse inequality, and a sum of inequalities that ties has every term tied (core spokes), so every spoke ties, and
+-- then \(k=2\) (2). The tie (core star) is the relation of the two ties at the price of the centre,
+-- \cite[Lemma~4.1(3)]{Veys2024}, derived there from the intersections of \(E_0\) with the principal divisor
+-- \(\mathrm{div}(h^*f)\) and with \(K_Y\) and the adjunction formula, with the first proof for all plane curves credited
+-- to \cite{Loeser1988}; and that the least of the weight on the dual graph of a plane curve is reached at a rupture
+-- curve or a branch is classical \cite[Remark~6.2]{CassouNoguesVeys2013}.
+proof lem:node
+  "core star" V[St.N * h_2, St.nu * h_1]
+  "core below" chain[St.nu * (sum j, St.M_(j)) = sum j, St.nu * St.M_(j) by sum; <= sum j, St.N * St.mu_(j) by sum[V]; = St.N * (sum j, St.mu_(j)) by sum]
+  "core spokes" with[exists A in Weight(k) : forall l : A_(l) = St.nu * St.M_(l) by take[A_(l) := St.nu * St.M_(l); V]; with[exists B in Weight(k) : forall l : B_(l) = St.N * St.mu_(l) by take[B_(l) := St.N * St.mu_(l); V]; logic[with[forall l : A_(l) = St.nu * St.M_(l) by logic; with[forall l : B_(l) = St.N * St.mu_(l) by logic; with[forall l : A_(l) <= B_(l) by logic[V[1 * hw3(l), 1 * h_1(l) | 1 * hw4(l)]]; with[(sum j, A_(j)) = sum j, St.nu * St.M_(j) by sum[V]; with[(sum j, B_(j)) = sum j, St.N * St.mu_(j) by sum[V]; with[(sum j, St.nu * St.M_(j)) = St.nu * (sum j, St.M_(j)) by sum; with[(sum j, St.N * St.mu_(j)) = St.N * (sum j, St.mu_(j)) by sum; with[(sum j, A_(j)) <= (sum j, B_(j)) by sum[V]; with[(sum j, A_(j)) = (sum j, B_(j)) by V[1 * hw10], V[1 * hw7, 1 * hw9, 1 * h_2 | 1 * hw6, 1 * hw8]; with[forall l : A_(l) = B_(l) by lem:slack(tie)[n := k, a := A, b := B]; V[1 * hw12(i), 1 * hw4(i) | 1 * hw3(i)], V[1 * hw3(i) | 1 * hw4(i), 1 * hw12(i)]]]]]]]]]]]]]]
+  (1) with[St.N * (sum j, St.mu_(j)) + 2 * St.N = k * St.N + St.nu * (sum j, St.M_(j)) by lem:node(core star)[k := k, s := s, St := St]; with[St.nu * (sum j, St.M_(j)) <= St.N * (sum j, St.mu_(j)) by lem:node(core below)[k := k, St := St]; cases[3 <= k; logic; with[k <= 2 by V[1 * hn1]; with[k * St.N <= 2 * St.N by V[St.N * hw3]; with[St.N * (sum j, St.mu_(j)) <= St.nu * (sum j, St.M_(j)) by V[1 * hw1, 1 * hw4]; with[forall j : St.nu * St.M_(j) = St.N * St.mu_(j) by lem:node(core spokes)[k := k, St := St]; logic]]]]]]]
+  (2) with[St.N * (sum j, St.mu_(j)) + 2 * St.N = k * St.N + St.nu * (sum j, St.M_(j)) by lem:node(core star)[k := k, s := s, St := St]; with[St.nu * (sum j, St.M_(j)) <= St.N * (sum j, St.mu_(j)) by lem:node(core below)[k := k, St := St]; with[k * St.N <= 2 * St.N by V[St.N * h_4]; with[St.N * (sum j, St.mu_(j)) <= St.nu * (sum j, St.M_(j)) by V[1 * hw1, 1 * hw3]; with[forall j : St.nu * St.M_(j) = St.N * St.mu_(j) by lem:node(core spokes)[k := k, St := St]; with[0 < St.N by V[0]; with[1 <= St.N by V[1 * hw6]; with[2 <= k by V[1 * h_4 * hw7, 1 * hw1, 1 * hw2]; with[k = 2 by V[1 * h_4], V[1 * hw8]; logic, logic]]]]]]]]]

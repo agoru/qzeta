@@ -1,0 +1,4 @@
+{"kind": "witness", "note": "N | nd gives gamma delta | nD, with N = g kappa delta, D = N + d and nd = N u: h = xyz, n = 3, k0 = 3, d = 3, where m_f(o(n/N)) = 75 = 0 + 66 + 9, and h = xy, n = 3, k0 = 2, d = 4, where m_f(o(n/N)) = 15 = 0 + 13 + 2, the closed form of (L4) checked against the zeta function of the monodromy on the Newton polyhedron", "rows": [
+ {"g": "3", "kappa": "1", "delta": "3", "n": "3", "d": "3", "u": "1"},
+ {"g": "2", "kappa": "1", "delta": "2", "n": "3", "d": "4", "u": "3"}
+]}

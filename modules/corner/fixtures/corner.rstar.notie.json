@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "V + nu = kappa * D", "note": "V is not the gap kap D - nu of the ray, and A_Z is not the quotient", "rows": [
+ {"g": "1", "kappa": "2", "rho": "1", "delta": "2", "m": "2", "D": "5", "nu": "9", "k1": "1", "V": "2"}
+]}

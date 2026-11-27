@@ -1,0 +1,5 @@
+{"kind": "model", "note": "e = 1: the plane at six units", "rows": [
+ {"s": 3, "e": 0},
+ {"s": 3, "e": 1},
+ {"s": 3, "e": 2}
+]}

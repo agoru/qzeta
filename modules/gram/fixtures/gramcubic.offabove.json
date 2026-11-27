@@ -1,0 +1,5 @@
+{"kind": "counterexample", "drop": "3 < s", "note": "up to s = 3 the row 8 x >= 1 has the price zero and the value is that of (below) or (tie)", "rows": [
+ {"s": 2, "e": 1},
+ {"s": 3, "e": 1},
+ {"s": 1, "e": 0}
+]}

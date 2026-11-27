@@ -1,0 +1,7 @@
+{"kind": "witness", "note": "the primitive Betti number b of a smooth hypersurface of degree e + 1 in P^(2j - 1), (e + 1) b = e^(2j) + e: at (n, delta) = (2, 2), (2, 4), (4, 4), (4, 5), (6, 6)", "rows": [
+ {"j": 1, "e": 1, "b": 1},
+ {"j": 1, "e": 3, "b": 3},
+ {"j": 2, "e": 3, "b": 21},
+ {"j": 2, "e": 4, "b": 52},
+ {"j": 3, "e": 5, "b": 2605}
+]}

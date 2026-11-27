@@ -1,0 +1,16 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "lem_costs_balance": {"hash":"4079ca38fb120d7f","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0],"6":[0],"7":[0]},"deps":"d3e7b554a3eae1a1","cut":"83bbda4757aa2d7c"},
+  "lem_costs_box": {"hash":"680cd31f1fc510e6","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0],"6":[0],"11":[0],"16":[0]},"deps":"fb16fb1f50b3a5b3","cut":"a266c94598c462b4"},
+  "lem_costs_core_balance": {"hash":"709f0831080bc205","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0]},"deps":"6f1335447e5ab871","cut":"6a897fcbce89289b"},
+  "lem_costs_core_below": {"hash":"f07cbe1a51a0824b","won":{"0":[0],"1":[0]},"deps":"60727742b89d0c9c","cut":"f085e6913d4b90b1"},
+  "lem_costs_core_level": {"hash":"c61c510f07b81834","won":{"0":[0]},"deps":"99e3d2b0757a56d6","cut":"50c5294b5fd3fd3f"},
+  "lem_costs_core_pairing": {"hash":"4b43e308ca03bfa3","won":{"0":[0],"1":[0]},"deps":"a573f66901d7d9a6","cut":"da3e79dae52c01d5"},
+  "lem_costs_core_swap": {"hash":"29f4251d1131d928","won":{"0":[0]},"deps":"ad3622f47a309c38","cut":"c823bacf6bff4fdd"},
+  "lem_costs_gap": {"hash":"2579ee7934263151","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0]},"deps":"f867e96e27dc0249","cut":"b149150c1fa44e92"},
+  "lem_costs_tie": {"hash":"94752c26446a537b","won":{"0":[0],"1":[0],"2":[0]},"deps":"f3bb64c015e84f69","cut":"7b003fca1d1677be"},
+  "lem_costs_weak": {"hash":"981d1a2064d59daf","won":{"0":[0],"1":[0],"2":[0]},"deps":"d35d6cd74e448912","cut":"28d51dfd2536aa9c"}
+ }
+}

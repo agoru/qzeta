@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "lem:mass(shift): p_u = y^(2v) p_x + p_v on the side u = x + v", "rows": [{"x": 1, "u": 3, "v": 2, "y": "2", "px": "3", "pu": "63", "pv": "15"}, {"x": 2, "u": 5, "v": 3, "y": "4/3", "px": "175/81", "pu": "989527/59049", "pv": "3367/729"}]}

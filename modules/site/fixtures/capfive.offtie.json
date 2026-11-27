@@ -1,0 +1,18 @@
+{
+ "kind": "counterexample",
+ "drop": "kq = 0",
+ "map": {
+  "e": "1 + eta"
+ },
+ "note": "off the tie the face is one vertex: at kq = 1, e = 1 the pair is (6/5, 1)",
+ "rows": [
+  {
+   "kq": 1,
+   "e": 1
+  },
+  {
+   "kq": "1/2",
+   "e": 2
+  }
+ ]
+}

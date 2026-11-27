@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "a = b + c", "note": "5, 1, 1 is no block: 5 is not 1 + 1", "rows": [
+ {"a": 5, "b": 1, "c": 1}
+]}

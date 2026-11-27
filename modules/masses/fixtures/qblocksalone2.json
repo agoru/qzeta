@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "T_2 = T_1 + T_3 at the member, with s = N + sigma and the t-block positive (on the masses p_n + 1 = y^(2n))", "rows": [{"N": 2, "tau": 1, "sigma": 1, "c": 4, "a": 2, "b": 2, "s": 3, "t": 1, "zB": 1, "zT": 1, "y": "25", "pN": "390624", "ptau": "624", "psig": "624", "pc": "152587890624", "pa": "390624", "pb": "390624", "ps": "244140624", "pt": "624"}]}

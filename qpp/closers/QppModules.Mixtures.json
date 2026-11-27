@@ -1,0 +1,16 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "lem_lsthree_above": {"hash":"2b54097789b38d0d","won":{"0":[0],"2":[0],"4":[0],"6":[0]},"deps":"c303e3f60ca3c36a","cut":"dcde1d7cf99a76bc"},
+  "lem_lsthree_below": {"hash":"4dd1c2fec3338393","won":{"0":[0],"2":[0],"4":[0],"6":[0],"8":[0],"10":[0],"12":[0]},"deps":"a72a822345d75a35","cut":"d962cb499cb35722"},
+  "lem_lsthree_rung": {"hash":"2d5a07b4a6e1b799","won":{"0":[0]},"deps":"d0f1a084e951c187","cut":"e3b196e3bfa7c037"},
+  "lem_lsunit_emptied": {"hash":"da8d21952b525e5f","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0]},"deps":"bb492b3d3a645bc2","cut":"faa35510b9070a45"},
+  "lem_lsunit_kept": {"hash":"0a6eafbc5d5914f8","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0]},"deps":"736ef18d7041b2fd","cut":"e98f0e4316137a59"},
+  "lem_lsunit_positive": {"hash":"73e42f1357dc2e98","won":{"0":[0],"1":[0],"2":[0],"3":[0]},"deps":"c521e45ffc43bb45","cut":"593a90bb1bdd50ba"},
+  "lem_lsunit_tie": {"hash":"04df730e6818ff5c","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0]},"deps":"84e53de1bed29ab0","cut":"a4c361c45049175b"},
+  "lem_mixture_out": {"hash":"7802f6abadd0705b","won":{"0":[0],"1":[0],"6":[0],"7":[0],"12":[0],"13":[0],"17":[0],"21":[9],"25":[0],"26":[0]},"deps":"0aa8f4dff0b684db","cut":"8e25a7c3021959ab"},
+  "lem_mixture_vertex": {"hash":"925e1e8f58a44966","won":{"0":[9]},"deps":"7b7702fbf7beba59","cut":"c99355c340c7a3f4"},
+  "lem_onescale_1": {"hash":"40ac31abad39c411","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0]},"deps":"6a8c9831acaea578","cut":"37786fb04e09bf38"}
+ }
+}

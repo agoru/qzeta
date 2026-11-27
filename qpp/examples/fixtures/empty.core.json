@@ -1,0 +1,30 @@
+{
+ "kind": "model",
+ "note": "the empty region, in one and in two variables",
+ "rows": [
+  {
+   "n": 1,
+   "K": [
+    [
+     2
+    ]
+   ],
+   "omega": [
+    1
+   ]
+  },
+  {
+   "n": 2,
+   "K": [
+    [
+     2,
+     4
+    ]
+   ],
+   "omega": [
+    2,
+    1
+   ]
+  }
+ ]
+}

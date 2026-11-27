@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "T_3 below T_2 when the s-block is positive and the t-block is on its other negative side (on the masses p_n + 1 = y^(2n))", "rows": [{"N": 2, "tau": 3, "sigma": 1, "a": 1, "b": 1, "s": 1, "t": 1, "zB": 1, "zT": 1, "y": "5", "pN": "624", "ptau": "15624", "psig": "24", "pa": "24", "pb": "24", "ps": "24", "pt": "24"}]}

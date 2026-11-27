@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall j in NN>=1 : j <= N => c_(j) + c_(j + 2) = b_(j) * c_(j + 1))", "note": "costs (1, 1, 2) are no chain: the shares 1 + 1/2 are not 2/2", "bounds": {"j": 6}, "rows": [
+ {"N": 1, "b[]": [2], "c[]": [1, 1, 2], "d[]": [1, 2], "x[]": [1, 1, "1/2"]}
+]}

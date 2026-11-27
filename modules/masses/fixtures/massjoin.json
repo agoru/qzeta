@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "lem:mass(join): p_x = p_u p_v + p_u + p_v on the side x = u + v", "rows": [{"x": 3, "u": 1, "v": 2, "y": "2", "px": "63", "pu": "3", "pv": "15"}, {"x": 5, "u": 3, "v": 2, "y": "3/2", "px": "58025/1024", "pu": "665/64", "pv": "65/16"}]}

@@ -1,0 +1,1 @@
+{"kind": "counterexample", "rows": [{"n": 2, "d": [1, 1], "xh": [1, 1], "bp": [3, 3], "bm": [0, 0], "xs": [3, 3], "y": [0, 0], "R": [[0, 2], [2, 0]]}], "drop": "(forall a : (sum b, R_(a)_(b) * xh_(b)) < d_(a) * xh_(a))"}

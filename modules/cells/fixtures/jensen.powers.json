@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "sums of powers of positive masses on 1..N, with equal terms at N = 4 (the case of equality) and a range of no term", "rows": [{"N": 0, "m": 2, "e[]": []}, {"N": 1, "m": 0, "e[]": ["3/4"]}, {"N": 3, "m": 2, "e[]": ["1/8", "1/4", "1/2"]}, {"N": 4, "m": 3, "e[]": [1, 1, 1, 1]}, {"N": 2, "m": 1, "e[]": ["2/7", "5/3"]}]}

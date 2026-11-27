@@ -1,0 +1,124 @@
+-- Q++ 0.2
+module weights
+uses table, twist
+
+subsection sec:weights Weights, walls and nodes
+
+-- A pair of inverses \(r,1/r\) tied at \(t\): \(r+1/r=t\), that is \(r^2+1=tr\). Off the wall \(r=1\), \(r\) and \(1\)
+-- are tied by a gap \(d\), \(r=1+d\) above it or \(1=r+d\) below it, and either orientation gives \(r^2+1=2r+d^2\).
+-- So the tie is at least \(2\) (wall), and the self-dual wall \(t=2\) holds only at \(r=1\) (selfdual). A tie \(t\)
+-- that is a whole number is that wall: with \(r=c/e\) in lowest terms, certified by \(uc=ve+1\), the tie
+-- \(c^2+e^2=tce\) makes \(e\) divide \(c\) and \(c\) divide \(e\), so \(c=e\) and \(r=1\) (node). So a whole tie \(t\ge3\) is
+-- the tie of no pair of positive rationals.
+lemma lem:inverses [the self-dual wall of a pair of inverses]
+  (wall): r, t in QQ>0, r * r + 1 = t * r : 2 <= t
+  fix (wall) inverses.wall
+  neqfix (wall) inverses.wall.notie
+  (selfdual): r in QQ>0, r * r + 1 = 2 * r : r = 1
+  fix (selfdual) inverses.selfdual
+  neqfix (selfdual) inverses.selfdual.notie
+  (node): c, e, u, v, t in NN>=1, r in QQ>0, r * e = c, u * c = v * e + 1, r * r + 1 = t * r : r = 1, t = 2
+  fix (node) inverses.node
+  neqfix (node) inverses.node.notie
+  origin: ?{\text{elementary}}
+
+-- An orientation times itself: below the wall \(r<1\) twice gives \(2r<r^2+1\), and above it \(1<r\) twice gives the
+-- same. The node: \(c^2+e^2=e\,(tc)=c\,(te)\), so the two legs of \cref{lem:euclid} give \(c=ew\) and \(e=cw'\);
+-- then \(ww'=1\), so \(w=1\), \(c=e\) and \(r=1\).
+proof lem:inverses
+  (wall) with[2 * r <= r * r + 1 by cases[r < 1; V[1 * hc1 * hc1]; V[1 * hn1 * hn1]]; with[r * 2 <= r * t by V[1 * h_1, 1 * hw1]; div[r; V[1 * hw2]]]]
+  (selfdual) cases[r < 1; with[2 * r < r * r + 1 by V[1 * hc1 * hc1]; with[r * r + 1 <= 2 * r by V[1 * h_1]; logic]]; cases[1 < r; with[2 * r < r * r + 1 by V[1 * hc2 * hc2]; with[r * r + 1 <= 2 * r by V[1 * h_1]; logic]]; V[1 * hn2], V[1 * hn1]]]
+  (node) with[c * c + e * e = t * c * e by V[(e * e) * h_3, (t * e) * h_1 | (c + r * e) * h_1]; with[1 <= t * c by V[c * hp(t), 1 * hp(c)]; with[exists w in NN>=1 : c = e * w by lem:euclid(detached)[c := c, e := e, a := u, b := v, x := c, y := e, z := t * c; c * c + e * e = e * (t * c) by V[1 * hw1]]; with[c = e * w by logic; with[1 <= t * e by V[e * hp(t), 1 * hp(e)]; with[exists w2 in NN>=1 : e = c * w2 by lem:euclid(attached)[c := c, e := e, a := u, b := v, x := e, y := c, z := t * e; v * e + 1 = u * c by V[| 1 * h_2]; e * e + c * c = c * (t * e) by V[1 * hw1]]; with[e = c * w2 by logic; with[c * (w * w2) = c * 1 by V[| w * hw7, 1 * hw4]; with[w * w2 = 1 by div[c]; with[w * 1 <= w * w2 by mono; with[w = 1 by V[1 * hw10, 1 * hw9], V[1 * hp(w)]; with[c = e by V[1 * hw4, e * hw11]; with[e * r = e * 1 by V[1 * h_1, 1 * hw12]; with[r = 1 by div[e]; (V[1 * hw14], V[(r + 1) * hw14 | 1 * h_3, t * hw14])]]]]]]]]]]]]]]
+
+-- A string at the weight \(t\) is a row of positive masses \(x_1,x_2,\dots\) in which the middle of three consecutive
+-- masses, weighted by \(t\), ties its two neighbours: \(x_j+x_{j+2}=tx_{j+1}\). At \(t=1\) the middle is the sum, a block.
+-- At a weight \(t\le1\) the middle is at least the sum of its neighbours, so the next step fails: a string has at most
+-- three masses (insertion). At the self-dual wall \(t=2\) the middle is the mean, and the string is one arithmetic
+-- progression, \(x_{n+1}+nx_1=x_1+nx_2\) (wall). At a weight \(t\ge2\) a string that does not fall at its first step
+-- never falls (grow).
+lemma lem:weights [the string at one weight]
+  (insertion): t, x, y, z, w in QQ>0, t <= 1, x + z = t * y : t * z < y + w
+  fix (insertion) weights.insertion
+  neqfix (insertion) weights.insertion.heavy
+  neqfix (insertion) weights.insertion.notie
+  core diff: N, n in NN>=1, x_(1..N + 2) in QQ>0, (forall j in NN>=1 : j <= N => x_(j) + x_(j + 2) = 2 * x_(j + 1)) : n <= N => x_(n + 2) + x_(1) = x_(n + 1) + x_(2)
+  fix core diff weights.diff
+  (wall): N, n in NN>=1, x_(1..N + 2) in QQ>0, (forall j in NN>=1 : j <= N => x_(j) + x_(j + 2) = 2 * x_(j + 1)) : n <= N + 1 => x_(n + 1) + n * x_(1) = x_(1) + n * x_(2)
+  fix (wall) weights.wall
+  neqfix (wall) weights.wall.nostring
+  (grow): N, n in NN>=1, t in QQ>0, x_(1..N + 2) in QQ>0, 2 <= t, x_(1) <= x_(2), (forall j in NN>=1 : j <= N => x_(j) + x_(j + 2) = t * x_(j + 1)) : n <= N + 1 => x_(n) <= x_(n + 1)
+  fix (grow) weights.grow
+  neqfix (grow) weights.grow.light
+  neqfix (grow) weights.grow.fall
+  neqfix (grow) weights.grow.nostring
+  origin: ?{\text{elementary}}
+
+-- At the wall every step is tied to the first: \(x_{n+2}+x_1=x_{n+1}+x_2\) (core diff), by induction on \(n\), and the
+-- progression is the sum of these ties. Above it, from \(x_n\le x_{n+1}\), \(x_n+x_{n+2}=tx_{n+1}\ge2x_{n+1}\ge
+-- x_n+x_{n+1}\), so \(x_{n+1}\le x_{n+2}\).
+proof lem:weights
+  (insertion) V[1 * h_2, y * h_1, z * h_1]
+  "core diff" ind[n; with[x_(1) + x_(1 + 2) = 2 * x_(1 + 1) by logic; V[1 * hw1]]; with[n <= N by V[1 * hi2]; with[x_(n + 2) + x_(1) = x_(n + 1) + x_(2) by logic; with[x_(n + 1) + x_(n + 1 + 2) = 2 * x_(n + 1 + 1) by logic; V[1 * hw3, 1 * hw4]]]]]
+  (wall) ind[n; eq; with[n <= N by V[1 * hi2]; with[n <= N + 1 by V[1 * hw1]; with[x_(n + 1) + n * x_(1) = x_(1) + n * x_(2) by logic; with[x_(n + 2) + x_(1) = x_(n + 1) + x_(2) by lem:weights(core diff)[N := N, n := n, x := x]; V[1 * hw3, 1 * hw4]]]]]]
+  (grow) ind[n; with[x_(1 + 1) = x_(2) by eq; V[1 * h_2 | 1 * hw1]]; with[n <= N by V[1 * hi2]; with[n <= N + 1 by V[1 * hw2]; with[x_(n) <= x_(n + 1) by logic; with[x_(n) + x_(n + 1 + 1) = t * x_(n + 1) by logic; with[2 * x_(n + 1) <= t * x_(n + 1) by mono; V[1 * hw4, 1 * hw6 | 1 * hw5]]]]]]]
+
+subsection sec:shares Cycles of shares and the cosines of rational angles
+
+-- A whole cut into \(N\) equal parts \(x\), \(xN=1\), carries the shares \(x,2x,\dots,Nx\), and the step adds one part.
+-- Then \(k\) steps make a whole number \(j\) of turns only when \(k=Nj\): the step has the order \(N\) (power). A share
+-- is fixed by the step only when the part is itself a whole number of turns, which forces \(N=1\): a cycle of two or
+-- more shares has no fixed share (none).
+lemma lem:shares [the step on a cycle of shares]
+  (power): k, N, j in NN>=1, x in QQ>0, x * N = 1, k * x = j : k = N * j
+  fix (power) shares.power
+  neqfix (power) shares.power.nopart
+  neqfix (power) shares.power.noturn
+  (none): N, j in NN>=1, x in QQ>0, x * N = 1, x = j : N = 1
+  fix (none) shares.none
+  neqfix (none) shares.none.nopart
+  neqfix (none) shares.none.noturn
+  origin: ?{\text{elementary}}
+
+proof lem:shares
+  (power) V[k * h_1 | N * h_2]
+  (none) with[j * N = 1 by V[N * h_2, 1 * h_1]; with[N <= 1 by V[1 * hw1, N * hp(j)]; V, V]]
+
+-- The step of a string at a whole weight \(t\) takes \((x_j,x_{j+1})\) to \((x_{j+1},x_{j+2})\). If it has a finite order,
+-- it turns by an angle \(\theta\) that is a rational multiple of \(\pi\), with \(t=2\cos\theta\), and Niven's theorem
+-- reads the weight: at such an angle a positive rational \(\cos\theta\) is \(\frac12\) or \(1\). So the positive
+-- whole weights of the form \(2\cos\theta\) are \(t=1\) and \(t=2\), the crystallographic restriction on the
+-- positive weights. Only \(t=1\) gives a step of finite order, the order \(6\); at \(t=2\) the step is one Jordan
+-- block.
+cit fact:niven [Niven's theorem]
+  mathlib: niven (Mathlib.NumberTheory.Niven)
+
+-- The string at the weight \(t\) with \(x_1=1\) and \(x_2=t\) has the masses \(x_c=U_{c-1}(t/2)\), the Chebyshev
+-- polynomials of the second kind. Its walls at depth \(c\), the zeroes of \(U_{c-1}(t/2)\), are the weights
+-- \(t=2\cos(k\pi/c)\) for \(0<k<c\), and the positive weights among them are those with \(2k<c\).
+cit fact:chebyshevzeros [the zeroes of the Chebyshev polynomials of the second kind]
+  mathlib: Polynomial.Chebyshev.roots_U_real (Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.RootsExtrema)
+
+-- A wall \(2\cos(k\pi/c)\) of the string that is new at depth \(c\), with \(k/c\) in lowest terms, has the degree
+-- \(\varphi(2c)/2\): two at the depths \(4\), \(5\) and \(6\), three at \(7\) and \(9\), four at \(8\), \(10\), \(12\)
+-- and \(15\). It is the degree of the cosine of a rational angle: for \(m,n\) coprime with \(\varphi(n)>2\),
+-- \(\cos(2\pi m/n)\) is algebraic of degree \(\varphi(n)/2\) \cite[Section~6, Theorem]{Jahnel2010}. At depth \(9\) the
+-- new positive walls are \(2\cos20^\circ\), \(2\cos40^\circ\) and \(2\cos80^\circ\). The two smaller ones are zeroes of
+-- the tie \(x^3+1=3x\), and the largest is a zero of the tie \(x^3=3x+1\) \cite[Section~5, iii)]{Jahnel2010}. These are
+-- one cubic read in its two orientations, and it has no term of degree two, so the largest wall is the sum of the
+-- other two, \(2\cos20^\circ=2\cos40^\circ+2\cos80^\circ\). The cubic has no rational zero, so the walls are not
+-- masses, and this identity is not a block of positive masses.
+cit fact:cosdegree [the degree of the cosine of a rational angle]
+  doi: 10.48550/arXiv.1006.2938
+  stmt: Theorem of Section 6, p. 5, of arXiv:1006.2938v1
+  origin: ?{\text{cited: \cite[Section~6, Theorem]{Jahnel2010}, read in its arXiv version 1006.2938v1, with the cubic of depth}\ 9\ \text{from \cite[Section~5, iii)]{Jahnel2010}}}
+
+-- The string at the weight \(2+t\) from \(x_1=t\) and \(x_2=(2+t)t\) has the masses \(x_c=\sum_{k=1}^cA_{c,k}t^k\),
+-- with the counts \(A_{c,k}=\binom{c+k-1}{2k-1}\): these are the polynomials of \(Q_c+Q_{c+2}=(2+t)Q_{c+1}\),
+-- \(Q_1=t\), \(Q_2=(2+t)t\), with \(Q_c(t)=tU_{c-1}(t/2+1)\) and \(Q_{c+1}(t)=tB_c(t)\), \(B_c\) the Morgan--Voyce
+-- polynomials \cite[Section~1, (1.2)]{BenoumhaniHeimNeuhauser2022}. So \(x_c=td_c\), with \(d_c\) the determinant of
+-- \cref{lem:string} at the constant weight \(2+t\): above the self-dual wall every power of \(t\) has a positive count in
+-- it, and the count of \(t\) in \(x_c\) is \(\binom c1=c\), the progression of \cref{lem:weights}(wall).
+cit fact:morganvoyce [the Morgan--Voyce polynomials]
+  doi: 10.48550/arXiv.2204.11237
+  stmt: Section 1, (1.2) and the coefficients A(n, k), pp. 1--3, of arXiv:2204.11237v1
+  origin: ?{\text{cited: \cite[Section~1, (1.2)]{BenoumhaniHeimNeuhauser2022}, read in its arXiv version 2204.11237v1}}

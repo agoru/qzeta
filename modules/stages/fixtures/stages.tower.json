@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "the bases 2, 3, 5 and 10 at the depths 1 to 3: 1 + k T = B^(M+1)", "rows": [
+ {"B": 2, "k": 1, "M": 1},
+ {"B": 3, "k": 2, "M": 2},
+ {"B": 5, "k": 4, "M": 1},
+ {"B": 10, "k": 9, "M": 3}
+]}

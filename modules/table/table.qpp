@@ -1,0 +1,10 @@
+-- Q++ 0.2
+module table
+uses theory
+
+section sec:table The table
+
+  -- Each row is a family of programs of the theory at its parameters: a way in to polynomial members, the programs
+  -- of the family, polynomial in the parameters, and a certificate over the parameters.
+
+type Pair := pair

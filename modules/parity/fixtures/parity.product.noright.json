@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "F = P + Y", "note": "1 = 1 + 1 is no tie: 2 + 1 is not 2 + 1 + 1", "rows": [
+ {"E": 2, "O": 1, "X": 1, "F": 1, "P": 1, "Y": 1}
+]}

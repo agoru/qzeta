@@ -1,0 +1,7 @@
+{
+ "kind": "model",
+ "note": "a witness outside the type of its existential: y = 1/2 is no point of NN^1, so the row proves nothing and the points of the box decide the clause: it fails",
+ "rows": [
+  {"n": 1, "u": [1], "y": ["1/2"]}
+ ]
+}

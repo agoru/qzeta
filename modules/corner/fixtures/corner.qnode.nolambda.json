@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "Sa * Lm + Sa * t^(m * (D + sigma) + D) = Sa + t^(m * (D + sigma) + D) * (sum i in 1..(e + sigma) * (k1 * (m + 1) + 1), t^i)", "note": "the box of the cone of the far ray is not its sum", "rows": [
+ {"e": "2", "sigma": "1", "D": "1", "k1": "1", "m": "2", "t": "1/2", "SD": "1/2", "Ss": "1/2", "Se": "3/4", "Sa": "7/8", "Sv": "3/4", "SM": "31/32", "SS": "127/128", "SV": "131071/131072", "SR": "31/32", "Sad": "15/16", "U": "1/8", "F": "1/3", "Sg": "4097/4096", "Rh": "9/8", "Lm": "32841/16384", "Q": "161926520/516026527"}
+]}

@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "forall r in NN : r + 2 <= n0 + 1 => 2 * T(r + 1) <= T(r) + T(r + 2)", "rows": [{"n0": 3, "s0": 1, "T": [0, 0, 2, 2, 2]}], "bounds": {"r": 8, "u": 8}}

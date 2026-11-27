@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "the unit letter T = q: the marks 1 and q multiply to q, at e = 1 and e = 3; the marks 1 and -1 colliding on one fibre of a ruling of the split quadric at q = 5 and q = 7, where the fibre ties", "rows": [
+ {"e": "1", "T": "2", "U": "1/2", "u": "1", "w": "1/2"},
+ {"e": "3", "T": "4", "U": "1/4", "u": "1", "w": "1/4"},
+ {"e": "4", "T": "5", "U": "1/5", "u": "1", "w": "1/5"},
+ {"e": "6", "T": "7", "U": "1/7", "u": "1", "w": "1/7"}
+]}

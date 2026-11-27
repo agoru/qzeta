@@ -1,0 +1,99 @@
+-- Q++ 0.2
+paper refusedcontexts
+-- Cited rules over a context, and rules on tuples and lattice points, stated wrong: each row is well formed and false,
+-- and fails on the fixture of the right rule.
+
+section sec:refusedcontexts Cited rules over a context stated wrong
+
+type Pair := pair
+type Point(n) := (QQ>=0)^n
+type Loss(n) := Point(n) -> QQ>=0
+type Weight(n) := (QQ>0)^n
+type Region(n) := set(Point(n))
+type Grid(n) := NN^n
+type Forms(k, n) := ((QQ>=0)^n)^k
+type Sides(k, n) := ((QQ>0)^n)^k
+word sep(K in Loss(n), K' in Loss(n')) : Loss(n + n')
+define sep(K, K')(x, y) := K(x) + K'(y)
+context coef(K in Loss(n), B in Region(n), p in Pair)
+context coefw(K in Loss(n), omega in Weight(n), B in Region(n), p in Pair)
+relation (K #asymp K' #on B) := n in NN, K, K' in Loss(n), B in Region(n), (exists c, C in QQ>0 : forall w in B : c * K'(w) <= K(w) <= C * K'(w))
+relation (K #bdd B) := n in NN, K in Loss(n), B in Region(n), (exists c in QQ>0 : forall w in B : c <= K(w))
+relation (K #below K' #on B) := n in NN, K, K' in Loss(n), B in Region(n), (exists C in QQ>0 : forall w in B : K(w) <= C * K'(w))
+
+-- The two directions of Mono swapped (top on [1, 2], (1/2, 1) on [0, 2] for w^2).
+cit fact:monorev [Mono reversed]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B, C in Region(n), p, q in Pair, B subseteq C, coef(K, B, p), coef(K, C, q) : p <= q
+  fix core mono.core
+
+-- max for min.
+cit fact:maxunion [Min with max]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B, C in Region(n), p, q in Pair, coef(K, B, p), coef(K, C, q) : coef(K, B cup C, max(p, q))
+  fix core min.core
+
+-- min for the sum of the parts.
+cit fact:addmin [Add with min]
+  doi: 10.1017/CBO9780511800474
+  core: n, n' in NN, K in Loss(n), K' in Loss(n'), omega in Weight(n), omega' in Weight(n'), B in Region(n), B' in Region(n'), p, q in Pair, coefw(K, omega, B, p), coefw(K', omega', B', q) : coefw(sep(K, K'), join(omega, omega'), B times B', min(p, q))
+  fix core add.core
+
+-- The empty region with the least pair instead of top.
+cit fact:emptyzero [the empty region with the pair (0, 1)]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), omega in Weight(n) : coefw(K, omega, emptyset, (0, 1))
+  fix core empty.core
+
+-- Chart with the pair of the comparable loss doubled.
+cit fact:chartsum [Chart with the pair doubled]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K, K' in Loss(n), B in Region(n), p in Pair, K #asymp K' #on B, coef(K', B, p) : coef(K, B, p + p)
+  fix core chart.core
+
+-- Chart with the one-sided hypothesis K <= C K' instead of the two-sided one.
+cit fact:chartbelow [Chart with a one-sided hypothesis]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K, K' in Loss(n), B in Region(n), p in Pair, K #below K' #on B, coef(K', B, p) : coef(K, B, p)
+  fix core chart.core
+
+-- A loss bounded below with a literal pair instead of top.
+cit fact:bddhalf [a loss bounded below with the pair (1/2, 1)]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B in Region(n), K #bdd B : coef(K, B, (1/2, 1))
+  fix core bdd.core
+
+-- Below reversed: the larger loss given the smaller pair.
+cit fact:belowrev [Below reversed]
+  doi: 10.18409/jas.v8i1.47
+  core: n in NN, K, K' in Loss(n), B in Region(n), p, q in Pair, K #below K' #on B, coef(K, B, p), coef(K', B, q) : q <= p
+  fix core below.core
+
+-- The points of [0, 2]^2 under the diagonal miscounted: 7 for 6.
+lemma lem:latcountwrong [a wrong count of lattice points]
+  core: b in Grid(2), (forall i : b_(i) = 2) : (sum u <= b, iverson(sum i, u_(i) <= 2)) = 7
+  fix core latcount.model
+
+-- A cut box bounded by the box [0, b] without the + 1 of each side.
+lemma lem:latboxwrong [a cut box under the product of its sides]
+  core: n in NN, b in Grid(n) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= prod i, b_(i)
+  fix core latbox.model
+
+-- The injection of lem:latinj read backwards: the larger cut under the smaller one.
+lemma lem:latinjwrong [a count by an injection reversed]
+  core: n in NN, b, c in Grid(n), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists v in Grid(n) : (forall i : v_(i) <= c_(i)), (forall i : v_(i) = u_(i) + 1), sum i, v_(i) <= 2 + n) : (sum v <= c, iverson(sum i, v_(i) <= 2 + n)) <= sum u <= b, iverson(sum i, u_(i) <= 2)
+  fix core latinj.model
+
+-- The weak compositions of m into d + 1 parts counted as the points of the simplex sum_k t_(k) <= m.
+lemma lem:zsimplexwrong [the weak compositions in a box, with the binomial of the simplex]
+  core: r, m, d in NN, c in Grid(r), r = d + 1, (forall k : m <= c_(k)) : (sum t <= c, iverson(sum k, t_(k) = m)) = binom(m + d + 1, d + 1)
+  fix core zsimplex.model
+
+-- An existential over the points of NN^n under a box, read at a witness outside NN^n: half of an odd count.
+lemma lem:witnesswrong [a witness outside its type]
+  core: n in NN, u in Grid(n) : exists y in Grid(n) : (forall i : y_(i) <= u_(i)), forall j : 2 * y_(j) = u_(j)
+  fix core witness.model
+
+lemma lem:latpowdiffwrong [the bounds of a power difference reversed]
+  core: k, n in NN, q in Grid(n), a, b in QQ>0, l, W in Forms(k, n), s in Sides(k, n), (forall i : 1 <= q_(i)), (forall iota : forall i : a <= l_(iota)_(i)), (forall iota : forall i : l_(iota)_(i) + s_(iota)_(i) <= b), (forall iota : forall i : l_(iota)_(i)^q_(i) + q_(i) * W_(iota)_(i) = (l_(iota)_(i) + s_(iota)_(i))^q_(i)) : forall iota : forall i : a * W_(iota)_(i) <= a^q_(i) * s_(iota)_(i)
+  fix core latpowdiff.model

@@ -1,0 +1,91 @@
+-- Q++ 0.2
+paper refusedbidet
+-- Cases of the bideterminant that the generator refuses, each with its reason. bidetP(T, U) and bidetM(T, U) are the
+-- two halves of the determinant of a couple of square tables of ((QQ>=0)^n)^n, or of one table. Each half alone is
+-- #P-hard, so a tie, a comparison or a deficit reads each couple only through det(T - U), which is invariant under
+-- adding one mass to both halves of a couple. A half is never a value, a readout or the body of a definition.
+
+section sec:refused Refused halves of the bideterminant
+
+type Forms(k, n) := ((QQ>=0)^n)^k
+type Rows(k, n) := (NN^n)^k
+
+-- A half as a value: the witness of an existential.
+lemma lem:bvalue [a half as a value]
+  core: n in NN, T, U in Forms(n, n) : exists x in QQ>=0 : bidetP(T, U) = x
+
+proof lem:bvalue
+  "core" take[x := 0; V]
+
+-- The halves of two couples compared: the other side holds the other half of another couple.
+lemma lem:bcouples [the halves of two couples]
+  core: n in NN, T, U, R, S in Forms(n, n), (bidetP(T, U) = bidetM(R, S)) : bidetM(R, S) <= bidetP(T, U)
+
+proof lem:bcouples
+  "core" V[1 * h_1]
+
+-- The two halves on one side: their sum is the permanent of T + U, a half of no tie.
+lemma lem:bside [the two halves on one side]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0 : bidetP(T, U) + bidetM(T, U) + k >= k
+
+proof lem:bside
+  "core" V[0]
+
+-- A deficit of the halves of two couples.
+lemma lem:bdeficit [a deficit of two couples]
+  core: n in NN, T, U, R, S in Forms(n, n), k in QQ>=0 : max(bidetP(T, U) - bidetM(R, S), 0) + k >= k
+
+proof lem:bdeficit
+  "core" V[0]
+
+-- A half fixed at the determinant: bidetM(T, U) = det(T - U), a half as a value.
+lemma lem:bdouble [a half fixed at the determinant]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0, (bidetP(T, U) = 2 * bidetM(T, U)) : bidetM(T, U) <= bidetP(T, U)
+
+proof lem:bdouble
+  "core" V[1 * h_1]
+
+-- The halves of two couples in a product of one side: the relation reads more than det(T - U) and det(R - S).
+lemma lem:bproduct [a product of halves on each side]
+  core: n in NN, T, U, R, S in Forms(n, n), k in QQ>=0, (bidetP(T, U) * bidetP(R, S) = bidetM(T, U) * bidetM(R, S)) : k <= k + 1
+
+proof lem:bproduct
+  "core" V[0]
+
+-- A half counted twice: 2 * bidetP(T, U) against bidetM(T, U) once.
+lemma lem:bmult [a half counted twice]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0, (bidetP(T, U) + bidetP(T, U) = bidetM(T, U) + k) : k <= k + 1
+
+proof lem:bmult
+  "core" V[0]
+
+-- A half under min: the two sides hold the same halves, but min reads a half alone.
+lemma lem:bmin [a half under min]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0, (min(bidetP(T, U), k) + bidetM(T, U) = bidetM(T, U) + bidetP(T, U)) : k <= k + 1
+
+proof lem:bmin
+  "core" V[0]
+
+-- A half as a readout: the witness of take.
+lemma lem:btake [a half as the witness of take]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k) : exists x in QQ>=0 : x = k
+
+proof lem:btake
+  "core" take[x := bidetP(T, U); V]
+
+-- A table of natural numbers: the word reads tables of ((QQ>=0)^n)^n.
+lemma lem:bnat [a table of NN]
+  core: n in NN, T, U in Rows(n, n), k in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k) : bidetM(T, U) <= bidetP(T, U)
+
+proof lem:bnat
+  "core" V[1 * h_1, 1 * h_2]
+
+-- A table that is not square.
+lemma lem:bshape [a table that is not square]
+  core: k, n in NN, T, U in Forms(k, n), c in QQ>=0, (bidetP(T, U) = bidetM(T, U) + c) : bidetM(T, U) <= bidetP(T, U)
+
+proof lem:bshape
+  "core" V[1 * h_1, 1 * h_2]
+
+-- A half in the body of a definition.
+define bval(x) := bidetP(T, U) + x

@@ -1,0 +1,56 @@
+-- Q++ 0.2
+module costs
+uses theory
+
+subsection sec:costs The cost of a ray
+
+-- For \(p=\sum_kc_kz_k\) of total weight \(t=\sum_kc_k\) and a ray \(w\) with \(\langle w,z_k\rangle=M+e_k\), the cost is the prices times the excesses: \(\langle w,p\rangle=tM+\sum_kc_ke_k\) (gap). Prices of both signs are a balance of two positive combinations (balance). On the ray of the face every point is at the level (tie), and above it \(tM\le\langle w,p\rangle\) (weak): least action and largest dilation share one certificate. A box point and its dual add to \(\sum_kz_k\) (box).
+lemma lem:costs [the cost of a ray: the gap of the certificate of a least action]
+  core swap: n, r in NN>=1, z in Forms(r, n), c in Weight(r), w in Weight(n) : (sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))
+  core pairing: n, r in NN>=1, z in Forms(r, n), c in Weight(r), p in Point(n), w in Weight(n), (forall i : p_(i) = sum k, c_(k) * z_(k)_(i)) : (sum i, w_(i) * p_(i)) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))
+  core below: n, r in NN>=1, z in Forms(r, n), c in Weight(r), p in Point(n), w in Weight(n), (forall i : (sum k, c_(k) * z_(k)_(i)) <= p_(i)) : (sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))) <= sum i, w_(i) * p_(i)
+  core balance: n, r, s in NN>=1, z in Forms(r, n), y in Forms(s, n), c in Weight(r), g in Weight(s), p in Point(n), w in Weight(n), (forall i : p_(i) + (sum l, g_(l) * y_(l)_(i)) = sum k, c_(k) * z_(k)_(i)) : (sum i, w_(i) * p_(i)) + (sum l, g_(l) * (sum i, w_(i) * y_(l)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))
+  core level: r in NN>=1, c in Weight(r), e in Point(r), M in QQ>0 : (sum k, c_(k) * (M + e_(k))) = (sum k, c_(k)) * M + (sum k, c_(k) * e_(k))
+  (gap): n, r in NN>=1, z in Forms(r, n), c in Weight(r), e in Point(r), p in Point(n), w in Weight(n), M, t in QQ>0, (forall i : p_(i) = sum k, c_(k) * z_(k)_(i)), t = (sum k, c_(k)), (forall k : (sum i, w_(i) * z_(k)_(i)) = M + e_(k)) : (sum i, w_(i) * p_(i)) = t * M + (sum k, c_(k) * e_(k))
+  fix (gap) costs.gap
+  neqfix (gap) costs.gap.noweight
+  neqfix (gap) costs.gap.nolevel
+  neqfix (gap) costs.gap.nopoint
+  (balance): n, r, s in NN>=1, z in Forms(r, n), y in Forms(s, n), c in Weight(r), g in Weight(s), ez in Point(r), ey in Point(s), p in Point(n), w in Weight(n), M, t in QQ>0, (forall i : p_(i) + (sum l, g_(l) * y_(l)_(i)) = sum k, c_(k) * z_(k)_(i)), t + (sum l, g_(l)) = (sum k, c_(k)), (forall k : (sum i, w_(i) * z_(k)_(i)) = M + ez_(k)), (forall l : (sum i, w_(i) * y_(l)_(i)) = M + ey_(l)) : (sum i, w_(i) * p_(i)) + (sum l, g_(l) * ey_(l)) = t * M + (sum k, c_(k) * ez_(k))
+  fix (balance) costs.balance
+  neqfix (balance) costs.balance.noweight
+  neqfix (balance) costs.balance.nolevely
+  neqfix (balance) costs.balance.nolevelz
+  neqfix (balance) costs.balance.nopoint
+  (tie): n, r in NN>=1, z in Forms(r, n), c in Weight(r), p in Point(n), u in Weight(n), N, t in QQ>0, (forall i : p_(i) = sum k, c_(k) * z_(k)_(i)), t = (sum k, c_(k)), (forall k : (sum i, u_(i) * z_(k)_(i)) = N) : (sum i, u_(i) * p_(i)) = t * N
+  fix (tie) costs.tie
+  neqfix (tie) costs.tie.nolevel
+  neqfix (tie) costs.tie.nopoint
+  neqfix (tie) costs.tie.noweight
+  (weak): n, r in NN>=1, z in Forms(r, n), c in Weight(r), p in Point(n), w in Weight(n), M, t in QQ>0, (forall i : (sum k, c_(k) * z_(k)_(i)) <= p_(i)), t = (sum k, c_(k)), (forall k : M <= (sum i, w_(i) * z_(k)_(i))) : t * M <= (sum i, w_(i) * p_(i))
+  fix (weak) costs.weak
+  neqfix (weak) costs.weak.nolevel
+  neqfix (weak) costs.weak.nobelow
+  neqfix (weak) costs.weak.noweight
+  (box): n, r in NN>=1, z in Forms(r, n), f, g in Weight(r), p, q in Point(n), u in Weight(n), N in QQ>0, (forall i : p_(i) = sum k, f_(k) * z_(k)_(i)), (forall i : q_(i) = sum k, g_(k) * z_(k)_(i)), (forall k : f_(k) + g_(k) = 1), (forall k : (sum i, u_(i) * z_(k)_(i)) = N) : (forall i : p_(i) + q_(i) = sum k, z_(k)_(i)), (sum i, u_(i) * p_(i)) + (sum i, u_(i) * q_(i)) = r * N
+  fix (box) costs.box
+  neqfix (box) costs.box.nodual
+  neqfix (box) costs.box.nodualpoint
+  neqfix (box) costs.box.nolevel
+  neqfix (box) costs.box.nopoint
+  origin: ?{\text{form proved: the cost of a ray is the gap of the certificate of a least action; the weak duality of \cref{lem:count}}}
+
+-- Each row exchanges the two sums in \(\sum_iw_i\sum_kc_kz_{ki}\) (core pairing, core balance), so the cost of a
+-- combination is the combination of the costs of its points, each the level \(M\) plus its excess (core level); (weak)
+-- keeps the inequalities term by term (core below), and in (box) the weights \(f_k+g_k=1\) add up to the plain sum.
+proof lem:costs
+  "core swap" chain[(sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) = sum i, sum k, w_(i) * (c_(k) * z_(k)_(i)) by sum[sum[V]]; = sum k, sum i, w_(i) * (c_(k) * z_(k)_(i)) by sum[V]; = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by sum[sum[V]]]
+  "core pairing" with[(sum i, w_(i) * p_(i)) = sum i, w_(i) * (sum k, c_(k) * z_(k)_(i)) by sum[V[w_(i) * h_1(i)]]; with[(sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by lem:costs(core swap)[n := n, r := r, z := z, c := c, w := w]; V[1 * hw1, 1 * hw2]]]
+  "core below" with[(sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by lem:costs(core swap)[n := n, r := r, z := z, c := c, w := w]; with[(sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) <= sum i, w_(i) * p_(i) by sum[V[w_(i) * h_1(i)]]; V[1 * hw2 | 1 * hw1]]]
+  "core balance" with[(sum i, w_(i) * (sum l, g_(l) * y_(l)_(i))) = sum l, g_(l) * (sum i, w_(i) * y_(l)_(i)) by lem:costs(core swap)[n := n, r := s, z := y, c := g, w := w]; with[(sum i, w_(i) * (sum k, c_(k) * z_(k)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by lem:costs(core swap)[n := n, r := r, z := z, c := c, w := w]; with[(sum i, w_(i) * (p_(i) + (sum l, g_(l) * y_(l)_(i)))) = (sum i, w_(i) * p_(i)) + (sum i, w_(i) * (sum l, g_(l) * y_(l)_(i))) by sum[V]; with[(sum i, w_(i) * (p_(i) + (sum l, g_(l) * y_(l)_(i)))) = sum i, w_(i) * (sum k, c_(k) * z_(k)_(i)) by sum[V[w_(i) * h_1(i)]]; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4]]]]]
+  "core level" with[(sum k, c_(k) * M) = (sum k, c_(k)) * M by sum[V]; chain[(sum k, c_(k) * (M + e_(k))) = (sum k, c_(k) * M) + (sum k, c_(k) * e_(k)) by sum[V]; = (sum k, c_(k)) * M + (sum k, c_(k) * e_(k)) by V[1 * hw1]]]
+  (gap) with[(sum i, w_(i) * p_(i)) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by lem:costs(core pairing)[n := n, r := r, z := z, c := c, p := p, w := w]; with[(sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))) = sum k, c_(k) * (M + e_(k)) by sum[V[c_(k) * h_3(k)]]; with[(sum k, c_(k) * (M + e_(k))) = (sum k, c_(k)) * M + (sum k, c_(k) * e_(k)) by lem:costs(core level)[r := r, c := c, e := e, M := M]; V[1 * hw1, 1 * hw2, 1 * hw3, M * h_2]]]]
+  (balance) with[(sum i, w_(i) * p_(i)) + (sum l, g_(l) * (sum i, w_(i) * y_(l)_(i))) = sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by lem:costs(core balance)[n := n, r := r, s := s, z := z, y := y, c := c, g := g, p := p, w := w]; with[(sum l, g_(l) * (sum i, w_(i) * y_(l)_(i))) = sum l, g_(l) * (M + ey_(l)) by sum[V[g_(l) * h_4(l)]]; with[(sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))) = sum k, c_(k) * (M + ez_(k)) by sum[V[c_(k) * h_3(k)]]; with[(sum l, g_(l) * (M + ey_(l))) = (sum l, g_(l)) * M + (sum l, g_(l) * ey_(l)) by lem:costs(core level)[r := s, c := g, e := ey, M := M]; with[(sum k, c_(k) * (M + ez_(k))) = (sum k, c_(k)) * M + (sum k, c_(k) * ez_(k)) by lem:costs(core level)[r := r, c := c, e := ez, M := M]; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5, M * h_2]]]]]]
+  (tie) with[(sum i, u_(i) * p_(i)) = sum k, c_(k) * (sum i, u_(i) * z_(k)_(i)) by lem:costs(core pairing)[n := n, r := r, z := z, c := c, p := p, w := u]; with[(sum k, c_(k) * (sum i, u_(i) * z_(k)_(i))) = sum k, c_(k) * N by sum[V[c_(k) * h_3(k)]]; with[(sum k, c_(k) * N) = (sum k, c_(k)) * N by sum[V]; V[1 * hw1, 1 * hw2, 1 * hw3, N * h_2]]]]
+  (weak) with[(sum k, c_(k) * (sum i, w_(i) * z_(k)_(i))) <= sum i, w_(i) * p_(i) by lem:costs(core below)[n := n, r := r, z := z, c := c, p := p, w := w]; with[(sum k, c_(k) * M) <= sum k, c_(k) * (sum i, w_(i) * z_(k)_(i)) by sum[V[c_(k) * h_3(k)]]; with[(sum k, c_(k) * M) = (sum k, c_(k)) * M by sum[V]; V[1 * hw1, 1 * hw2, M * h_2 | 1 * hw3]]]]
+  (box) with[(sum i, u_(i) * p_(i)) = sum k, f_(k) * (sum i, u_(i) * z_(k)_(i)) by lem:costs(core pairing)[n := n, r := r, z := z, c := f, p := p, w := u]; with[(sum i, u_(i) * q_(i)) = sum k, g_(k) * (sum i, u_(i) * z_(k)_(i)) by lem:costs(core pairing)[n := n, r := r, z := z, c := g, p := q, w := u]; with[(sum k, f_(k) * (sum i, u_(i) * z_(k)_(i))) + (sum k, g_(k) * (sum i, u_(i) * z_(k)_(i))) = sum k, (f_(k) + g_(k)) * (sum i, u_(i) * z_(k)_(i)) by sum[V]; with[(sum k, (f_(k) + g_(k)) * (sum i, u_(i) * z_(k)_(i))) = sum k, N by sum[V[(f_(k) + g_(k)) * h_4(k), N * h_3(k)]]; with[(sum k, N) = r * N by sum; logic[with[(sum k, f_(k) * z_(k)_(i)) + (sum k, g_(k) * z_(k)_(i)) = sum k, (f_(k) + g_(k)) * z_(k)_(i) by sum[V]; with[(sum k, (f_(k) + g_(k)) * z_(k)_(i)) = sum k, z_(k)_(i) by sum[V[z_(k)_(i) * h_3(k)]]; V[1 * h_1(i), 1 * h_2(i), 1 * hw6, 1 * hw7]]]], V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5]]]]]]

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x * y = n * b + X * u * w", "note": "two splits sharing b whose product does not tie: the bottom fails and the top holds", "rows": [
+ {"n": "4", "x": "2", "y": "2", "b": "1", "u": "1", "w": "1", "X": "1", "P": "2", "Q": "2"}
+]}

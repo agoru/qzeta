@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "2 <= g * c", "note": "g c = 1: 4 is not below 3", "rows": [
+ {"g": 1, "c": 1, "kappa": 2, "rho": 1, "delta": 1}
+]}

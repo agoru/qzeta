@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "the unit law at t = b T^e, x = a T^N, k = b^N / a^e (the monomials of Lemma 3.6 and Theorem B), four points", "rows": [{"N": 1, "e": 1, "t": "6", "x": "1", "k": "6"}, {"N": 3, "e": 2, "t": "2/9", "x": "40/27", "k": "1/200"}, {"N": 2, "e": 5, "t": "5/2048", "x": "3/112", "k": "420175/972"}, {"N": 4, "e": 3, "t": "27/16", "x": "81/8", "k": "1/128"}]}

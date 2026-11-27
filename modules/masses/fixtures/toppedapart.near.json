@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "T + 1 <= y^2", "note": "too close to the level 1 for the total: T = 11, y = 2, L = 52 against R = 32", "rows": [{"m": 2, "c": "1", "e": "2", "T": "11", "y": "2", "L": "52", "R": "32"}]}

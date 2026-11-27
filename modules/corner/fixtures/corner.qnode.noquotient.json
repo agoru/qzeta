@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "Sa * Q + SD^3 * t^(e + sigma) * Sg / (SS * SV) = SD^2 * Rh / SR", "note": "the open cone of the vertex is not its tie", "rows": [
+ {"e": "1", "sigma": "1", "D": "1", "k1": "1", "m": "1", "t": "2", "SD": "2", "Ss": "2", "Se": "2", "Sa": "6", "Sv": "6", "SM": "30", "SS": "62", "SV": "1022", "SR": "14", "Sad": "14", "U": "4", "F": "2/3", "Sg": "1", "Rh": "1", "Lm": "161", "Q": "16594/15841"}
+]}

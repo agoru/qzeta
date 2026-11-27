@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall j in NN>=1 : j <= N => x_(j) * y_(j + 1) + y_(j + 1) * x_(j + 2) = y_(j) * x_(j + 1) + x_(j + 1) * y_(j + 2)", "note": "x = (1, 1, 1), y = (0, 1, 5): the cross product is 1 at the first cell and 4 at the second", "bounds": {"j": 9}, "rows": [
+ {"N": 1, "x[]": [1, 1, 1], "y[]": [0, 1, 5], "D": 1}
+]}

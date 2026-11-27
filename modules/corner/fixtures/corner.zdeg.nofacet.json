@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "g * Nw = k * m * (D + 1)", "note": "Nw = N_AD in place of the value of the facet ray", "rows": [
+ {"k": "2", "k1": "1", "m": "3", "m1": "2", "D": "5", "g": "2", "gD": "2", "Nw": "6", "Nad": "6"}
+]}

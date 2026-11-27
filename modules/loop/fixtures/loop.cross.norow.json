@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall j in NN>=1 : j <= N => y_(j) + y_(j + 2) = b_(j) * y_(j + 1)", "note": "y = (0, 1, 0) is no string of the weight two: the two cross products at the cell are 2 and 0", "bounds": {"j": 9}, "rows": [
+ {"N": 1, "b[]": [2], "x[]": [1, 1, 1], "y[]": [0, 1, 0]}
+]}

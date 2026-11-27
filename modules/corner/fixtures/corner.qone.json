@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "three letters 1 + u, 1 + v, 1 + w of the marks of a corner with one mark, and m + 1 their product", "rows": [
+ {"u": "1", "v": "1", "w": "1", "m": "7"},
+ {"u": "1/2", "v": "2", "w": "1/3", "m": "5"},
+ {"u": "3", "v": "1/4", "w": "2/5", "m": "6"},
+ {"u": "1/7", "v": "1/7", "w": "1/7", "m": "169/343"}
+]}

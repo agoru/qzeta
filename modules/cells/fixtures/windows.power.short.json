@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "1 <= Th", "note": "a shorter interval at the same left end", "rows": [{"eta": 1, "a": 1, "b": 1, "l": 1, "Th": "1/2"}, {"eta": 2, "a": "1/2", "b": "1/2", "l": 2, "Th": "1/4"}]}

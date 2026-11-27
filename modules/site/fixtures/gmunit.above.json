@@ -1,0 +1,27 @@
+{
+ "kind": "model",
+ "rename": {
+  "N": "d"
+ },
+ "set": {
+  "D": 4
+ },
+ "note": "the unit of a mixture of mass zero: d = N, D = 4",
+ "rows": [
+  {
+   "alpha": 1,
+   "d": 1,
+   "D": 4
+  },
+  {
+   "alpha": 3,
+   "d": "1/2",
+   "D": 4
+  },
+  {
+   "alpha": 2,
+   "d": 3,
+   "D": 4
+  }
+ ]
+}

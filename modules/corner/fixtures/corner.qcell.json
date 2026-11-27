@@ -1,0 +1,7 @@
+{"kind": "witness", "note": "one point of the box of the edge over Z in sum form: gaps at either end of the box and inside it, letters above, below and at t = 1", "rows": [
+ {"D": 1, "sigma": 1, "e": 0, "r": 0, "t": 2},
+ {"D": 2, "sigma": 1, "e": 1, "r": 0, "t": "1/2"},
+ {"D": 1, "sigma": 2, "e": 0, "r": 1, "t": 1},
+ {"D": 2, "sigma": 3, "e": 2, "r": 1, "t": "3/2"},
+ {"D": 3, "sigma": 1, "e": 1, "r": 2, "t": "2/3"}
+]}

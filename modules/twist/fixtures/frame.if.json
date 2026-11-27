@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "frames 8/17 and 3/4 at levels N that e divides, and 1/2 written as 2/4: the row needs no lowest terms", "rows": [
+ {"c": 8, "e": 17, "q": "8/17", "N": 17, "j": 1},
+ {"c": 8, "e": 17, "q": "8/17", "N": 340, "j": 20},
+ {"c": 3, "e": 4, "q": "3/4", "N": 12, "j": 3},
+ {"c": 2, "e": 4, "q": "1/2", "N": 8, "j": 2}
+]}

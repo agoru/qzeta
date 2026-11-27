@@ -1,0 +1,38 @@
+{
+ "kind": "model",
+ "note": "w^2 near 0 has the pair (1/2, 1), and so has its union with itself; w^4 has (1/4, 1)",
+ "rows": [
+  {
+   "n": 1,
+   "K": [
+    [
+     2
+    ]
+   ],
+   "B": [
+    [
+     [
+      0,
+      1
+     ]
+    ]
+   ]
+  },
+  {
+   "n": 1,
+   "K": [
+    [
+     4
+    ]
+   ],
+   "B": [
+    [
+     [
+      0,
+      1
+     ]
+    ]
+   ]
+  }
+ ]
+}

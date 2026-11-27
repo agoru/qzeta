@@ -1,0 +1,62 @@
+-- Q++ 0.2
+module theory
+
+section sec:theory Least action over the positive rationals
+
+-- This section gives the laws of the block and of least action. A chamber is given by its walls, each a row that
+-- separates two positive forms with their offsets and with a multiple of the level on each side: at the level
+-- \(L\) a point is feasible when it is on the side of the first form at every row, and prices on the rows tie the
+-- content to the forms and the value to the levels. In standard terms the rows are the constraints of a linear
+-- program, each written with two positive sides. A potential is a map from the points to \(\Q_{\ge0}\). When it
+-- has a chamber, its pair (\cref{def:pair}) is read on the chamber and on its certificate, whose value is the
+-- value of the prices with one more than the dimension of the least face. A statement takes the chamber and the
+-- certificate as data and checks them: every least that it uses is given by its certificate, a point and prices in
+-- one tie, and no statement takes a minimum over a list of cases, over the charts of a cover or over its subcovers.
+-- \Cref{sec:sizes} gives
+-- the law of the block on sizes, which holds up to one level. \Cref{sec:root} is the certificate of a least
+-- action, a point and prices in one tie, and the weighted count of lattice points, bounded from above and from
+-- below by the certificate. \Cref{sec:costs} reads the cost of a ray as the gap of that certificate: its balance
+-- when the prices sit on both sides, its tie on the ray of a face, its weak bound above the face, and the box of a
+-- point and its dual. \Cref{sec:spectrum} gives the cited facts that read the same cost as the spectrum, the zeta
+-- functions and the monodromy of a non-degenerate polynomial, and as the spectrum below \(1\) of an isolated singular
+-- point.
+
+  -- Points with nonnegative coordinates, natural exponents, and forms with one tuple of coefficients per constraint.
+type Point(n) := (QQ>=0)^n
+type Exponent(n) := NN^n
+type Forms(r, n) := ((QQ>=0)^n)^r
+type IntForms(r, n) := (NN^n)^r
+type Grid(n) := Exponent(n) -> QQ>=0
+type Weight(n) := (QQ>0)^n
+
+  -- A chamber is one object: its walls, each separating two positive forms \(P, N\) with their offsets, and its level
+  -- on each side of a wall. At level \(L\) a point is feasible when it is on the side of \(P\) at every wall; prices on
+  -- the walls tie the content to the forms, and the value to the levels.
+type Chamber(k, n) := {P, N in IntForms(k, n), op, om, epsP, epsM in Exponent(k)}
+relation (u #feasible Pr #level L) := k, n, L in NN, Pr in Chamber(k, n), u in Exponent(n), (forall iota : (sum i, Pr.P_(iota)_(i) * u_(i)) + Pr.op_(iota) + Pr.epsP_(iota) * L >= (sum i, Pr.N_(iota)_(i) * u_(i)) + Pr.om_(iota) + Pr.epsM_(iota) * L)
+relation (pi #prices Pr #content c #value lambda) := k, n in NN, Pr in Chamber(k, n), pi in Point(k), c in Exponent(n), lambda in QQ>=0, (forall i : c_(i) + (sum iota, pi_(iota) * Pr.N_(iota)_(i)) = sum iota, pi_(iota) * Pr.P_(iota)_(i)), lambda + (sum iota, pi_(iota) * Pr.epsP_(iota)) = sum iota, pi_(iota) * Pr.epsM_(iota)
+
+-- The order in summand form: \(u<v\) exactly when \(u+k=v\) for a positive \(k\), a count between two counts and a
+-- mass between two masses, so the strict order of two parts is the block \(\{u,k,v\}\).
+cit fact:gap [the gap of two counts or two masses]
+  mathlib: exists_pos_add_of_lt' (Mathlib.Algebra.Order.Monoid.Unbundled.ExistsOfLE)
+  core: u, v in NN>=1, u < v : exists k in NN>=1 : u + k = v
+  (mass): u, v in QQ>0, u < v : exists k in QQ>0 : u + k = v
+
+-- The slack of one part is at most the slack of the whole: when \(a_i\le b_i\) at every coordinate, then
+-- \(b_j+\sum_ia_i\le a_j+\sum_ib_i\) at every coordinate \(j\), with no subtraction (core). So two sums that tie, one
+-- bounded by the other term by term, tie term by term (tie).
+lemma lem:slack [the slack of one part, at most the slack of the whole]
+  core: n in NN>=1, a, b in Weight(n), (forall i : a_(i) <= b_(i)) : forall j : b_(j) + (sum i, a_(i)) <= a_(j) + (sum i, b_(i))
+  fix core slack
+  neqfix core slack.unbounded
+  (tie): n in NN>=1, a, b in Weight(n), (forall i : a_(i) <= b_(i)), (sum i, a_(i)) = (sum i, b_(i)) : forall j : a_(j) = b_(j)
+  fix (tie) slack.tie
+  neqfix (tie) slack.untied
+  origin: ?{\text{elementary, proved here over Q with no subtraction: the sum split at the coordinate into the coordinates below it, at it and above it; that sums bounded term by term which tie are equal term by term (tie) is standard (Mathlib: Finset.sum\_eq\_sum\_iff\_of\_le)}}
+
+-- Split each sum at \(j\) into the cells \(i<j\), \(i=j\), \(j<i\); the outer cells compare term by term and the
+-- middle one is the term at \(j\).
+proof lem:slack
+  "core" logic[with[(sum i, a_(i)) = (sum i : i < j, a_(i)) + (sum i : i = j, a_(i)) + (sum i : j < i, a_(i)) by trichotomy; with[(sum i, b_(i)) = (sum i : i < j, b_(i)) + (sum i : i = j, b_(i)) + (sum i : j < i, b_(i)) by trichotomy; with[(sum i : i = j, a_(i)) = a_(j) by sum; with[(sum i : i = j, b_(i)) = b_(j) by sum; with[(sum i : i < j, a_(i)) <= (sum i : i < j, b_(i)) by sum[V[1 * h_1(i)]]; with[(sum i : j < i, a_(i)) <= (sum i : j < i, b_(i)) by sum[V[1 * h_1(i)]]; V[1 * hw1, 1 * hw3, 1 * hw5, 1 * hw6 | 1 * hw2, 1 * hw4]]]]]]]]
+  (tie) with[forall l : b_(l) + (sum i, a_(i)) <= a_(l) + (sum i, b_(i)) by lem:slack(core)[n := n, a := a, b := b]; logic[V[1 * h_1(j)], V[1 * hw1(j) | 1 * h_2]]]

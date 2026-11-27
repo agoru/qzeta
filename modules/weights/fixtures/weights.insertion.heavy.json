@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "t <= 1", "note": "at the weight 3 the string 1, 1, 2, 5 goes on", "rows": [
+ {"t": 3, "x": 1, "y": 1, "z": 2, "w": 5}
+]}

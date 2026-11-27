@@ -1,0 +1,1 @@
+{"kind": "model", "note": "lem:surplus at alpha = d = 1 at its wall D = 2: the second point x = 1 / (2 D) of the edge from x = 0", "set": {"L": 1, "n": 2, "sigma": 0, "p[]": [1], "r[]": ["1/2"]}, "map": {"c[]": "list(D)", "xs": "1 / (2 * D)"}, "rows": [{"L": 1, "n": 2, "sigma": 0, "p[]": [1], "r[]": ["1/2"], "c[]": [2], "xs": "1/4"}]}

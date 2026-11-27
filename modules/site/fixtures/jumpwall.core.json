@@ -1,0 +1,33 @@
+{
+ "rename": {
+  "v_S": "s",
+  "v_varepsilon": "e"
+ },
+ "set": {
+  "F": 1
+ },
+ "kind": "witness",
+ "note": "a silent gap at a threshold of order zero is the gap row at F = 1, priced 1/2 at the point (1/2, 0); the other names count the silent gaps of its values",
+ "rows": [
+  {
+   "s": "1/2",
+   "e": 0,
+   "j": 1,
+   "z": 1,
+   "d": 1,
+   "n'": 0,
+   "k'": 1,
+   "F": 1
+  },
+  {
+   "s": "1/2",
+   "e": 0,
+   "j": 1,
+   "z": 0,
+   "d": 3,
+   "n'": 1,
+   "k'": 1,
+   "F": 1
+  }
+ ]
+}

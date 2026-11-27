@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "the factor of a cost is 0 modulo its numerator when the lengths are coprime", "rows": [{"a": 2, "n": 3, "u": 2, "v": 1, "x": "2", "F": "7/3"}, {"a": 3, "n": 2, "u": 1, "v": 1, "x": "1/2", "F": "6/7"}, {"a": 1, "n": 4, "u": 5, "v": 1, "x": "1", "F": "4"}, {"a": 5, "n": 3, "u": 2, "v": 3, "x": "3/2", "F": "76/211"}]}

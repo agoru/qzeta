@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "the digits of 3 and 5 in base 2 add up to one more than those of 15 (no carry), and those of 7 and 8 in base 10 to those of 56 (a carry), as do those of 5/2 and 26/3 in base 3 to those of 65/3; 1 times 1 in base 2", "rows": [
+ {"b": 2, "A": 2, "C": 3, "E": 4, "X": "3", "Y": "5"},
+ {"b": 10, "A": 1, "C": 1, "E": 2, "X": "7", "Y": "8"},
+ {"b": 3, "A": 1, "C": 2, "E": 3, "X": "5/2", "Y": "26/3"},
+ {"b": 2, "A": 1, "C": 1, "E": 1, "X": "1", "Y": "1"}
+]}

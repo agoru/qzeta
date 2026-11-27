@@ -1,0 +1,4 @@
+{"kind": "witness", "note": "T and TU above 1, U below: at e = 2 the letters 3 and 1/2, and at e = 1/2 the same letters", "rows": [
+ {"e": "2", "T": "3", "U": "1/2", "u": "1", "w": "1/4", "v": "1/4"},
+ {"e": "1/2", "T": "3", "U": "1/2", "u": "4", "w": "1", "v": "1"}
+]}

@@ -1,0 +1,12 @@
+{
+ "lean": "leanprover/lean4:v4.35.0",
+ "mathlib": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+ "decls": {
+  "lem_gram_depth": {"hash":"12d1e90a9c52a111","won":{"0":[0]},"deps":"979948430c45653b","cut":"3c0fe296e127e48d"},
+  "lem_gram_depthtie": {"hash":"e1eab489014da5d5","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0],"6":[0],"7":[0],"8":[0],"9":[0],"10":[0],"11":[0]},"deps":"fc42a34b968809a1","cut":"4975304fae6e3c1d"},
+  "lem_gram_form": {"hash":"82adca66698dc764","won":{"0":[0]},"deps":"a38b7d66b5201812","cut":"e93959292fcd5dbe"},
+  "lem_gram_formtie": {"hash":"2ceb416566c81c39","won":{"0":[0],"1":[0],"2":[0],"3":[0],"4":[0],"5":[0],"6":[0],"7":[0],"8":[0],"9":[0],"10":[0],"11":[0]},"deps":"761a92841834a0eb","cut":"1ef2fb3d81267793"},
+  "lem_gramcubic_above": {"hash":"22a074179cde1f28","won":{"0":[0]},"deps":"f9349cc28e70782e","cut":"3381546623fc50b3"},
+  "lem_gramcubic_below": {"hash":"62023b697202bcd0","won":{"0":[0],"2":[0],"4":[0]},"deps":"e9a0a71fed9864e0","cut":"a02a9685e001501e"}
+ }
+}

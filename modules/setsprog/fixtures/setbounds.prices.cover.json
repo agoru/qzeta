@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "forall i : beta_(i) + (sum u in 1..k, theta_(u) * A_(u)_(i)) >= p_(i)", "rows": [{"n": 2, "k": 1, "A": [[1, 1]], "S": [[0, 0, 1]], "B": [0], "d": [0], "theta": [0], "kappa": [1], "p": [1, 1], "beta": [0, 0]}]}

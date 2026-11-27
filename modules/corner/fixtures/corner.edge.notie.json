@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "alpha_R + g * alpha_V = g * (1 + b)", "note": "b is not the cost of the third spoke, so the costs do not tie", "rows": [
+ {"g": "2", "alpha_R": "1/2", "alpha_V": "37/44", "b": "1/30", "u": "7/44", "w": "533/660", "v": "467/660"}
+]}

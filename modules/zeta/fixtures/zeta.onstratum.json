@@ -1,0 +1,4 @@
+{"kind": "witness", "note": "a spoke that meets no other spoke: the strata off it form a cluster and the stratum on it is one count; first two disjoint spokes with the counts 3, 2, 5, then three spokes where the third meets neither of the two others", "rows": [
+ {"b": 5, "x": "1/3", "y": "2/3", "Z": 4, "E": 5, "O": 1},
+ {"b": 3, "x": "1/4", "y": "3/4", "Z": "9/2", "E": "41/3", "O": "55/6"}
+]}

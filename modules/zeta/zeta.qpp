@@ -1,0 +1,31 @@
+-- Q++ 0.2
+module zeta
+uses parity
+
+subsection sec:zeta The stratum sum of a cluster
+
+-- A cluster is glued along a spoke from its strata off the spoke and its strata on the spoke, each a cluster of fewer spokes or a single stratum. A cluster ties the even part \(E\) of its Euler characteristics \(\chi(E_J)\) at the \(y_i\) to the odd part \(O\) and its stratum sum \(Z=\sum_I\chi(E_I^\circ)x^I\) at the \(x_i=1-y_i\), \(E=O+Z\); a single stratum of count \(b\) enters as the self-dual block \(2b=b+b\): of the ties \(b+s=s+b\) that carry it, the one whose odd part \(s\) is its zeta \(b\). On the spoke its \(y\) and \(x\) form the block \(1=y+x\): the part on the spoke enters the zeta function through \(x\) and changes the parity of its \(\chi(E_J)\) through \(y\) (\cref{lem:parity}), and an Euler characteristic off the spoke adds its counts in the two parts. So two clusters glue to a cluster (glue), and a cluster and a single stratum on either side (onstratum, offstratum), or two single strata (spoke), glue by (glue) with the stratum entered as the self-dual block, which adds the same count to the two sides. Read on the strata of all the gluings, this is the identity \(\sum_I\chi(E_I^\circ)x^I=\sum_J(-1)^{|J|}\chi(E_J)y^J\) with \(x_i+y_i=1\), where \(E_J\) is the intersection of the cells of \(J\) and \(E_I^\circ\) the set of the points on the cells of \(I\) and on no other, each Euler characteristic entering by two positive halves.
+lemma lem:zeta [the stratum sum of a cluster glued along a spoke]
+  (glue): x, y, Z_1, E_1, O_1, Z_2, E_2, O_2 in QQ>0, 1 = y + x, E_1 = O_1 + Z_1, E_2 = O_2 + Z_2 : E_1 + E_2 + y * O_2 = (O_1 + O_2 + y * E_2) + (Z_1 + x * Z_2)
+  fix (glue) zeta.glue
+  neqfix (glue) zeta.glue.nounit
+  neqfix (glue) zeta.glue.nooff
+  neqfix (glue) zeta.glue.noon
+  (spoke): a, b, x, y in QQ>0, 1 = y + x : a + b = y * b + (a + x * b)
+  fix (spoke) zeta.spoke
+  neqfix (spoke) zeta.spoke.nounit
+  (onstratum): b, x, y, Z, E, O in QQ>0, 1 = y + x, E = O + Z : E + b = (O + y * b) + (Z + x * b)
+  fix (onstratum) zeta.onstratum
+  neqfix (onstratum) zeta.onstratum.nounit
+  neqfix (onstratum) zeta.onstratum.nooff
+  (offstratum): a, x, y, Z, E, O in QQ>0, 1 = y + x, E = O + Z : a + E + y * O = (O + y * E) + (a + x * Z)
+  fix (offstratum) zeta.offstratum
+  neqfix (offstratum) zeta.offstratum.nounit
+  neqfix (offstratum) zeta.offstratum.noon
+  origin: ?{\text{form proved over Q: the stratum sum of a cluster glued along a spoke from its strata off and on the spoke, by \cref{lem:parity}(product) at the block of the spoke; read on the strata of all the gluings it is the identity}\ \sum_I\chi(E_I^\circ)x^I=\sum_J(-1)^{|J|}\chi(E_J)y^J\ \text{with}\ x=1-y}
+
+proof lem:zeta
+  (glue) with[E_2 * 1 + O_2 * y = E_2 * y + O_2 * 1 + Z_2 * x by lem:parity(product)[E := E_2, O := O_2, X := Z_2, F := 1, P := y, Y := x]; V[1 * h_2, 1 * hw1]]
+  (spoke) with[2 * a + 2 * b + y * b = (a + b + y * (2 * b)) + (a + x * b) by lem:zeta(glue)[x := x, y := y, Z_1 := a, E_1 := 2 * a, O_1 := a, Z_2 := b, E_2 := 2 * b, O_2 := b; 2 * a = a + a by V[0]; 2 * b = b + b by V[0]]; V[1 * hw1]]
+  (onstratum) with[E + 2 * b + y * b = (O + b + y * (2 * b)) + (Z + x * b) by lem:zeta(glue)[x := x, y := y, Z_1 := Z, E_1 := E, O_1 := O, Z_2 := b, E_2 := 2 * b, O_2 := b; 2 * b = b + b by V[0]]; V[1 * hw1]]
+  (offstratum) with[2 * a + E + y * O = (a + O + y * E) + (a + x * Z) by lem:zeta(glue)[x := x, y := y, Z_1 := a, E_1 := 2 * a, O_1 := a, Z_2 := Z, E_2 := E, O_2 := O; 2 * a = a + a by V[0]]; V[1 * hw1]]

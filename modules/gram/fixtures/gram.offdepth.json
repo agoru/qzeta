@@ -1,0 +1,5 @@
+{"kind": "counterexample", "drop": "1 < k + s", "note": "at k = 1, s = 0 the row of depth has the price zero and the radius runs on an edge; at k = 1/2, s = 1/4 the value is below", "rows": [
+ {"k": 1, "s": 0, "e": 1},
+ {"k": 1, "s": 0, "e": 0},
+ {"k": "1/2", "s": "1/4", "e": 1}
+]}

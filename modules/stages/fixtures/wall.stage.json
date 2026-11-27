@@ -1,0 +1,7 @@
+{"kind": "witness", "note": "the floors 1, 14 of the wall x^2 = 2 at the wholes 1, 10 from 3/2 and 17/12; 5 at 4 from 10/7 with excess 2; 5 of x^2 = 3 at 3 from 7/4; 6 of x^2 = 5 at 3 from 9/4", "rows": [
+ {"D": 2, "N": 1, "P": 3, "Q": 2, "E": 1, "A": 1},
+ {"D": 2, "N": 10, "P": 17, "Q": 12, "E": 1, "A": 14},
+ {"D": 2, "N": 4, "P": 10, "Q": 7, "E": 2, "A": 5},
+ {"D": 3, "N": 3, "P": 7, "Q": 4, "E": 1, "A": 5},
+ {"D": 5, "N": 3, "P": 9, "Q": 4, "E": 1, "A": 6}
+]}

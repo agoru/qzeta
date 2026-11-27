@@ -1,0 +1,69 @@
+-- Q++ 0.2
+module front
+uses theory, cover
+
+-- \textbf{In which sense a least action.} The value of a potential over \(\Q\) is a pair \((\lambda,m)\) read in counts: at
+-- the level \(L\), the grid points of mesh \(2^{-N}\) where \(K\le2^{-L}\) number \(2^{nN}L^{m-1}2^{-\lfloor\lambda
+-- L\rfloor}\) up to constants. On a chart \(\lambda\) is the least content per unit of level, \(\min\{c\cdot
+-- u:\ Pu\ge1,\ u\ge0\}\), and \(m-1\) the dimension of the least face, the Laplace principle on a Newton polyhedron in
+-- counting form \cite[Theorem~0.4]{Varchenko1976}, \cite[Theorem~1.3]{Lin2017}, \cite[Lemma~5.4]{DenefHoornaert2001};
+-- the least is replaced by its certificate, a point and prices in one tie \cite[Theorems~5 and~7]{Tucker1956}, and
+-- checking it takes no minimum.
+
+subsection sec:front The pair on points and the volume of sublevel sets
+
+-- For a polynomial \(K\ne0\) with rational coefficients, nonnegative on the real box \(\bar B=\prod_i[0,\rho_i]\) and zero at some point of it, the volume \(V(\varepsilon)\) of \(\{\bw\in\bar B:\ K(\bw)\le\varepsilon\}\) is \(c\,\varepsilon^\lambda(\ln\frac1\varepsilon)^{m-1}(1+o(1))\) as \(\varepsilon\to0\), with \(c>0\), \(-\lambda\) the largest pole of \(z\mapsto\int_{\bar B}K^z\) and \(m\) its order, the real log canonical threshold of \(K\) on \(\bar B\) and its multiplicity \cite[Theorem~1.1 and the proof of Theorem~1.4]{Greenblatt2008}.
+cit fact:volume [the volume of a sublevel set]
+  doi: 10.48550/arXiv.0709.2496
+  stmt: Theorem 1.1 and the proof of Theorem 1.4, (1.22)--(1.24)
+  origin: ?{\text{cited: \cite[Theorem~1.1 and the proof of Theorem~1.4]{Greenblatt2008}, read in its arXiv version 0709.2496v2, pp.~2--6, summed over a partition of unity of the box}}
+
+-- The pair on points is the pair of the volume: for a potential \(K\) nonnegative on the box \(\bar B\) with
+-- \(|K(\bw)-K(\bw')|\le M\max_i|w_i-w'_i|\), once \(2^{-N-1}\le\rho_i\) for each \(i\), each grid point \(\bw\) of depth
+-- \(N\) carries a cube of side \(2^{-N-1}\) in \(\bar B\), with the side \([w_i,w_i+2^{-N-1}]\) where it fits and
+-- \([w_i-2^{-N-1},w_i]\) otherwise, the cubes of two grid points have no common interior point, and each point of
+-- \(\bar B\) lies in the cell of side \(2^{-N}\) of a grid point below it; so the volume \(V\) of the sublevel sets and
+-- the count \(c_N(L)\) satisfy \(V(2^{-L-1})\le2^{-nN}c_N(L)\le2^nV(2^{-L+1})\) once also \(M2^{-N}\le2^{-L-1}\). Without
+-- the bound on the side the right inequality fails: at \(n=1\), \(\rho_1=\frac14\), \(K=0\), \(N=0\) and \(L=1\) the count
+-- is \(1\) and \(2V(1)=\frac12\). For a polynomial with a zero in
+-- \(\bar B\) the pair is then the real log canonical threshold and its multiplicity, by \cref{fact:volume},
+-- and it gives the Laplace integral \cite[Theorem~1.3]{Greenblatt2008}.
+remark rem:volume [the counts and the volume]
+  origin: ?{\text{cited for a polynomial potential: \cref{fact:volume}, and \cite[Theorem~1.3]{Greenblatt2008} for the Laplace integral; the bracket of the volume by the cells of a dyadic grid is elementary}}
+
+subsection sec:spectrum Least action and the spectrum
+
+-- The level of a point \(p\ge\mathbf 1\), the least of \(\langle u,p\rangle/N(u)\) over the facet rays \(u\) (\cref{lem:costs}, weak and tie), is the degree of \(x^{p-\mathbf 1}dx\) in the Newton filtration; for \(f\) convenient and non-degenerate, these levels on \(\Omega_f=\Omega^n/df\wedge\Omega^{n-1}\) graded by that filtration are the spectral numbers of \(f\) at the origin \cite[Theorem, p.~411]{Saito1988}.
+cit fact:spectrum [the spectrum of a non-degenerate singularity]
+  doi: 10.1007/BF01457153
+  stmt: Theorem, p. 411
+  origin: ?{\text{cited: \cite[Theorem, p.~411]{Saito1988}; the Newton degree}\ \varphi(p)\ \text{is the level of \cref{lem:costs} at}\ p}
+
+-- Below \(1\) the spectrum keeps the form of the levels for every \(f\) with an isolated singular point at the origin,
+-- with a function in place of the point. On an embedded resolution of \(f=0\) near the origin, with components \(E_i\)
+-- of multiplicity \(N_i\) and log discrepancy \(\nu_i\), a function \(g\) adds its order \(\operatorname{ord}_{E_i}g\)
+-- to \(\nu_i\), and its level is the least \(t\) with \(\nu_i+\operatorname{ord}_{E_i}g=tN_i\) on some component. The
+-- multiplicity of a level \(t<1\) in the spectrum is the dimension of \(\mathcal J((1-\epsilon)tf)/\mathcal J(tf)\) for
+-- small \(\epsilon>0\), with \(\mathcal J\) the multiplier ideal at the origin: it counts the functions of level \(t\)
+-- \cite[\S1,~Theorem, Definition~2.2 and Proposition~2.9]{Budur2003}.
+cit fact:budur [the spectrum below one by multiplier ideals]
+  doi: 10.1007/s00208-003-0450-9
+  stmt: Theorem of \S1, Definition 2.2 and Proposition 2.9
+  origin: ?{\text{cited: \cite[\S1,~Theorem, Definition~2.2 and Proposition~2.9]{Budur2003}, numbered as in its arXiv version math/0210254; in the case of \cref{fact:spectrum}, for}\ g=x^{p-\mathbf 1}\text{, the level of}\ g\ \text{is the level of}\ p}
+
+-- At \(s=-t\) a ray \(w\) carries two masses, \(\nu(w)=\langle w,\mathbf 1\rangle\) and \(tN(w)\): they tie, or their cost sits on one side (\cref{lem:costs}, balance at \(\mathbf 1\)). For \(f\) non-degenerate, the local topological zeta function is a sum over the faces of the Newton polyhedron in which each ray of a dual cone enters through \(\nu(w)+N(w)s\), and its part \(Z^{(e)}\) over the divisors with \(e\mid N\), which does not depend on the resolution, is the same sum over the faces with \(e\mid N\) \cite[Definition~2.1.1, Theorems~2.1.2 and~5.3]{DenefLoeser1992}.
+cit fact:zetanewton [the topological zeta function of a non-degenerate polynomial]
+  doi: 10.1090/S0894-0347-1992-1151541-7
+  stmt: Definition 2.1.1, Theorems 2.1.2 and 5.3
+  origin: ?{\text{cited: \cite[Definition~2.1.1, Theorems~2.1.2 and~5.3]{DenefLoeser1992}; the factor of a ray is the block of \cref{lem:costs}(balance) at}\ \mathbf 1}
+
+-- A facet \(\tau\) at the level \(N(\tau)\) carries every order \(e\mid N(\tau)\), with the weight of its normalized volume \(\mathrm{NVol}(\tau)\). For \(f\) convenient and non-degenerate, the zeta function of the monodromy of \(f\) at the origin is the product of \((1-t^{N(\tau)})^{\mathrm{NVol}(\tau)}\) over the compact facets \(\tau\) of the restrictions of \(f\) to the coordinate subspaces of odd dimension, divided by the same product over those of even dimension \cite{Varchenko1976Zeta}.
+cit fact:zetamonodromy [the zeta function of monodromy of a non-degenerate polynomial]
+  doi: 10.1007/BF01390323
+  origin: ?{\text{cited: \cite{Varchenko1976Zeta}, in three variables \cite[Theorem~2]{LemahieuVanProeyen2011}}}
+
+-- A candidate pole is \(-t\), with \(t\) the level of \(\mathbf 1\) on a facet ray (\cref{lem:costs}, tie). For \(f\) non-degenerate with a simplicial Newton polyhedron, and for every non-degenerate \(f\) in three variables, every pole \(s_0\) of the local motivic, topological or \(p\)-adic zeta function of \(f\) gives an eigenvalue of the monodromy at a point of \(f=0\) near the origin, the root of unity of the class of \(s_0\) modulo the integers \cite[Theorems~1.1.1, 1.1.3, 1.1.4 and~7.2.1]{LarsonPayneStapledon2026}.
+cit fact:monodromynewton [the monodromy conjecture for non-degenerate polynomials]
+  doi: 10.1090/cams/68
+  stmt: Theorems 1.1.1, 1.1.3, 1.1.4 and 7.2.1
+  origin: ?{\text{cited: \cite[Theorems~1.1.1, 1.1.3, 1.1.4 and~7.2.1]{LarsonPayneStapledon2026}, numbered as in its arXiv version 2209.03553v3; in three variables also \cite{LemahieuVanProeyen2011} and \cite{BoriesVeys2016}}}

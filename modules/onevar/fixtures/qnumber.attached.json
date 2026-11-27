@@ -1,0 +1,4 @@
+{"kind": "witness", "note": "the masses [T], [U], [TU] of letters below 1, with e = 1 - t, T = t^A, U = t^C at (t, A, C) = (1/2, 2, 3), and at letters that are not powers of one letter", "rows": [
+ {"e": "1/2", "T": "1/4", "U": "1/8", "u": "3/2", "w": "7/4", "v": "31/16"},
+ {"e": "1/3", "T": "2/3", "U": "1/2", "u": "1", "w": "3/2", "v": "2"}
+]}

@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "t = N + tau", "note": "the side of the t-block dropped: with the t-block positive too the two sides are equal here (on the masses p_n + 1 = y^(2n))", "rows": [{"N": 2, "tau": 1, "sigma": 1, "a": 1, "b": 1, "s": 1, "t": 1, "zB": 1, "zT": 1, "y": "3", "pN": "80", "ptau": "8", "psig": "8", "pa": "8", "pb": "8", "ps": "8", "pt": "8"}]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall i : (sum j, P_(i)_(j) * y_(j)) = b_(i) * y_(i)", "note": "the closed chain of three cells at the weights two: y = (1, 0, 0) is no string, and the cross products of the meeting of the first two cells are 0 and 1", "rows": [
+ {"n": 3, "P": [[0, 1, 1], [1, 0, 1], [1, 1, 0]], "e[]": [1, 2, 3], "f[]": [2, 3, 1], "b": [2, 2, 2], "x": [1, 1, 1], "y": [1, 0, 0]}
+]}

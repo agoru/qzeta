@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall i : forall j : P_(i)_(j) = P_(j)_(i)", "note": "one cell meets two others that do not meet it back: the mean tie holds at the first cell, and the two cross products of its first meeting are 0 and 1", "rows": [
+ {"n": 3, "P": [[0, 1, 1], [0, 0, 0], [0, 0, 0]], "x": [1, 1, 1], "y": [1, 0, 2]}
+]}

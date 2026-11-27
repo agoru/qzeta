@@ -1,0 +1,4 @@
+{"kind": "model", "note": "the roots 7 and 32 of x^2 + 1 = 0 up to 25 in base 5 differ by 25; the roots 10 and 59 of x^2 = 2 up to 49 in base 7 by 49", "rows": [
+ {"B": 5, "k": 4, "z": 2, "u": 4, "v": 3, "M": 1, "a": 2, "b": 1, "t": 1, "r": 6, "c": 2, "d": 41, "P": 2, "Q": 1},
+ {"B": 7, "k": 6, "z": 3, "u": 6, "v": 5, "M": 1, "a": 1, "b": 3, "t": 1, "r": 8, "c": 2, "d": 71, "P": 2, "Q": 1}
+]}

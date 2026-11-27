@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "b * w = b2 * c + b1 * d", "note": "a ray off the tie of costs", "rows": [{"b": "2", "b1": "1", "b2": "1", "c": "1", "d": "3", "w": "3"}]}

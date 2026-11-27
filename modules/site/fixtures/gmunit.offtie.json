@@ -1,0 +1,18 @@
+{
+ "kind": "counterexample",
+ "drop": "d = 2 * alpha",
+ "rename": {
+  "N": "d"
+ },
+ "note": "off the tie the face is one vertex: at d = 3 alpha the pair is (alpha/2, 1), at d = alpha it is (alpha/4, 1)",
+ "rows": [
+  {
+   "alpha": 1,
+   "d": 3
+  },
+  {
+   "alpha": 1,
+   "d": 1
+  }
+ ]
+}

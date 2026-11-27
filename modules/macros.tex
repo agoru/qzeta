@@ -1,0 +1,113 @@
+% The environments and macros of the modules (modules/*/*.qpp), for every manifest that prints them: the frame of
+% a paper reads this file with \input{../../modules/macros} and keeps only its own title, abstract and bibliography
+% style. Add a macro here, never in a frame: .github/scripts/check_printed.py refuses a control sequence of the printed
+% modules that is neither defined here nor a command of LaTeX or of a package of the frame (its list STANDARD).
+% the kinds that number with the theorems count on an alias of their counter (aliascnt), so that a reference names its
+% own kind (Lemma, Remark, ...) and not the kind of the counter
+\usepackage{aliascnt}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}\newtheorem{lemma}[lemma]{Lemma}\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}\newtheorem{proposition}[proposition]{Proposition}\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}\newtheorem{corollary}[corollary]{Corollary}\aliascntresetthe{corollary}
+\newaliascnt{conjecture}{theorem}\newtheorem{conjecture}[conjecture]{Conjecture}\aliascntresetthe{conjecture}
+\newtheorem{fact}{Fact}
+\renewcommand{\thefact}{F\arabic{fact}}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}\newtheorem{definition}[definition]{Definition}\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}\newtheorem{example}[example]{Example}\aliascntresetthe{example}
+\newaliascnt{remark}{theorem}\newtheorem{remark}[remark]{Remark}\aliascntresetthe{remark}
+\newaliascnt{question}{theorem}\newtheorem{question}[question]{Question}\aliascntresetthe{question}
+\newtheorem{problem}{Problem}
+\newtheorem{construction}{Construction}
+\crefname{fact}{Fact}{Facts}
+\crefname{construction}{Construction}{Constructions}
+\crefname{problem}{Problem}{Problems}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{question}{Question}{Questions}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Fp}{\mathbb F_p}
+\newcommand{\Zp}{\Z_{(p)}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\bd}{{\boldsymbol{\delta}}}
+\newcommand{\bxi}{{\boldsymbol{\xi}}}
+\newcommand{\balpha}{{\boldsymbol{\alpha}}}
+\newcommand{\bbeta}{{\boldsymbol{\beta}}}
+\newcommand{\one}{\mathbf{1}}
+% the halves of the bideterminant: of a couple of tables (T, U) standing for T - U, and of one table (Gondran and
+% Minoux; Akian, Gaubert and Guterman, arXiv:0812.3496, Def. 4.14 and Remark 4.17)
+\newcommand{\bidetP}[2]{\lvert(#1,#2)\rvert^{+}}
+\newcommand{\bidetM}[2]{\lvert(#1,#2)\rvert^{-}}
+\newcommand{\bidetPa}[1]{\lvert #1\rvert^{+}}
+\newcommand{\bidetMa}[1]{\lvert #1\rvert^{-}}
+\newcommand{\Kb}{\bar K}
+\newcommand{\Leb}{\operatorname{Leb}}
+\DeclareMathOperator{\trop}{trop}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\rec}{rec}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\ac}{ac}
+\DeclareMathOperator{\val}{val}
+\newcommand{\cont}{\operatorname{cont}}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bl}{\mathbf{l}}
+\newcommand{\be}{{\boldsymbol{\varepsilon}}}
+\newcommand{\btau}{{\boldsymbol{\tau}}}
+\newcommand{\btheta}{{\boldsymbol{\theta}}}
+\newcommand{\bsigma}{{\boldsymbol{\sigma}}}
+\newcommand{\bpsi}{{\boldsymbol{\psi}}}
+\newcommand{\bchi}{{\boldsymbol{\chi}}}
+\newcommand{\vol}{\operatorname{vol}}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\dist}{dist}
+% the named expressions of the proof syntax (def:syntax): the generators, the patterns, the constants
+\newcommand{\gI}{\mathrm{I}}
+\newcommand{\gV}{\mathrm{V}}
+\newcommand{\gEq}{\mathrm{eq}}
+\newcommand{\gInd}{\mathrm{ind}}
+% a fixture of a statement item (qpp/README.md, Fixtures); the article prints nothing for it
+\newcommand{\FIX}[1]{}
+\newcommand{\Pt}[1]{\mathrm{P#1}}
+\newcommand{\Kt}{\mathrm{K}}
+\newcommand{\Rf}[1]{\textup{(R#1)}}
+\newcommand{\Mf}{\textup{(M)}}
+% the syntax of a proof: after one or two sentences of orientation, the display expr, one line
+% \eit{LABEL}{EXPRESSION} per item, condition or case, the expression in math mode; its commas and semicolons allow
+% a line break; a line breaks at a semicolon or at a space \ (as after the comma of a list), never inside f(x,y)
+{\catcode`\;=\active\gdef;{\mathchar"603B\penalty100\relax}}
+\expandafter\let\expandafter\pcctrlspace\csname\space\endcsname
+\def\pcbreakspace{\ifmmode\penalty200\fi\pcctrlspace}
+\newenvironment{expr}{\par\smallskip\raggedright\mathcode`\;="8000\let\ \pcbreakspace\relax}{\qedhere\par}
+\newcommand{\eit}[2]{\par\hangindent=1.5em\hangafter=1\noindent\textup{#1}\nobreak\quad\(#2\)}
+% the syntax of a statement, a definition or a construction: after one sentence of description, the
+% display stmt, one line \sit{LABEL}{CONTENT} per hypothesis, item, condition or object, the content in math mode
+% (numbered equations may stand between the lines)
+\newenvironment{stmt}{\par\smallskip\raggedright\mathcode`\;="8000\let\ \pcbreakspace\relax}{\par\smallskip}
+\newcommand{\sit}[2]{\par\hangindent=1.5em\hangafter=1\noindent\textup{\textsc{#1}}\nobreak\quad\(#2\)}
+% a row of a statement that is prose (the origin of a result), in text mode, so that it breaks across lines
+\newcommand{\tit}[2]{\par\hangindent=1.5em\hangafter=1\noindent\textup{\textsc{#1}}\nobreak\quad #2}
+% a proof transcoded from its words: one paragraph \pline{LABEL}{SENTENCES} per line of the proof, in text mode
+\newenvironment{plines}{\par\smallskip\raggedright}{\qedhere\par}
+\newcommand{\pline}[2]{\par\hangindent=1.5em\hangafter=1\noindent\textup{#1}\nobreak\quad #2}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "Q * T = e + 1", "note": "a letter Q = 2 that is not q/T", "rows": [
+ {"e": "1", "T": "3/2", "U": "2/3", "Q": "2", "u": "1/2", "w": "1/3", "v": "1"}
+]}

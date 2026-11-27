@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "E_(1) = O_(1)", "note": "a start 2 against 1 is no wall: 2 is not 1", "bounds": {"j": 6}, "rows": [
+ {"N": 1, "w[]": [1], "E[]": [2], "O[]": [1]}
+]}

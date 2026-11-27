@@ -1,0 +1,2418 @@
+-- Q++ 0.2
+paper vocabulary
+-- The vocabulary rows over Mathlib, each used once: words, defines, relations, aliases, types, contexts and
+-- typed words, with the proof words that read them.
+
+section sec:vocabulary The vocabulary rows
+
+-- The words of base, as base has them.
+cit fact:arch [the archimedean property]
+  mathlib: exists_nat_gt (Mathlib.Algebra.Order.Archimedean.Basic)
+  core: x in QQ : exists n in NN : n > x
+
+word mass := QQ>0
+word integer := ZZ
+define pos(x) := max(x, 0)
+alias Arch := fact:arch
+
+word weightset := QQ>=0
+define half(x) := x / 2
+define mean(x, y) := (x + y) / 2
+relation (q #zsite t) := q in QQ>0, q <= t, t <= 2 * q
+alias Zarch := fact:arch
+
+-- A word for a set.
+lemma lem:zword [a word for a set]
+  given: x in mass, y in weightset, x <= y
+  (1): x * x <= x * y
+
+proof lem:zword
+  (1) V[x * h_2]
+
+-- A certificate that names the fact of a step: hwK is the fact of the K-th step with of the proof line.
+lemma lem:zwithcert [the fact of a step in a certificate]
+  given: x, y in QQ>0, x <= y
+  (1): 2 * x <= x + y
+
+proof lem:zwithcert
+  (1) with[x + x <= x + y by V[1 * h_1]; V[1 * hw1]]
+
+-- A certificate with masses as multipliers: each multiplier, and each monomial of the rest, positive by the name of
+-- its sign.
+lemma lem:zmasscert [masses as multipliers in a certificate]
+  given: x, y, a, b in QQ>0, k in NN>=2, w_(1..k) in QQ>0, a <= b, x <= y
+  (1): x * a + x * x <= x * b + x * y + 2 * x * y
+  (2): x < y + x * y
+  (3): x * a < x * b + k * w_(k) * y
+  (4): 2 * a + x / 2 <= 2 * b + y / 2
+
+proof lem:zmasscert
+  (1) V[x * h_1, x * h_2]
+  (2) V[1 * h_2]
+  (3) V[x * h_1]
+  (4) V[2 * h_1, 1/2 * h_2]
+
+-- Equations in a certificate: a relation between counts, read in QQ by its cast; an equation as the goal; a goal true
+-- by ring, from a datum times 0; an equation read from its other side, after the bar of V[written | turned].
+lemma lem:zeqcert [equations in a certificate]
+  given: c, ca, cb in NN, x, y, z in QQ>0, c = ca + cb, x <= c, y = x + z
+  (1): x <= ca + cb
+  (2): y + x = 2 * x + z
+  (3): 0 * x * y <= 0
+  (4): x + z <= y
+
+proof lem:zeqcert
+  (1) V[1 * h_1, 1 * h_2]
+  (2) V[1 * h_3]
+  (3) V[0 * h_2]
+  (4) V[| 1 * h_3]
+
+-- The data of V also name the clause of a case split and its negation (hcK, hnK), a universal fact at an index in
+-- scope (h_1(i)), or no fact at all (V[0]: the rest, a sum of positive monomials, closes the goal).
+lemma lem:zcasecert [case facts, instances and no fact in a certificate]
+  index: n in NN, a in Point(n), x in QQ>0, (forall i : a_(i) <= x) : forall i : a_(i) <= 2 * x
+  rest: x in QQ>0 : x * x <= x * x + x
+  order: x, y in QQ>=0, (y < x => x <= y + 1) : x <= y + 1
+
+proof lem:zcasecert
+  "index" V[1 * h_1(i)]
+  "rest" V[0]
+  "order" cases[x <= y; V[1 * hc1]; logic[V]]
+
+-- A define, as a tie and under cases.
+lemma lem:zdef [a define]
+  given: x, y in QQ>0, x <= y
+  (1): half(x) <= half(y)
+  (2): pos(x - y) = 0
+  (3): pos(y - x) + x = y
+  (4): max(x, y, 2 * y) = 2 * y
+  (5): mean(x, y) <= y
+  (6): min(x, y, 2 * y) = x
+  (7): max(y - x, 0) + x = y
+  (8): max(x - y, 0) = 0
+
+proof lem:zdef
+  (1) V
+  (2) cases V
+  (3) cases V
+  (4) cases V
+  (5) V
+  (6) cases V
+  (7) cases V
+  (8) cases V
+
+-- A relation as one hypothesis, its rows read by projection.
+lemma lem:zrel [a relation]
+  given: q, t in QQ, (q #zsite t)
+  (1): t <= 2 * q
+  (2): q * q <= q * t
+  (3): 3 * q <= 4 * t
+
+proof lem:zrel
+  (1) V
+  (2) V
+  (3) V
+
+-- The same with the sign in the binder.
+lemma lem:zreldivpos [a division under a relation, the sign in the binder]
+  given: q, t in QQ>0, (q #zsite t)
+  (1): t / q <= 2
+
+proof lem:zreldivpos
+  (1) div[q]
+
+-- A monotone comparison.
+lemma lem:zmono [mono]
+  given: a, b, c in QQ>0, a <= b
+  (1): a * c + a^2 <= b * c + b^2
+
+proof lem:zmono
+  (1) mono
+
+-- A power of one base on both sides: a base at least 1 keeps the order of the exponents, a base at most 1 reverses
+-- it.
+lemma lem:zmonopow [mono on powers of one base]
+  given: y, z in QQ>=0, eta in NN, 1 <= y, z <= 1
+  (1): y^2 <= y^(3 + eta)
+  (2): z^(3 + eta) <= z^2
+
+proof lem:zmonopow
+  (1) mono
+  (2) mono
+
+-- An equation of rationals from its two bounds (le_antisymm).
+lemma lem:zantisymm [an equation from two bounds]
+  given: a, b in QQ>=0, a <= b, b <= a
+  (1): a = b
+
+proof lem:zantisymm
+  (1) V, V
+
+-- A count with its bound on the binder (k in NN>=3): linarith reads the bound cast to the rationals, as it reads a
+-- hypothesis 3 <= k of the given.
+lemma lem:natbound [a bound on the binder]
+  given: k in NN>=3, x in QQ>0
+  (1): 3 * x <= k * x
+
+proof lem:natbound
+  (1) mono
+
+-- Core items: each declares its names and is read without the given (none of them has x <= 1); `core` and
+-- `core NAME` are read by the checks only, `core 1` is printed.
+lemma lem:coreitems [core items]
+  given: x in QQ>0, x <= 1
+  (1): x * x <= x
+  core: x, y in QQ>=0, x <= y : x * x <= x * y
+  core tie: x, y in QQ>=0 : x * y = y * x
+  core 1: x in QQ>=0 : x <= x + x
+
+proof lem:coreitems
+  (1) V
+  "core" mono
+  "core tie" I
+  "core 1" V
+
+-- Sums by cited rules of Mathlib: a family given by a formula in its index (`b_(i) := c`), a side goal of the cited
+-- rule proved by its word (`HYP by W`), and sum[W] with the hypotheses over the range at the index.
+cit fact:termwise [a sum bounded term by term]
+  mathlib: Finset.sum_le_sum (Mathlib.Algebra.Order.BigOperators.Group.Finset)
+  core: N in NN, a_(1..N), b_(1..N) in QQ>=0, (forall i in NN>=1 : i <= N => a_(i) <= b_(i)) : (sum i in 1..N, a_(i)) <= (sum i in 1..N, b_(i))
+
+cit fact:constsum [a sum of equal terms]
+  mathlib: Finset.sum_const (Mathlib.Algebra.BigOperators.Group.Finset.Basic)
+  core: N in NN, c in QQ>=0 : (sum i in 1..N, c) = N * c
+
+cit fact:pigeon [the pigeonhole principle for sums]
+  mathlib: Finset.exists_lt_of_sum_lt (Mathlib.Algebra.Order.BigOperators.Group.Finset)
+  core: N in NN, f_(1..N), g_(1..N) in QQ>=0, (sum i in 1..N, f_(i)) < (sum i in 1..N, g_(i)) : exists i in NN>=1 : i <= N, f_(i) < g_(i)
+
+-- A cited rule that takes the premise of the statement as its argument, the guards of its names left out: the rule
+-- applied to the premise by its name.
+cit fact:zgap [a gap between two counts]
+  mathlib: lt_iff_exists_add.mp (Mathlib.Algebra.Order.Monoid.Canonical.Defs)
+  core: u, v in NN>=1, u < v : exists k in NN>=1 : v = u + k
+
+lemma lem:sumupper [terms at most c: the sum at most N c, term by term]
+  core: N in NN, a_(1..N), c in QQ>=0, (forall i in NN>=1 : i <= N => a_(i) <= c) : (sum i in 1..N, a_(i)) <= (sum i in 1..N, c) = N * c
+
+proof lem:sumupper
+  "core" sum[V], fact:constsum
+
+lemma lem:sumupperref [the same by the cited rule at the constant family]
+  core: N in NN, a_(1..N), c in QQ>=0, (forall i in NN>=1 : i <= N => a_(i) <= c) : (sum i in 1..N, a_(i)) <= (sum i in 1..N, c) = N * c
+
+proof lem:sumupperref
+  "core" fact:termwise[b_(i) := c], fact:constsum
+
+-- A side goal of the cited rule quantified over the index range, proved by V with its certificate: at each index j of
+-- the range it is the hypothesis h_3 of the row at j, whose premises are those of the side goal.
+lemma lem:sumupperside [the same with the universal side goal written and proved by V]
+  core: N in NN, a_(1..N), c in QQ>=0, (forall i in NN>=1 : i <= N => a_(i) <= c) : (sum i in 1..N, a_(i)) <= (sum i in 1..N, c)
+
+proof lem:sumupperside
+  "core" fact:termwise[b_(i) := c; (forall j in NN>=1 : j <= N => a_(j) <= c) by V[1 * h_3(j)]]
+
+lemma lem:sumscale [a sum above N G has a term above G]
+  core: N in NN, g_(1..N), G in QQ>=0, (sum i in 1..N, g_(i)) > N * G : exists i in NN>=1 : i <= N, G < g_(i)
+
+proof lem:sumscale
+  "core" fact:pigeon[f_(i) := G; (sum i in 1..N, G) < (sum i in 1..N, g_(i)) by fact:constsum[c := G]]
+
+-- The same with the data a member of a family, the side goal in the names of the row (a name free in the data is
+-- never captured by a name the rule binds), and printed.
+lemma lem:sumscalefam [a sum above N G_i has a term above G_i]
+  given: N in NN, i in NN>=1, g_(1..N), G_(1..N) in QQ>=0, (sum j in 1..N, g_(j)) > N * G_(i)
+  (1): exists j in NN>=1 : j <= N, G_(i) < g_(j)
+
+proof lem:sumscalefam
+  (1) fact:pigeon[f_(j) := G_(i); (sum j in 1..N, G_(i)) < (sum j in 1..N, g_(j)) by fact:constsum[c := G_(i)]]
+
+-- The word pascal: the sums of binomials against the weight 1/2^j are at most 2^(k + 1), by induction on k for every
+-- J (Pascal's rule shifted, S_(k+1)(J+1) = S_k(J+1) + S_(k+1)(J)/2, and the absorption of the last term, the terms
+-- being at least 0); and the sums of the powers (j + 1)^k against the same weight, from (j + 1)^k <= k! binom(j + k, k).
+lemma lem:zpascal [sums of binomials against a geometric weight]
+  given: k, J in NN
+  (1): (sum j in 0..J, binom(j + k, k) / 2^j) <= 2^(k + 1)
+  (2): (sum j in 0..J, (j + 1)^k / 2^j) <= (prod i in 1..k, i) * 2^(k + 1)
+
+proof lem:zpascal
+  (1) pascal
+  (2) pascal
+
+-- An alias of this module and one of base.
+lemma lem:zarch [an alias]
+  given: x in QQ
+  (1): exists n in NN : n > x
+  (2): exists n in NN : n > x
+
+proof lem:zarch
+  (1) Zarch
+  (2) Arch
+
+-- Cases with data.
+lemma lem:zcases [cases with data]
+  given: x, y in QQ>=0
+  (1): x * y <= max(x, y) * max(x, y)
+
+proof lem:zcases
+  (1) cases V[h_1 * h_2]
+
+-- A strict division.
+lemma lem:zstrict [a strict division]
+  given: a, b, c in QQ>0, c * a > c * b
+  (1): a > b
+
+proof lem:zstrict
+  (1) div[c]
+
+-- A double minus.
+lemma lem:zneg [a double minus]
+  given: t in QQ
+  (1): -(-t) = t
+
+proof lem:zneg
+  (1) I
+
+define ordz(m) := m - 1
+relation (m #zcount t) := m in NN>=1, t in QQ>=0, m <= t + 1
+
+-- A relation with a count, and a define applied to a count.
+lemma lem:znat [a relation with a count]
+  given: m in NN, t in QQ, (m #zcount t)
+  (1): ordz(m) <= t
+  (2): m >= 1
+  (3): ordz(m) >= 0
+
+proof lem:znat
+  (1) V
+  (2) V
+  (3) V
+
+-- The relation applied to the count m + 1: the cast of the sum in its row is pushed.
+lemma lem:znat2 [a relation between two terms]
+  given: a, b in QQ>0, m in NN>=1, ((m + 1) #zcount (a + b))
+  (1): m <= a + b
+
+proof lem:znat2
+  (1) V
+
+lemma lem:zreldiv [a division under a relation]
+  given: q, t in QQ, (q #zsite t)
+  (1): t / q <= 2
+
+proof lem:zreldiv
+  (1) div[q]
+
+-- A certificate that names a row of a relation (h_1_2: the second row of h_1).
+lemma lem:zdata [a certificate that names a row of the relation]
+  given: q, t in QQ, (q #zsite t)
+  (1): q * q <= q * t
+
+proof lem:zdata
+  (1) V[q * h_1_2]
+
+subsection sec:types Types, contexts and typed words
+
+-- Types and words are built from the primitives of Q++ only: tuples X^n, functions (X -> Y), sets set(X), pair;
+-- join(x, y) concatenates two tuples and B times C is the product of two sets of tuples. No row names Lean or
+-- Mathlib.
+type Pair := pair
+type Point(n) := (QQ>=0)^n
+type Loss(n) := Point(n) -> QQ>=0
+type Weight(n) := (QQ>0)^n
+type Region(n) := set(Point(n))
+type Map(n) := Point(n) -> Point(n)
+type Grid(n) := NN^n
+type Rows(k, n) := (NN^n)^k
+type Forms(k, n) := ((QQ>=0)^n)^k
+type Sides(k, n) := ((QQ>0)^n)^k
+type Line := NN -> QQ>=0
+word sep(K in Loss(n), K' in Loss(n')) : Loss(n + n')
+define sep(K, K')(x, y) := K(x) + K'(y)
+word shift(K in Loss(n)) : Loss(n)
+define shift(K)(w) := 2 * K(w) + 1
+-- two halves of one size: the equation is proved by the lemmas of Fin.append only (simp only)
+word twice(K in Loss(n), K' in Loss(n)) : Loss(n + n)
+define twice(K, K')(x, y) := K(x) * K'(y)
+-- A word with an argument in NN (a depth N, which its result type may name), whose values are tuples: defined at a
+-- coordinate, halve(n, N)(u)_(j); its body takes powers, sums over a range and brackets of natural numbers.
+type Halves(n) := Grid(n) -> Point(n)
+type Dyads(n) := Grid(n) -> Grid(n)
+type Values(n) := Grid(n) -> QQ>=0
+type Depth(n) := {F in Halves(n), N in NN}
+word halve(n, N in NN) : Halves(n)
+define halve(n, N)(u)_(j) := u_(j) / 2^N
+word dyad(B in Grid(n), N in NN) : Dyads(n)
+define dyad(B, N)(u)_(j) := sum k in 1..B_(j), iverson(u_(j) * 2^k <= 2^N)
+word value(K in Loss(n), N in NN) : Values(n)
+define value(K, N)(u) := K(halve(n, N)(u))
+relation (G #zfloor Q #zbox b) := n in NN, G in Values(n), Q in QQ>0, b in Grid(n), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)) => Q <= G(u))
+context coef(K in Loss(n), B in Region(n), p in Pair)
+context coefw(K in Loss(n), omega in Weight(n), B in Region(n), p in Pair)
+relation (K #asymp K' #on B) := n in NN, K, K' in Loss(n), B in Region(n), (exists c, C in QQ>0 : forall w in B : c * K'(w) <= K(w) <= C * K'(w))
+relation (K #bdd B) := n in NN, K in Loss(n), B in Region(n), (exists c in QQ>0 : forall w in B : c <= K(w))
+relation (K #below K' #on B) := n in NN, K, K' in Loss(n), B in Region(n), (exists C in QQ>0 : forall w in B : K(w) <= C * K'(w))
+-- A relation on a tuple of tuples, read entry by entry (one subscript in print, f_{\iota,i}), and a relation with another
+-- one as a clause.
+relation (f #zcap t) := k, n in NN, f in Rows(k, n), t in NN, (forall iota : forall i : f_(iota)_(i) <= t)
+relation (f #zcaps g #zby t) := k, n, t in NN, f, g in Rows(k, n), (f #zcap t), (forall j : forall i : g_(j)_(i) <= f_(j)_(i))
+-- A bundle: a program as one object, its parts named Pr.P, ...; a relation on it, a clause wherever it is used,
+-- inside a bracket too.
+type Prog(k, n) := {P, N in Rows(k, n), op, om, eps in Grid(k)}
+relation (s #zfeasible Pr #zlevel L) := k, n, L in NN, Pr in Prog(k, n), s in Grid(n), (forall iota : (sum i, Pr.P_(iota)_(i) * s_(i)) + Pr.op_(iota) >= (sum i, Pr.N_(iota)_(i) * s_(i)) + Pr.om_(iota) + Pr.eps_(iota) * L)
+-- A bundle with a part in NN, read part by part: the tuple by its coordinates, the count as a natural number.
+type ZCert(k) := {y in Grid(k), d in NN}
+
+cit fact:mono [Mono: a larger region has a smaller pair]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B, C in Region(n), p, q in Pair, B subseteq C, coef(K, B, p), coef(K, C, q) : q <= p
+  fix core mono.core
+  neqfix core mono.neq
+
+cit fact:min [Min: on a union the pair is the least]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B, C in Region(n), p, q in Pair, coef(K, B, p), coef(K, C, q) : coef(K, B cup C, min(p, q))
+  fix core min.core
+
+lemma lem:unique [the pair is unique]
+  core: n in NN, K in Loss(n), B in Region(n), p, q in Pair, coef(K, B, p), coef(K, B, q) : p <= q
+
+proof lem:unique
+  "core" fact:mono[C := B, p := q, q := p]
+
+lemma lem:uniq2 [uses lem:unique]
+  core: n in NN, K in Loss(n), B in Region(n), p, q in Pair, coef(K, B, p), coef(K, B, q) : q <= p
+
+proof lem:uniq2
+  "core" lem:unique[p := q, q := p]
+
+-- An equation from two words, the first for <= and the second for >= (le_antisymm): by two lemmas, and by the
+-- cited rule twice.
+lemma lem:uniqeq [the pair is unique, as an equation]
+  core: n in NN, K in Loss(n), B in Region(n), p, q in Pair, coef(K, B, p), coef(K, B, q) : p = q
+
+proof lem:uniqeq
+  "core" lem:unique, lem:uniq2
+
+lemma lem:uniqcit [the pair is unique, from the cited rule twice]
+  core: n in NN, K in Loss(n), B in Region(n), p, q in Pair, coef(K, B, p), coef(K, B, q) : p = q
+
+proof lem:uniqcit
+  "core" fact:mono[C := B, p := q, q := p], fact:mono[C := B]
+
+lemma lem:sum [the product is monotone]
+  core: p, q, r in Pair, p <= q : p + r <= q + r
+
+proof lem:sum
+  "core" mono
+
+cit fact:add [Add: independent parts multiply]
+  doi: 10.1017/CBO9780511800474
+  core: n, n' in NN, K in Loss(n), K' in Loss(n'), omega in Weight(n), omega' in Weight(n'), B in Region(n), B' in Region(n'), p, q in Pair, coefw(K, omega, B, p), coefw(K', omega', B', q) : coefw(sep(K, K'), join(omega, omega'), B times B', p + q)
+  fix core add.core
+
+cit fact:pieces [Min: on a union of pieces the pair is the least]
+  doi: 10.1017/CBO9780511800474
+  core: n, J in NN, K in Loss(n), omega in Weight(n), P_(1..J) in Region(n), p_(1..J) in Pair, (forall j in NN>=1 : j <= J => coefw(K, omega, P_(j), p_(j))) : coefw(K, omega, union j in 1..J, P_(j), oplus j in 1..J, p_(j))
+  fix core pieces.core
+
+-- A doi may hold the mark that closes a Lean comment: it is printed escaped in the doc comment of the cited fact,
+-- so the build of this file checks that it closes nothing.
+cit fact:doimark [a doi with the mark that closes a Lean comment]
+  doi: 10.1017/CBO9780511800474-/#exit
+  core: x in QQ>0 : x > 0
+
+-- A cited fact of a doi with no context, a hypothesis of the row that cites it: over the kernel the row takes the
+-- fact over the kernel, read in Mathlib by its reading.
+lemma lem:zdoicit [a cited fact as a hypothesis]
+  core: y in QQ>0 : y > 0
+
+proof lem:zdoicit
+  "core" fact:doimark[x := y]
+
+cit fact:empty [the empty region has the pair top]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), omega in Weight(n) : coefw(K, omega, emptyset, top)
+  fix core empty.core
+
+lemma lem:addsym [Add with the parts given]
+  core: n, n' in NN, K in Loss(n), K' in Loss(n'), omega in Weight(n), omega' in Weight(n'), B in Region(n), B' in Region(n'), p, q in Pair, coefw(K, omega, B, p), coefw(K', omega', B', q) : coefw(sep(K, K'), join(omega, omega'), B times B', p + q)
+
+proof lem:addsym
+  "core" fact:add
+
+lemma lem:pieces [Min applied to the pieces]
+  core: n, J in NN, K in Loss(n), omega in Weight(n), Q_(1..J) in Region(n), q_(1..J) in Pair, (forall j in NN>=1 : j <= J => coefw(K, omega, Q_(j), q_(j))) : coefw(K, omega, union j in 1..J, Q_(j), oplus j in 1..J, q_(j))
+
+proof lem:pieces
+  "core" fact:pieces[P := Q, p := q]
+
+lemma lem:topunit [top is the unit of the tropical sum]
+  core: p in Pair : min(p, top) = p
+
+proof lem:topunit
+  "core" V
+
+lemma lem:topabs [top absorbs the product]
+  core: p in Pair : p + top = top
+
+proof lem:topabs
+  "core" V
+
+lemma lem:trans [the order is transitive]
+  core: p, q, r in Pair, p <= q, q <= r : p <= r
+
+proof lem:trans
+  "core" V
+
+lemma lem:minle [the tropical sum is below each part]
+  core: p, q in Pair : min(p, q) <= p
+
+proof lem:minle
+  "core" V
+
+lemma lem:emptyunion [the empty region is a unit of the union]
+  core: n in NN, B in Region(n) : B cup emptyset = B
+
+proof lem:emptyunion
+  "core" V
+
+lemma lem:setalg [the algebra of sets]
+  core: n in NN, B, C, D in Region(n), B subseteq D, C subseteq D : B cap C subseteq B cup C subseteq D
+
+proof lem:setalg
+  "core" V, V
+
+lemma lem:infle [the tropical sum is below each member]
+  core: J in NN>=1, p_(1..J) in Pair, j in NN>=1, j <= J : (oplus i in 1..J, p_(i)) <= p_(j)
+
+proof lem:infle
+  "core" V
+
+lemma lem:leinf [a lower bound of every member is below the tropical sum]
+  core: J in NN>=1, p_(1..J) in Pair, q in Pair, (forall i in NN>=1 : i <= J => q <= p_(i)) : q <= (oplus i in 1..J, p_(i))
+
+proof lem:leinf
+  "core" V
+
+lemma lem:least [the least member is the tropical sum]
+  core: J in NN>=1, p_(1..J) in Pair, j in NN>=1, j <= J, (forall i in NN>=1 : i <= J => p_(j) <= p_(i)) : (oplus i in 1..J, p_(i)) = p_(j)
+
+proof lem:least
+  "core" V
+
+cit fact:chart [Chart: comparable losses have the same pair]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K, K' in Loss(n), B in Region(n), p in Pair, K #asymp K' #on B, coef(K', B, p) : coef(K, B, p)
+  fix core chart.core
+  neqfix core chart.neq
+
+cit fact:bdd [a loss bounded below has the pair top]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B in Region(n), K #bdd B : coef(K, B, top)
+  fix core bdd.core
+
+cit fact:below [Below: a smaller loss has a smaller pair]
+  doi: 10.18409/jas.v8i1.47
+  stmt: Proposition 3.4
+  core: n in NN, K, K' in Loss(n), B in Region(n), p, q in Pair, K #below K' #on B, coef(K, B, p), coef(K', B, q) : p <= q
+  fix core below.core
+
+lemma lem:self [a loss is comparable to itself]
+  core: n in NN, K in Loss(n), B in Region(n) : forall w in B : 1 * K(w) <= K(w) <= 1 * K(w)
+
+proof lem:self
+  "core" V
+
+lemma lem:chart2 [Chart applied]
+  core: n in NN, K, K' in Loss(n), B in Region(n), p in Pair, K #asymp K' #on B, coef(K', B, p) : coef(K, B, p)
+
+proof lem:chart2
+  "core" fact:chart
+
+lemma lem:nonneg [a loss is nonnegative]
+  core: n in NN, K in Loss(n), w in Point(n) : K(w) >= 0
+
+proof lem:nonneg
+  "core" V
+
+lemma lem:map [a loss after a map]
+  core: n in NN, K in Loss(n), Phi in Map(n), w in Point(n), K(Phi(w)) >= 1 : 2 * K(Phi(w)) >= 2
+
+proof lem:map
+  "core" V
+
+-- A typed word applied at a point: its value there is read through its equation NAME_def, a tie
+-- for V; a word of two points at join(x, y), where its equation holds.
+lemma lem:wpoint [a typed word at a point]
+  core: n in NN, K in Loss(n), w in Point(n) : shift(K)(w) >= 1
+
+proof lem:wpoint
+  "core" V
+
+lemma lem:wjoin [a word of two points at a joined point]
+  core: n, n' in NN, K in Loss(n), K' in Loss(n'), x in Point(n), y in Point(n'), K(x) <= 1, K'(y) <= 2 : sep(K, K')(join(x, y)) <= 3
+
+proof lem:wjoin
+  "core" V
+
+-- A hypothesis quantified over the points of a region, used at the points the goal introduces: from
+-- forall v in B : P and the point w of B, the instance P at w, a fact for V.
+lemma lem:winst [hypotheses over the points of a region, at a point]
+  core: n in NN, K, K' in Loss(n), B in Region(n), (forall v in B : K(v) <= K'(v)), (forall v in B : K'(v) <= 1) : forall w in B : K(w) <= 1
+
+proof lem:winst
+  "core" V
+
+lemma lem:winst2 [a hypothesis over points with a typed word]
+  core: n in NN, K in Loss(n), B in Region(n), (forall v in B : shift(K)(v) <= 3) : forall w in B : K(w) <= 1
+
+proof lem:winst2
+  "core" V
+
+lemma lem:whyp [a word at a point in a hypothesis]
+  core: n in NN, K in Loss(n), w in Point(n), shift(K)(w) <= 3 : K(w) <= 1
+
+proof lem:whyp
+  "core" V
+
+-- A word with a depth, its values tuples: a statement names no word (it is not read over the kernel), and a proof
+-- takes the word as a witness. V reads a coordinate of the word at a point through its equation, and through a
+-- hypothesis that names its value there (y = halve(n, N)(u)); a relation takes a word as its argument; take gives a
+-- part of a bundle by a word.
+lemma lem:wdepth [a word with a depth, its values tuples]
+  core: n, N in NN, u in Grid(n) : exists y in Point(n) : forall j : 2^N * y_(j) = u_(j)
+  fix core wdepth.core
+  core dyad: n, N in NN, B, u in Grid(n) : exists s in Grid(n) : forall j : s_(j) = sum k in 1..B_(j), iverson(u_(j) * 2^k <= 2^N)
+  fix core dyad wdepth.dyad
+  core value: n, N in NN, K in Loss(n), Q in QQ>0, b in Grid(n), (forall y in Point(n) : Q <= K(y)) : forall v in Grid(n) : (forall i : v_(i) <= b_(i)) => exists y in Point(n) : (forall j : 2^N * y_(j) = v_(j)), Q <= K(y)
+  core bundle: n, N in NN : exists D in Depth(n) : D.N = N, (forall u in Grid(n) : forall x in Point(n) : D.F(u) = x => forall j : 2^N * x_(j) = u_(j))
+
+proof lem:wdepth
+  "core" with[exists y in Point(n) : halve(n, N)(u) = y by take[y := halve(n, N)(u); V]; logic[take[y := y; V]]]
+  "core dyad" with[exists s in Grid(n) : dyad(B, N)(u) = s by take[s := dyad(B, N)(u); V]; logic[take[s := s; V]]]
+  "core value" logic[with[exists y in Point(n) : halve(n, N)(v) = y by take[y := halve(n, N)(v); V]; with[(value(K, N) #zfloor Q #zbox b) by logic[with[exists z in Point(n) : halve(n, N)(u) = z by take[z := halve(n, N)(u); V]; logic[with[Q <= K(z) by logic; V]]]]; logic[with[Q <= value(K, N)(v) by logic; take[y := y; (V, V)]]]]]]
+  "core bundle" take[D.F := halve(n, N), D.N := N; (V, logic[V])]
+
+subsection sec:literals Literal pairs
+
+-- A tuple (l, m) is a literal pair where a type row `type NAME := pair` is in scope (a primitive of the list):
+-- NAME.mk l (m - 1), the first coordinate built in NNRat from numerals, counts,
+-- masses and names in QQ>=0 with + * / ^ min max, the second a multiplicity, at least 1 whatever its names (a
+-- numeral at least 1, a name in NN>=k with k >= 1, + * ^ of those, a product over a range of those). A comparison of
+-- sums of literals is read in Q with no branch: the word of the proof line compares the first coordinates, weakly
+-- where the orders compare outright (omega), else strictly.
+
+lemma lem:lsum [a product of literal pairs]
+  core: (1/2, 1) + (1/2, 1) = (1, 1)
+
+proof lem:lsum
+  "core" V
+
+lemma lem:lstrict [a strict comparison of the first coordinates]
+  core: k in NN>=1 : ((k + 1)/3, 1) <= ((k + 2)/3, 1)
+
+proof lem:lstrict
+  "core" V
+
+lemma lem:lord [equal first coordinates: the orders compare]
+  core: x in QQ>0, m in NN>=1 : (x, m + 1) <= (x, m)
+
+proof lem:lord
+  "core" V
+
+lemma lem:lmono [the pair is monotone in its first coordinate]
+  core: a, b in QQ>0, m in NN>=1, a <= b : (a, m) <= (b, m)
+
+proof lem:lmono
+  "core" V
+
+lemma lem:lmin [a min of first coordinates]
+  core: a, b in QQ>0 : (min(a, b), 1) <= (a, 1)
+
+proof lem:lmin
+  "core" V
+
+lemma lem:lorders [orders that do not compare: the first coordinates compare strictly]
+  core: a, b in QQ>0, a < b : (a, 1) <= (b, 4)
+
+proof lem:lorders
+  "core" V
+
+lemma lem:lfam [a member of a family of masses]
+  core: J in NN>=1, q_(1..J) in QQ>0, j in NN>=1 : (q_(j), 1) < (q_(j) + 1, 1)
+
+proof lem:lfam
+  "core" V
+
+lemma lem:lthree [the product of three pairs]
+  core: r in NN>=1 : (r/2, 1) + (1/2, 2) + (min(1, r), 1) >= (r/2 + 1/2 + min(1, r), 2)
+
+proof lem:lthree
+  "core" V
+
+lemma lem:ltop [a literal pair is below top]
+  core: (1/2, 1) < top
+
+proof lem:ltop
+  "core" V
+
+cit fact:half [a cited rule with a literal pair]
+  doi: 10.1017/CBO9780511800474
+  core: n in NN, K in Loss(n), B in Region(n), coef(K, B, (1/2, 1)) : coef(K, B cup B, (1/2, 1))
+  fix core half.core
+
+lemma lem:lctx [a literal pair in a context]
+  core: n in NN, K in Loss(n), B in Region(n), coef(K, B, (1/2, 1)) : coef(K, B cup B, (1/2, 1))
+
+proof lem:lctx
+  "core" fact:half
+
+lemma lem:lnn [a name in QQ>=0]
+  core: a in QQ>=0 : (a, 2) > (a, 3)
+
+proof lem:lnn
+  "core" V
+
+lemma lem:lmult [multiplicities: a power, a product over a range, a member of a family of counts]
+  core: m in NN>=1, k, J in NN, r_(1..J) in NN>=2 : (1/2, m^k * (prod j in 1..J, (j + r_(j)))) < (1, 1)
+
+proof lem:lmult
+  "core" V
+
+lemma lem:lgiven [literal pairs over the given of the item]
+  given: x in QQ>0, m in NN>=1
+  check: (x, m + 1) <= (x, m)
+
+proof lem:lgiven
+  "check" V
+
+lemma lem:lcert [a certificate on the first coordinates]
+  core: a, b in QQ>0, a < b : (a * a, 1) < (a * b, 1)
+
+proof lem:lcert
+  "core" V[a * h_1]
+
+-- A min of literal pairs (the tropical sum) is reduced with no search: under = its argument equal to the other side
+-- whatever the names (min_eq_left or min_eq_right, the comparison of its two arguments as above); a min on the right
+-- of <= or < by le_min or lt_min; a min on the left by the argument equal to the other side, or below it with no name
+-- or by a hypothesis on the first coordinates.
+
+lemma lem:lminnum [a min of numeral pairs]
+  core: min((1, 1), (1/2, 1), (1/2, 2)) = (1/2, 2)
+
+proof lem:lminnum
+  "core" V
+
+lemma lem:lminid [a min equal to one of its arguments whatever the names]
+  core: a, b in QQ>0 : min((a, 1), (a + b, 1)) = (a, 1)
+
+proof lem:lminid
+  "core" V
+
+lemma lem:lminhyp [a min equal to its argument by a hypothesis]
+  core: a, b in QQ>0, b <= a : (b, 1) = min((a, 1), (b, 1))
+
+proof lem:lminhyp
+  "core" V
+
+lemma lem:lminle [below a min, and a min below]
+  core: a, b in QQ>0, a <= b : (a, 2) <= min((a, 1), (b, 1)) <= (a, 1)
+
+proof lem:lminle
+  "core" V, V
+
+lemma lem:lminlt [a min below by a hypothesis on the first coordinates]
+  core: a, b in QQ>0, a < b : min((a, 2), (b, 1)) < (b, 1)
+
+proof lem:lminlt
+  "core" V
+
+-- A context whose pair is equal to the pair of a hypothesis whatever the names: `convert h using 1`, then the
+-- equation of the two pairs as above.
+
+lemma lem:lctxeq [a context pair equal by arithmetic]
+  core: n in NN, K in Loss(n), B in Region(n), a, b in QQ>0, coef(K, B, (a + b, 2)) : coef(K, B, (b + a, 1 + 1))
+
+proof lem:lctxeq
+  "core" V
+
+lemma lem:lctxsum [a context pair equal to a product of pairs]
+  core: n in NN, K in Loss(n), B in Region(n), a, b in QQ>0, coef(K, B, (a, 1) + (b, 1)) : coef(K, B, (a + b, 1))
+
+proof lem:lctxsum
+  "core" V
+
+lemma lem:lctxmin [a context pair equal to a min]
+  core: n in NN, K in Loss(n), B in Region(n), a, b in QQ>0, coef(K, B, (a, 1)) : coef(K, B, min((a, 1), (a + b, 1)))
+
+proof lem:lctxmin
+  "core" V
+
+subsection sec:programs Programs
+
+-- The atom prog(DECLS, ROWS : COST) = P (a primitive of the list): the scales are
+-- declared in QQ>=0, each row is a relation >=, <= or = of two affine forms in the scales, the cost is a linear form
+-- in the scales, and P is a pair. prog(...) = (l, m) says that l is the least value of the cost over the
+-- feasible points and that the points of cost l span an affine space of dimension m - 1; prog(...) = top says that
+-- no point is feasible. The word prog[PRICES; POINTS] proves it: one price per row, then each point as assignments
+-- (a scale left out is 0). The prices bound the value from below (weak duality) and the dimension from above (the
+-- rows of positive price and the scales of positive reduced cost are tight on the face); the points attain the value
+-- and bound the dimension from below. A sign of a price or of a reduced cost is read from the given; a fixture
+-- computes the pair by vertex enumeration, without the word.
+
+-- One unit at the tie N = 2 alpha: the optimal face is the segment between the two vertices.
+lemma lem:progtie [a program at a tie]
+  given: alpha, N in QQ>0, N = 2 * alpha
+  (1): prog(v, w in QQ>=0, 2 * v + 4 * w >= 1 : alpha * v + N * w) = (alpha / 2, 2)
+  fix (1) progtie.model
+  neqfix (1) progtie.neq
+
+-- Both reduced costs are zero at the tie (the second after N = 2 alpha is substituted): the priced row alone bounds
+-- the face from above, and the two vertices bound it from below.
+proof lem:progtie
+  (1) prog[alpha / 2; v := 1 / 2, w := 0; v := 0, w := 1 / 4]
+
+-- Off the tie, one item per case (the sign of a reduced cost is read from the given): the reduced cost N - 2 alpha of w
+-- is positive by the hypothesis 2 alpha < N, so the face is the vertex v = 1/2.
+lemma lem:progabove [a program above the tie]
+  given: alpha, N in QQ>0, 2 * alpha < N
+  (1): prog(v, w in QQ>=0, 2 * v + 4 * w >= 1 : alpha * v + N * w) = (alpha / 2, 1)
+  fix (1) progabove.model
+
+proof lem:progabove
+  (1) prog[alpha / 2; v := 1 / 2]
+
+-- An equation row and a face of dimension 2: the cost is constant on the triangle.
+lemma lem:progface [a program with a face of dimension 2]
+  given: alpha in QQ>0
+  (1): prog(a, b, c in QQ>=0, a + b + c = 1 : alpha * a + alpha * b + alpha * c) = (alpha, 3)
+  fix (1) progface.model
+
+proof lem:progface
+  (1) prog[alpha; a := 1; b := 1; c := 1]
+
+-- A parameter in a denominator: the price 1/(3 + eta) leaves the reduced cost (2 + eta)/(3 + eta) on w.
+lemma lem:progden [a program with a parametric price]
+  given: eta in QQ>=0
+  (1): prog(v, w in QQ>=0, (3 + eta) * v + w >= 1 : v + w) = (1 / (3 + eta), 1)
+  fix (1) progden.model
+
+proof lem:progden
+  (1) prog[1 / (3 + eta); v := 1 / (3 + eta)]
+
+-- A scale absent from the cost: the face is a ray, and a point on it bounds the dimension from below.
+lemma lem:progray [a program whose face is a ray]
+  given: alpha in QQ>0
+  (1): prog(v, w in QQ>=0, v >= 1 : alpha * v) = (alpha, 2)
+  fix (1) progray.model
+
+proof lem:progray
+  (1) prog[alpha; v := 1; v := 1, w := 1]
+
+-- No feasible point: the price 1 on the row gives the line 0 >= v + 1.
+lemma lem:progempty [an empty program]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, v + 1 <= 0 : alpha * v) = top
+  fix (1) progempty.model
+
+proof lem:progempty
+  (1) prog[1]
+
+-- A row <= with a positive price: on v + w = 1 the cost 2 alpha - alpha v is least at v = 1/2, where the row v <= 1/2
+-- is tight (price alpha); with the row = it leaves no direction, so the face is the vertex (1/2, 1/2).
+lemma lem:progupper [a program with an upper row]
+  given: alpha in QQ>0
+  (1): prog(v, w in QQ>=0, v + w = 1, v <= 1 / 2 : alpha * v + 2 * alpha * w) = (3 * alpha / 2, 1)
+  fix (1) progupper.model
+
+proof lem:progupper
+  (1) prog[2 * alpha, alpha; v := 1 / 2, w := 1 / 2]
+
+-- The atom in a given: p is the pair of the program (its least value alpha at v = 1); no word reads the atom yet, so
+-- the item checks only that the statement is formed.
+lemma lem:proggiven [a program in a given]
+  given: alpha in QQ>0, p in Pair, prog(v in QQ>=0, v >= 1 : alpha * v) = p
+  (1): alpha / 2 < alpha
+
+proof lem:proggiven
+  (1) V
+
+subsection sec:lattice Coordinates and lattice points
+
+-- Two constructs of the list of primitives. The coordinate x_(i) of a tuple x of a
+-- type row X^n (X one of NN, QQ>=0, QQ>0) is read under a binder over the coordinates: sum i, t; prod i, t;
+-- forall i : P; exists i : P, where i runs over the coordinates of the tuples it indexes (Lean: x i with i : Fin n).
+-- The index is only an index: no arithmetic on it, and no numeral as a coordinate. The sum sum u <= b, t runs over
+-- the lattice points u of NN^n with u <= b coordinatewise, b a tuple of NN^n (Finset.Icc 0 b); rows cut the box
+-- through iverson(...), so the number of points of a cut box is a sum of iverson(ROWS).
+
+-- At fixed values the word count substitutes each tuple that a hypothesis fixes and evaluates the sums in the kernel.
+lemma lem:latcount [the points of a square under a diagonal]
+  core: b in Grid(2), (forall i : b_(i) = 2) : (sum u <= b, iverson(sum i, u_(i) <= 2)) = 6
+  fix core latcount.model
+  eqfix core latcount.eq
+
+proof lem:latcount
+  "core" count
+
+-- A quantifier over the coordinates inside a row: the points of the square {0, 1}^2 off the corner 0.
+lemma lem:latsome [the points of a square with a coordinate 1]
+  core: b in Grid(2), (forall i : b_(i) = 1) : (sum u <= b, iverson(exists i : u_(i) = 1)) = 3
+  eqfix core latsome.eq
+
+proof lem:latsome
+  "core" count
+
+-- The number of points of a box is the product of its sides plus one (Pi.card_Icc).
+lemma lem:latcard [the points of a box]
+  core: n in NN, b in Grid(n) : (sum u <= b, 1) = prod i, (b_(i) + 1)
+  eqfix core latcard.eq
+
+proof lem:latcard
+  "core" box
+
+-- The word box compares a count over a box cut by a row with the points of a box [0, c]: from above when the cut lies
+-- under c (here c = b, the cut is a subset), from below when [0, c] lies in the cut.
+lemma lem:latbox [a cut box has at most the points of the box]
+  core: n in NN, b in Grid(n) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= prod i, (b_(i) + 1)
+  fix core latbox.model
+
+proof lem:latbox
+  "core" box
+
+-- From above by a smaller box: a point with coordinate sum at most 2 has every coordinate at most 2 (a term of a sum of
+-- terms at least zero is at most the sum).
+lemma lem:latcorner [a cut box under a corner]
+  core: n in NN, b, c in Grid(n), (forall i : c_(i) = 2) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= prod i, (c_(i) + 1)
+  fix core latcorner.model
+
+proof lem:latcorner
+  "core" box
+
+-- From below: a box [0, c] under b lies in the cut by the content of c (each sum over the coordinates is monotone in
+-- the point).
+lemma lem:latunder [a box inside a cut box]
+  core: n in NN, b, c in Grid(n), (forall i : c_(i) <= b_(i)) : prod i, (c_(i) + 1) <= sum u <= b, iverson(sum i, u_(i) <= sum i, c_(i))
+  fix core latunder.model
+
+proof lem:latunder
+  "core" box
+
+-- sum compares two sums over the coordinates term by term, with the hypotheses over every coordinate at the index.
+lemma lem:latsum [two sums over the coordinates]
+  core: n in NN, x, y in Point(n), (forall i : x_(i) <= y_(i)) : sum i, x_(i) <= sum i, y_(i)
+  fix core latsum.model
+
+proof lem:latsum
+  "core" sum
+
+-- ind over the coordinates: induction on the length n, the last coordinate split off (Fin.sum_univ_castSucc) and the
+-- relation at the first n coordinates (Fin.init).
+lemma lem:latind [a sum of coordinates at most 1]
+  core: n in NN, x in Point(n), (forall i : x_(i) <= 1) : sum i, x_(i) <= n
+  fix core latind.model
+
+proof lem:latind
+  "core" ind
+
+-- The coordinate of a member of a family of tuples, s_(k)_(i): a list of N boxes [0, s_(k)] has the points of each
+-- box, the product of its sides plus one, summed over the list (the word box at each member, through sum).
+lemma lem:latlist [the points of a list of boxes]
+  core: n, N in NN, s_(1..N) in Grid(n) : sum k in 1..N, (sum u <= s_(k), 1) = sum k in 1..N, prod i, (s_(k)_(i) + 1)
+  fix core latlist.model
+
+proof lem:latlist
+  "core" sum[box]
+
+-- A tuple of tuples (NN^n)^k, k rows of n coordinates: its entry
+-- f_(iota)_(i), both indices bound over coordinates (Lean: f iota i with iota : Fin k, i : Fin n). Two tuples of
+-- tuples compared entry by entry, by sum over the rows and sum over the coordinates.
+lemma lem:latrows [two tuples of tuples entry by entry]
+  core: k, n in NN, f, g in Rows(k, n), (forall iota : forall i : f_(iota)_(i) <= g_(iota)_(i)) : sum iota, sum i, f_(iota)_(i) <= sum iota, sum i, g_(iota)_(i)
+  fix core latrows.model
+
+proof lem:latrows
+  "core" sum[sum]
+
+-- The word inj counts by an injective relation: each point of the cut box [0, b] is related to a point of the cut
+-- box [0, c] (the totality, the relation the conjunction after exists), and two points related to one point are
+-- equal (the injectivity), so the first cut has at most the points of the second (here the shift by 1 in every
+-- coordinate). The exact model reads the quantifiers over NN^n on the boxes that their clauses forall i : u_(i) <= t
+-- bound. The two hypotheses may come from with (with: the injectivity proved first).
+lemma lem:latinj [a shift into a larger box]
+  core: n in NN, b, c in Grid(n), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists v in Grid(n) : (forall i : v_(i) <= c_(i)), (forall i : v_(i) = u_(i) + 1), sum i, v_(i) <= 2 + n), (forall u, w, v in Grid(n) : (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), (forall i : v_(i) <= c_(i)), (forall i : v_(i) = u_(i) + 1), (forall i : v_(i) = w_(i) + 1) => forall i : u_(i) = w_(i)) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= sum v <= c, iverson(sum i, v_(i) <= 2 + n)
+  with: n in NN, b, c in Grid(n), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists v in Grid(n) : (forall i : v_(i) <= c_(i)), (forall i : v_(i) = u_(i) + 1), sum i, v_(i) <= 2 + n) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= sum v <= c, iverson(sum i, v_(i) <= 2 + n)
+  fix core latinj.model
+
+proof lem:latinj
+  "core" inj
+  "with" with[forall u, w, v in Grid(n) : (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), (forall i : v_(i) <= c_(i)), (forall i : v_(i) = u_(i) + 1), (forall i : v_(i) = w_(i) + 1) => forall i : u_(i) = w_(i) by logic[V]; inj]
+
+-- A sum over a cell: the points of a range at which every clause holds, each clause a comparison or a family of
+-- comparisons. Over an index range, sum m in a..b : C_1, ..., C_J, t; over the coordinates, sum i : C_1, ..., C_J, t;
+-- over the positive lattice points u of (NN>=1)^n, sum u : C_1, ..., C_J, t, its first clause the content against a
+-- level, sum i, c_(i) * u_(i) + O rel L with every weight c_(i) at least 1, so that u_(i) <= L and the cell is finite
+-- (the point may name its type, sum u in PosGrid(n) : ..., or sum u in Grid(n) : ... for the points of NN^n). A point
+-- of a cell satisfies each clause there (h_ck_u, the clause k at the point u), and sum reads the terms at a point
+-- with these facts.
+lemma lem:latcellsum [a content under its level, term by term]
+  core: n, L in NN, c in (NN>=1)^n : (sum u : sum i, c_(i) * u_(i) <= L, sum i, c_(i) * u_(i)) <= sum u : sum i, c_(i) * u_(i) <= L, L
+
+proof lem:latcellsum
+  "core" sum[V[1 * h_c1_u]]
+
+-- Over the coordinates: the coordinates at which x lies below y.
+lemma lem:latcellcoord [a cell of coordinates, term by term]
+  core: n in NN, x, y in Point(n) : (sum i : x_(i) < y_(i), x_(i)) <= sum i : x_(i) < y_(i), y_(i)
+
+proof lem:latcellcoord
+  "core" sum[V[1 * h_c1_i]]
+
+-- The word trichotomy: at each point a comparison A, B has exactly one of A < B, A = B, B < A, so a cell sum is the sum
+-- over the three parts of one more clause, and a weak clause A <= B is its chamber A < B and its wall A = B.
+lemma lem:latcellwall [a chamber and its wall]
+  core: n, L in NN, c in (NN>=1)^n : (sum u : sum i, c_(i) * u_(i) <= L, 1) = (sum u : sum i, c_(i) * u_(i) < L, 1) + (sum u : sum i, c_(i) * u_(i) = L, 1)
+
+proof lem:latcellwall
+  "core" trichotomy
+
+-- Over an index range: the members of a family below, at and above a count.
+lemma lem:latcellthree [a range cell in three parts]
+  core: n, i in NN, e_(1..n) in NN : (sum m in 1..n : m <= n, 1) = (sum m in 1..n : m <= n, e_(m) < i, 1) + (sum m in 1..n : m <= n, e_(m) = i, 1) + (sum m in 1..n : m <= n, i < e_(m), 1)
+
+proof lem:latcellthree
+  "core" trichotomy
+
+-- The word simplex on a cell: the points t of NN^(d + 1) with sum k, t_(k) = m are the weak compositions of m into
+-- d + 1 parts, binom(m + d, d).
+lemma lem:latcellsimplex [the points of a simplex wall]
+  core: d, m, r in NN, r = d + 1 : (sum t in Grid(r) : sum k, t_(k) = m, 1) = binom(m + d, d)
+
+proof lem:latcellsimplex
+  "core" simplex
+
+-- Over the positive points: t in (NN>=1)^(d + 1) with sum k, t_(k) = m + d + 1 is s + 1 for a weak composition s of
+-- m, so the wall at m + r has binom(m + d, d) points too.
+lemma lem:latcellpossimplex [the positive points of a simplex wall]
+  core: d, m, r in NN, r = d + 1 : (sum t in PosGrid(r) : sum k, t_(k) = m + r, 1) = binom(m + d, d)
+
+proof lem:latcellpossimplex
+  "core" simplex
+
+-- The word inj on cells: each point of the first cell is related to a point of the second (the totality, its premise
+-- the clauses of the first cell, its last clauses those of the second), and two points related to one point are equal
+-- (the injectivity, its premises the clauses at both points and the relation at both), so the first cell has at most
+-- the points of the second. Each premise is a fact of a membership, and each image lies in the box of its level.
+lemma lem:latcellinj [a simplex wall inside its chamber]
+  core: r, m in NN, (forall t in Grid(r) : sum k, t_(k) = m => exists u in Grid(r) : (forall k : u_(k) = t_(k)), sum k, u_(k) <= m), (forall t, t2 in Grid(r) : forall u in Grid(r) : sum k, t_(k) = m, sum k, t2_(k) = m, (forall k : u_(k) = t_(k)), (forall k : u_(k) = t2_(k)) => forall k : t_(k) = t2_(k)) : (sum t in Grid(r) : sum k, t_(k) = m, 1) <= sum u in Grid(r) : sum k, u_(k) <= m, 1
+
+proof lem:latcellinj
+  "core" inj
+
+-- The word same: two cells over one holder with one term have the same points when their clauses agree at each point
+-- of the holder once the named ties are read there.
+lemma lem:latcellsame [one cell read through a tie]
+  core: n, i in NN>=1, e_(1..n) in NN>=1, (forall m in NN>=1 : m <= n => e_(m) = m) : (sum m in 1..n : e_(m) = i, 1) = sum m in 1..n : m = i, 1
+
+proof lem:latcellsame
+  "core" same[h_1]
+
+-- A cell of one point: the clause m = p with a <= p <= b, the term at p.
+lemma lem:latcellpoint [a range cell with one point]
+  core: n, i in NN>=1, i <= n, e_(1..n) in NN>=1 : (sum m in 1..n : m = i, e_(m)) = e_(i)
+
+proof lem:latcellpoint
+  "core" sum
+
+-- Over the coordinates of x: the cell i = k, 1 <= k <= n, has the one point k.
+lemma lem:latcellpointc [a coordinate cell with one point]
+  core: n, k in NN>=1, k <= n, x in Point(n), (forall i : x_(i) <= 1) : (sum i : k = i, 1) = 1
+
+proof lem:latcellpointc
+  "core" sum
+
+-- The exchange: a sum over the coordinates of a range cell is the range cell of the coordinate cells. Here the
+-- meetings m of 1..n, from e_(m) to f_(m), and P_(i)_(j) the meetings from i to j.
+lemma lem:latcellexch [a coordinate sum exchanged with a range cell]
+  core: n in NN>=1, e_(1..n), f_(1..n) in NN>=1, P in Forms(n, n), (forall i : forall j : P_(i)_(j) = sum m in 1..n : e_(m) = i, f_(m) = j, 1) : forall i : (sum j, sum m in 1..n : e_(m) = i, f_(m) = j, 1) = sum m in 1..n : e_(m) = i, (sum j : f_(m) = j, 1)
+
+proof lem:latcellexch
+  "core" logic[sum]
+
+-- A part left out of trichotomy is empty: above the range (n < m against m <= n), or refuted at each point by a
+-- certificate of 1 <= 0 from the clauses there, the families over the range at the point and the comparison.
+lemma lem:latcellbound [a part left out by the range]
+  core: n, i in NN>=1, f_(1..n) in NN>=1 : (sum m in 1..n : f_(m) = i, 1) = (sum m in 1..n : f_(m) = i, m < n, 1) + (sum m in 1..n : f_(m) = i, m = n, 1)
+
+proof lem:latcellbound
+  "core" trichotomy
+
+lemma lem:latcellcert [parts left out by a certificate]
+  core: n, i in NN>=1, e_(1..n) in NN>=1, (forall m in NN>=1 : m <= n => e_(m) = 1) : (sum m in 1..n : e_(m) = i, 1) = sum m in 1..n : e_(m) = i, e_(m) = 1, 1
+
+proof lem:latcellcert
+  "core" trichotomy[V[1 * h_tri_m | 1 * h_1_m]; V[1 * h_tri_m, 1 * h_1_m]]
+
+-- A sum with no clause is the cell of no clause on its holder, so trichotomy splits it too: over the coordinates at an
+-- index j, below j, at j and above j; over a range at its top; and by a certificate when the family has one value.
+lemma lem:latcellplain [a sum split into the cells of one comparison]
+  core: n in NN>=1, x in Point(n) : forall j : (sum i, x_(i)) = (sum i : i < j, x_(i)) + (sum i : i = j, x_(i)) + (sum i : j < i, x_(i))
+  range: n in NN>=1, e_(1..n) in NN>=1 : (sum m in 1..n, e_(m)) = (sum m in 1..n : m < n, e_(m)) + (sum m in 1..n : m = n, e_(m))
+  cert: n in NN>=1, e_(1..n) in NN>=1, (forall m in NN>=1 : m <= n => e_(m) = 1) : (sum m in 1..n, e_(m)) = sum m in 1..n : e_(m) = 1, e_(m)
+
+proof lem:latcellplain
+  "core" logic[trichotomy]
+  "range" trichotomy
+  "cert" trichotomy[V[1 * h_tri_m | 1 * h_1_m]; V[1 * h_tri_m, 1 * h_1_m]]
+
+-- A coordinate cell whose one point is an index j: the term at j.
+lemma lem:latcellpointidx [a coordinate cell at an index]
+  core: n in NN>=1, x in Point(n) : forall j : (sum i : i = j, x_(i)) = x_(j)
+
+proof lem:latcellpointidx
+  "core" logic[sum]
+
+-- A cell is the conjunction of its clauses, so two cells with the same clauses in another order are one cell (same,
+-- with no tie); read through ties, the clauses agree up to their order.
+lemma lem:latcellorder [a cell read up to the order of its clauses]
+  core: n, i, j in NN>=1, e_(1..n), f_(1..n) in NN>=1 : (sum m in 1..n : e_(m) = j, f_(m) = i, 1) = sum m in 1..n : f_(m) = i, e_(m) = j, 1
+  tie: n, i, j in NN>=1, e_(1..n), f_(1..n) in NN>=1, (forall m in NN>=1 : m <= n => e_(m) = m) : (sum m in 1..n : e_(m) = j, f_(m) = i, 1) = sum m in 1..n : f_(m) = i, m = j, 1
+
+proof lem:latcellorder
+  "core" same
+  "tie" same[h_1]
+
+-- A point of a range cell is a point of the range, so the families over the range hold there: here e_(m) <= n, so
+-- that the coordinate cell e_(m) = j has its one point.
+lemma lem:latcellrange [a point of a range cell lies in its range]
+  core: n in NN>=1, e_(1..n) in NN>=1, x in Point(n), (forall j : x_(j) <= 1), (forall m in NN>=1 : m <= n => e_(m) <= n) : (sum m in 1..n : e_(m) < m, (sum j : e_(m) = j, 1)) = sum m in 1..n : e_(m) < m, 1
+
+proof lem:latcellrange
+  "core" sum[sum]
+
+-- A cell of one point among several clauses: the clause m = p, the other clauses true at p, the term at p.
+lemma lem:latcellpointmany [a range cell with one point among its clauses]
+  core: n, i, k in NN>=1, k <= n, f_(1..n), g_(1..n) in NN>=1, f_(k) = i : (sum m in 1..n : f_(m) = i, m = k, g_(m)) = g_(k)
+  coord: n in NN>=1, x in Point(n), (forall i : x_(i) <= 1) : forall i : (sum m in 1..n : 1 <= m, m = i, 1) = 1
+
+proof lem:latcellpointmany
+  "core" sum
+  "coord" logic[sum]
+
+-- The exchange of two sums over ranges through a cell that relates both indices: the pairs l <= i of a triangle
+-- counted by rows or by columns.
+lemma lem:latcelltri [a triangle summed in either order]
+  core: r in NN>=1, e_(1..r) in NN>=1 : (sum i in 1..r, sum l in 1..r : l <= i, e_(l)) = sum l in 1..r, sum i in 1..r : l <= i, e_(l)
+  gap: r in NN>=1, e_(1..r) in NN>=1 : (sum h in 0..r, sum g in 1..r : h < g, e_(g)) = sum g in 1..r, sum h in 0..r : h < g, e_(g)
+
+proof lem:latcelltri
+  "core" sum
+  "gap" sum
+
+-- The word powdiff bounds a power difference: from the tie l^p + p * W = (l + s)^p with a <= l and l + s <= b, W lies
+-- between a^(p - 1) * s and b^(p - 1) * s, written without subtraction (times a, and times b); the geometric identity
+-- (sum_(i < p) (s + l)^i * l^(p - 1 - i)) * s + l^p = (s + l)^p, each of its p terms between a^(p - 1) and b^(p - 1).
+-- Under binders over the rows and the coordinates of tuples of tuples, the hypotheses over the same coordinates are
+-- read at the indices of the goal.
+lemma lem:zpowdiff [the bounds of a power difference]
+  core: p in NN>=1, a, b in QQ>0, l, W in QQ>=0, s in QQ>0, a <= l, l + s <= b, l^p + p * W = (l + s)^p : a^p * s <= a * W, b * W <= b^p * s
+
+proof lem:zpowdiff
+  "core" powdiff, powdiff
+
+lemma lem:latpowdiff [the bounds of power differences entry by entry]
+  core: k, n in NN, q in Grid(n), a, b in QQ>0, l, W in Forms(k, n), s in Sides(k, n), (forall i : 1 <= q_(i)), (forall iota : forall i : a <= l_(iota)_(i)), (forall iota : forall i : l_(iota)_(i) + s_(iota)_(i) <= b), (forall iota : forall i : l_(iota)_(i)^q_(i) + q_(i) * W_(iota)_(i) = (l_(iota)_(i) + s_(iota)_(i))^q_(i)) : forall iota : forall i : a^q_(i) * s_(iota)_(i) <= a * W_(iota)_(i), b * W_(iota)_(i) <= b^q_(i) * s_(iota)_(i)
+  fix core latpowdiff.model
+
+proof lem:latpowdiff
+  "core" powdiff, powdiff
+
+-- The word dual is weak duality from a tie of forms: the constraints P_(iota) . v >= N_(iota) . v + e_(iota), each
+-- times its price y_(iota) >= 0 and summed, with the two sums swapped, give c . v >= y . e by the tie at each
+-- coordinate, c_(i) + sum_iota y_(iota) * N_(iota)_(i) = sum_iota y_(iota) * P_(iota)_(i); the forms are on both
+-- sides, so no subtraction enters. With an offset a_(iota) on the larger side of each constraint, the goal carries
+-- y . a on the left (offset); the constraints are the universal whose two sides read a sum over the coordinates
+-- (pick: another universal comes first), the first whose smaller side adds the e_(iota) of the goal (match, among the
+-- parts of a conjunction), natural constraints read in QQ through their casts (nat). With a form d . v on the right, the tie reads c_(i) + sum_iota y_(iota) * N_(iota)_(i)
+-- = d_(i) + sum_iota y_(iota) * P_(iota)_(i) and the goal carries d . v on the right (form).
+lemma lem:latdual [weak duality from a tie of forms]
+  core: k, n in NN, P, N in Forms(k, n), y in Point(k), e in Grid(k), c in Grid(n), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = sum iota, y_(iota) * P_(iota)_(i)) : forall v in Point(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) >= sum iota, y_(iota) * e_(iota)
+  offset: k, n in NN, P, N in Forms(k, n), y in Point(k), e, a in Grid(k), c in Grid(n), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = sum iota, y_(iota) * P_(iota)_(i)) : forall v in Point(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) + a_(iota) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) + (sum iota, y_(iota) * a_(iota)) >= sum iota, y_(iota) * e_(iota)
+  form: k, n in NN, P, N in Forms(k, n), y in Point(k), e, a in Grid(k), c, d in Grid(n), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = d_(i) + sum iota, y_(iota) * P_(iota)_(i)) : forall v in Point(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) + a_(iota) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) + (sum iota, y_(iota) * a_(iota)) >= (sum i, d_(i) * v_(i)) + sum iota, y_(iota) * e_(iota)
+  pick: k, n in NN, P, N in Forms(k, n), y in Point(k), e in Grid(k), c in Grid(n), (forall iota : y_(iota) <= y_(iota) + e_(iota)), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = sum iota, y_(iota) * P_(iota)_(i)) : forall v in Point(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) >= sum iota, y_(iota) * e_(iota)
+  nat: k, n in NN, P, N in Rows(k, n), y in Point(k), e in Grid(k), c in Grid(n), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = sum iota, y_(iota) * P_(iota)_(i)) : forall v in Grid(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) >= sum iota, y_(iota) * e_(iota)
+  match: k, n in NN, P, N in Rows(k, n), y in Point(k), e, f in Grid(k), c in Grid(n), (forall i : c_(i) + (sum iota, y_(iota) * N_(iota)_(i)) = sum iota, y_(iota) * P_(iota)_(i)) : forall v in Grid(n) : (forall iota : (sum i, P_(iota)_(i) * v_(i)) >= (sum i, N_(iota)_(i) * v_(i)) + f_(iota)), (forall iota : (sum i, P_(iota)_(i) * v_(i)) >= (sum i, N_(iota)_(i) * v_(i)) + e_(iota)) => (sum i, c_(i) * v_(i)) >= sum iota, y_(iota) * e_(iota)
+
+proof lem:latdual
+  "core" dual
+  "offset" dual
+  "form" dual
+  "pick" dual
+  "nat" dual
+  "match" dual
+
+-- A relation in a conclusion is proved by its fields, one word each in the order of the row (or one per row, the
+-- bounds of its declarations closed by arithmetic). The word take gives the witnesses of the existentials that lead a
+-- goal, in their order: a number by a term, a tuple of tuples by a formula in its indices (each coordinate with its
+-- sign) or by join(a, b), the rows of a then those of b; the word after the semicolon proves the rest. A goal over the
+-- rows of a join is split at the seam: a forall into its two halves, each by the same word, a sum into the sum of
+-- the two sums, an exists into the disjunction of the two.
+relation (l #zrows t) := k, n in NN, l in Forms(k, n), t in QQ>=0, (forall iota : forall i : l_(iota)_(i) <= t)
+lemma lem:zwit [witnesses of tuples of tuples]
+  field: k, n in NN, l in Forms(k, n), t in QQ>=0, (l #zrows t) : l #zrows t + 1
+  scale: k, n in NN, l in Forms(k, n), t in QQ>=0, h in QQ>0, (l #zrows t) : exists m in Forms(k, n) : m #zrows h * t
+  join: k, k', n in NN, l in Forms(k, n), l' in Forms(k', n), t in QQ>=0, (l #zrows t), (l' #zrows t) : exists r in NN : exists m in Forms(r, n) : (m #zrows t), sum iota, sum i, m_(iota)_(i) = (sum iota, sum i, l_(iota)_(i)) + (sum iota, sum i, l'_(iota)_(i))
+
+proof lem:zwit
+  "field" V
+  "scale" take[m_(iota)_(i) := h * l_(iota)_(i); V]
+  "join" take[r := k + k', m := join(l, l'); (V, eq)]
+
+-- The word logic proves a goal that first-order logic gives from the hypotheses: each hypothesis read as a rule
+-- (binders over points, objects and indices, memberships, premises) is applied when its premises are facts, the
+-- first matched with a fact the goal or an earlier step brought in (a premise, the membership of a point), the others
+-- found among the facts; its conclusion is destructed (an existential gives its witnesses, a conjunction its parts)
+-- or kept as a fact; a hypothesis S subseteq T is applied to each membership in S (a membership of a union read as a
+-- disjunction); up to three rounds, then a tautology. Here a point of C has a point of B under it, so one of B'; and a
+-- cover of B by two regions gives a cover by the join of their two tuples of tuples, at the seam the disjunction of
+-- the two existentials.
+lemma lem:zlogic [first-order steps]
+  inside: n in NN, B, B', C in Region(n), B subseteq B', (forall w in C : exists v in B : forall i : v_(i) <= w_(i)) : forall w in C : exists v in B' : forall i : v_(i) <= w_(i)
+  cover: k, k', n in NN, l in Forms(k, n), l' in Forms(k', n), B, B_1, B_2 in Region(n), B subseteq B_1 cup B_2, (forall w in B_1 : exists iota : forall i : l_(iota)_(i) <= w_(i)), (forall w in B_2 : exists iota : forall i : l'_(iota)_(i) <= w_(i)) : exists r in NN : exists m in Forms(r, n) : forall w in B : exists iota : forall i : m_(iota)_(i) <= w_(i)
+
+proof lem:zlogic
+  "inside" logic
+  "cover" take[r := k + k', m := join(l, l'); logic]
+
+-- ind with the signs of its sums: the step from n to n + 1 adds the term r^(n + 1), at least 0 from 0 <= r
+-- (pow_nonneg), and the sum at n is at least 0 (Finset.sum_nonneg).
+lemma lem:zindpow [a power under the sum of the powers]
+  core: r in QQ>=0, n in NN : r^n <= (sum l in 0..n, r^l)
+
+proof lem:zindpow
+  "core" ind
+
+-- logic[W] proves the rest by the word W, which reads the witnesses by the names their existentials bind (with a
+-- suffix _2, _3, ... when a name is taken); a universal over a type with no premise is instantiated at each object of
+-- that type in scope. with[CLAUSE by W; W'] is a step: the clause, in the names in scope after the binders and
+-- premises of the goal are introduced, proved by W, then a fact for W' (an existential destructed). take gives an
+-- index, or a point of a region (with its membership). Here: the level of a dilation, 2^D * K'(w') = K(w) with
+-- 2^L * K(w) <= 1, the powers split and the equation times 2^L; a premise derived first by with; and a preimage
+-- u_(i) = w_(i) / d_(i), a point of B at u, then one of B' at d * u = w.
+lemma lem:zstep [forward steps]
+  level: n, L, D in NN, d in Weight(n), K, K' in Loss(n), B, B' in Region(n), (forall w in Point(n) : forall w' in Point(n) : (forall i : w'_(i) = d_(i) * w_(i)) => 2^D * K'(w') = K(w)), (forall w' in B' : exists w in B : forall i : w'_(i) = d_(i) * w_(i)), (forall w in B : 2^L * K(w) <= 1) : forall w' in B' : 2^(L + D) * K'(w') <= 1
+  premise: k, n, L in NN, l in Forms(k, n), t in QQ>=0, K in Loss(n), B in Region(n), t * 2^L <= 1, (forall w in B : K(w) <= t), (forall w in B : 2^L * K(w) <= 1 => exists iota : forall i : l_(iota)_(i) <= w_(i)) : forall w in B : exists iota : forall i : l_(iota)_(i) <= w_(i)
+  preimage: n in NN, d in Weight(n), B, B' in Region(n), (forall w in Point(n) : exists v in B : forall i : v_(i) = w_(i)), (forall v in B : exists v' in B' : forall i : v'_(i) = d_(i) * v_(i)) : forall w in Point(n) : exists y in B' : forall i : y_(i) = w_(i)
+
+proof lem:zstep
+  "level" logic[V]
+  "premise" logic[with[2^L * K(w) <= 1 by V; logic[take[iota := iota; V]]]]
+  "preimage" with[exists u in Point(n) : forall i : w_(i) = d_(i) * u_(i) by take[u_(i) := w_(i) / d_(i); V]; logic[take[y := v'; V]]]
+
+-- sum[W] first brings a factor free of the index into its sum (c * sum = sum of c times the terms) and merges two
+-- products over the same coordinates (prod A times prod B = prod of A * B), then compares term by term, products as
+-- sums; an equation of two Iverson brackets is the equivalence of their conditions, one word each way. Two products
+-- are compared term by term, = or <= (each factor of the smaller product at least 0). Two nested sums in the other
+-- order on the right are swapped first (over ranges, coordinates or the lattice points of a box). Two sums over the
+-- same range added are one sum of the two terms, on either side (addcoords, addrange, addle). Over a box, the facts
+-- over the points of its type are read at the index (boxfact, boxwith). A product of powers of one base is one power
+-- of the sum of the exponents (powsum), then W proves the relation of the powers (powd, powle).
+lemma lem:zsumfac [a factor into a sum, two products merged, brackets by their conditions]
+  factor: k, n in NN, l in Forms(k, n), c in Point(n) : sum iota, prod i, c_(i) * l_(iota)_(i) = (prod i, c_(i)) * (sum iota, prod i, l_(iota)_(i))
+  bracket: k, n in NN, l in Forms(k, n), t in QQ>=0 : sum iota, iverson(forall i : 2 * l_(iota)_(i) < 2 * t) = sum iota, iverson(forall i : l_(iota)_(i) < t)
+  prodle: k, n in NN, V, W in Forms(k, n), A in Point(n), (forall iota : forall i : V_(iota)_(i) <= A_(i) * W_(iota)_(i)) : sum iota, prod i, V_(iota)_(i) <= sum iota, prod i, A_(i) * W_(iota)_(i)
+  prodge: n in NN, a, b in Point(n), (forall i : a_(i) <= b_(i)) : prod i, (b_(i) + 1) >= prod i, a_(i)
+  swapbox: n, J in NN, b in Grid(n) : (sum j in 0..J, sum u <= b, iverson(sum i, u_(i) <= j)) = sum u <= b, sum j in 0..J, iverson(sum i, u_(i) <= j)
+  swapcoords: k, n in NN, l in Forms(k, n) : (sum iota, sum i, l_(iota)_(i)) = sum i, sum iota, l_(iota)_(i)
+  swaple: n, J in NN, a in Point(n) : (sum j in 0..J, sum i, a_(i)) <= sum i, sum j in 0..J, (a_(i) + 1)
+  swapweight: n, J in NN, b in Grid(n), w_(0..J) in QQ>=0 : (sum u <= b, sum j in 0..J, iverson(sum i, u_(i) <= j) * w_(j)) = sum j in 0..J, (sum u <= b, iverson(sum i, u_(i) <= j)) * w_(j)
+  addcoords: n in NN, mu, F, o in Point(n) : (sum iota, mu_(iota) * (F_(iota) + o_(iota))) = (sum iota, mu_(iota) * F_(iota)) + (sum kappa, mu_(kappa) * o_(kappa))
+  addrange: J in NN : (sum j in 0..J, (j + 1)) = (sum j in 0..J, j) + (sum j in 0..J, 1)
+  addle: n in NN, mu, F, o in Point(n) : (sum iota, mu_(iota) * F_(iota)) + (sum iota, mu_(iota) * o_(iota)) <= sum iota, mu_(iota) * (F_(iota) + o_(iota) + 1)
+  boxfact: n in NN, b in Grid(n), (forall u in Grid(n) : iverson(sum i, u_(i) <= 2) <= iverson(sum i, u_(i) <= 3)) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= sum u <= b, iverson(sum i, u_(i) <= 3)
+  boxwith: n in NN, b in Grid(n), (forall u in Grid(n) : iverson(sum i, u_(i) <= 2) <= iverson(sum i, u_(i) <= 3)) : (sum w <= b, iverson(sum i, w_(i) <= 2)) <= sum w <= b, iverson(sum i, w_(i) <= 3)
+  powsum: k in NN, x in QQ>0, a in Grid(k) : (prod iota, x^(a_(iota))) = x^(sum iota, a_(iota))
+  powd: k, d in NN, x in QQ>0, a in Grid(k), d = sum iota, a_(iota) : (prod iota, x^(a_(iota))) = x^d
+  powle: k, d in NN, a in Grid(k), (sum iota, a_(iota)) <= d : (prod iota, 2^(a_(iota))) <= 2^d
+
+proof lem:zsumfac
+  "factor" sum[sum]
+  "bracket" sum[(V, V)]
+  "prodle" sum[sum[V]]
+  "prodge" sum[V]
+  "swapbox" sum
+  "swapcoords" sum
+  "swaple" sum[sum[V]]
+  "swapweight" sum[sum]
+  "addcoords" sum
+  "addrange" sum
+  "addle" sum
+  "boxfact" sum[V]
+  "boxwith" with[forall v in Grid(n) : iverson(sum i, v_(i) <= 2) <= iverson(sum i, v_(i) <= 3) by logic; sum[V]]
+  "powsum" sum
+  "powd" sum[V]
+  "powle" sum[V]
+
+-- term[J] bounds a sum from below by its term at the index J: each term is at least 0, its sign built from the signs
+-- of its atoms, and J lies in the range of the sum; term[J; W] proves first that t is at most the term at J. Over
+-- the coordinates of tuples, J is a coordinate index in scope (the witness of an existential: coord, coordsame).
+lemma lem:zterm [a term under its sum]
+  core: k, J in NN : (J + 1)^k / 2^J <= sum j in 0..J, (j + 1)^k / 2^j
+  below: k, J in NN : (J + 1)^k / 2^(J + 1) <= sum j in 0..J, (j + 1)^k / 2^j
+  coord: k in NN, p, s in Point(k), (exists j : 2 <= p_(j) * s_(j)) : 2 <= sum iota, p_(iota) * s_(iota)
+  coordsame: k in NN, p, s in Point(k), (exists j : 2 <= p_(j) * s_(j)) : exists j : p_(j) * s_(j) <= sum iota, p_(iota) * s_(iota)
+
+proof lem:zterm
+  "core" term[J]
+  "below" term[J; V]
+  "coord" with[exists j : 2 <= p_(j) * s_(j) by logic; term[j]]
+  "coordsame" with[exists j : 2 <= p_(j) * s_(j) by logic; take[j := j; term[j]]]
+
+-- ind with a hypothesis over every natural number (the tie of each term): the first case reads it at the least
+-- index, the step at the new index, each case an exact combination with the relation at n. A count that multiplies
+-- is at least 1, so it cancels: x + q * W = y = x + q * Z gives W = Z.
+lemma lem:zcells [a telescope of ties, a count cancelled]
+  telescope: q in NN>=1, a, t in NN, c_(0..t) in QQ>=0, (forall j in NN : (a + j)^q + q * c_(j) = (a + j + 1)^q) : a^q + q * (sum j in 0..t, c_(j)) = (a + t + 1)^q
+  cancel: q in NN>=1, W, Z, x, y in QQ>=0, x + q * W = y, x + q * Z = y : W = Z
+
+proof lem:zcells
+  "telescope" ind
+  "cancel" V
+
+-- cells compares two lists of boxes by their weights (each side weight W given by the tie l^q + q W = (l + s)^q):
+-- the first list separated (each point in the interior of at most one box) and covered by the second (each point of
+-- a box of the first in a box of the second), counted on the cells of a common grid; the hypotheses are found by
+-- their shape, here one tie in a relation and one as it is.
+relation (W #zweight q #zcorners l #zsides s) := k, n in NN, W, l in Forms(k, n), s in Sides(k, n), q in Grid(n), (forall iota : forall i : l_(iota)_(i)^q_(i) + q_(i) * W_(iota)_(i) = (l_(iota)_(i) + s_(iota)_(i))^q_(i))
+
+lemma lem:zcellsum [two lists of boxes compared on the cells of a grid]
+  lists: N, N', n in NN, q in Grid(n), l, W in Forms(N, n), s in Sides(N, n), l', W' in Forms(N', n), s' in Sides(N', n), (forall i : 1 <= q_(i)), (W #zweight q #zcorners l #zsides s), (forall j : forall i : l'_(j)_(i)^q_(i) + q_(i) * W'_(j)_(i) = (l'_(j)_(i) + s'_(j)_(i))^q_(i)), (forall w in Point(n) : sum k, iverson(forall i : l_(k)_(i) < w_(i) < l_(k)_(i) + s_(k)_(i)) <= 1), (forall k : forall w in Point(n) : (forall i : l_(k)_(i) <= w_(i) <= l_(k)_(i) + s_(k)_(i)) => exists j : forall i : l'_(j)_(i) <= w_(i) <= l'_(j)_(i) + s'_(j)_(i)) : sum k, prod i, W_(k)_(i) <= sum k, prod i, W'_(k)_(i)
+
+proof lem:zcellsum
+  "lists" cells
+
+-- ind[n; W; W'] is an induction on the natural binder n for any goal: W proves the first case, W' the step, which
+-- reads the case at n as a fact (an existential destructed, its witness under the name it binds); a binder of NN>=k
+-- starts at k. Here: n + 1 <= 2^n; an existential whose witness grows by one at each step; 2 n <= 2^n from n = 2.
+-- ind with no binder, on a product over the coordinates, splits off the last factor (a coordinate in an exponent
+-- indexes its tuple).
+lemma lem:zindn [induction on a natural binder]
+  pow: n in NN : n + 1 <= 2^n
+  exist: n in NN : exists m in NN : n <= 2^m
+  count: n in NN>=2 : 2 * n <= 2^n
+  dil: n, l in NN, A in Grid(n) : (prod i, 2^(l * A_(i))) = 2^(l * (sum i, A_(i)))
+
+proof lem:zindn
+  "pow" ind[n; V; V]
+  "exist" ind[n; take[m := 0; V]; logic[take[m := m + 1; V]]]
+  "count" ind[n; V; V]
+  "dil" ind
+
+-- A natural bound from a rational one: k <= x < j + 1 gives k <= j (the cast, then k < j + 1), in the closer and as
+-- the side of mono (2^k <= 2^j); k = x = j gives k = j (the cast of the equation). A natural relation with a sum is
+-- read in QQ with its casts at the atoms (sum), a sum or a product of its index too (index, prod).
+lemma lem:zround [a natural bound from a rational one]
+  round: k, j in NN, x in QQ>=0, k <= x, x < j + 1 : k <= j
+  strict: k, j in NN, x in QQ>=0, k < x, x <= j : k < j
+  power: k, j in NN, x in QQ>=0, k <= x, x < j + 1 : 2^k <= 2^j
+  shift: kappa, kappa', c in NN, x in QQ>=0, kappa < x + 1, x <= kappa' + c : kappa <= kappa' + c
+  eq: k, j in NN, x in QQ>=0, k = x, j = x : k = j
+  sum: n, c in NN, a in Grid(n), x in QQ>=0, (sum i, a_(i)) <= c, x <= sum i, a_(i) : x <= c
+  index: J, c in NN, x in QQ>=0, (sum j in 0..J, j) <= c, x <= sum j in 0..J, j : x <= c
+  prod: m, d in NN, x in QQ>=0, (m + 1)^d <= (prod i in 1..d, i) * binom(m + d, d), x <= (m + 1)^d : x <= (prod i in 1..d, i) * binom(m + d, d)
+
+proof lem:zround
+  "round" V
+  "strict" V
+  "power" mono
+  "shift" V
+  "eq" V
+  "sum" V
+  "index" V
+  "prod" V
+
+-- The deficit max(a - b, 0) of two natural numbers is a natural number (over N, the truncated difference a - b):
+-- omega closes a natural goal with it (nat), it gives a tuple of NN by a formula (slack), and read in QQ it is the
+-- same number (rat).
+lemma lem:zdeficit [the deficit of two natural numbers]
+  nat: a, b in NN : max(a - b, 0) + b >= a
+  slack: n in NN, a, b in Grid(n) : exists s in Grid(n) : forall i : s_(i) + b_(i) >= a_(i)
+  rat: a, b in NN, x in QQ>=0, x = max(a - b, 0) : x + b >= a
+
+proof lem:zdeficit
+  "nat" V
+  "slack" take[s_(i) := max(a_(i) - b_(i), 0); V]
+  "rat" V
+
+-- A reference at a compound natural term (a sum) carries its cast whole, where the goal has the casts at the atoms:
+-- the instance and its hypotheses are read up to casts (norm_cast).
+lemma lem:zcastref [a reference at a natural sum]
+  base: m in NN, x in QQ>=0, x <= m : x <= m + 1
+  sum: n in NN, a in Grid(n), x in QQ>=0, x <= sum i, a_(i) : x <= (sum i, a_(i)) + 1
+
+proof lem:zcastref
+  "base" V
+  "sum" lem:zcastref(base)[m := (sum i, a_(i)), x := x]
+
+-- After the substitutions of eq (each defining equation by its name), the closer names no removed local: t = 0 gives
+-- x^0 (core, and a case).
+lemma lem:zeqsub [eq after a substitution]
+  core: t in NN, x, y in QQ>0, t <= 1, t = 0, y >= 1 : x^t <= y
+  cases: t in NN, x, y in QQ>0, t <= 1, y >= 1, x <= y : x^t <= y
+
+proof lem:zeqsub
+  "core" eq
+  "cases" cases[t = 0; eq; with[t = 1 by V; eq]]
+
+-- The word choose bounds a binomial coefficient from below, (m + 1)^d <= binom(m + d, d) d! (Mathlib's
+-- Nat.pow_le_choose), the factorial written as the product 1 * ... * d; also inside with (with), then times a power by
+-- mono (mono, chain: L^d <= q^d d! binom(m + d, d) from L <= q (m + 1)).
+lemma lem:zchoose [a lower bound of a binomial coefficient]
+  core: m, d in NN : (m + 1)^d <= binom(m + d, d) * prod i in 1..d, i
+  ge: m, d in NN : (prod i in 1..d, i) * binom(m + d, d) >= (m + 1)^d
+  with: m, d in NN, x in QQ>=0, x <= (m + 1)^d : x <= binom(m + d, d) * prod i in 1..d, i
+  mono: m, d in NN, q in QQ>0, (m + 1)^d <= (prod i in 1..d, i) * binom(m + d, d) : q^d * (m + 1)^d <= q^d * ((prod i in 1..d, i) * binom(m + d, d))
+  chain: m, d in NN, q, L in QQ>0, L <= q * (m + 1) : L^d <= q^d * ((prod i in 1..d, i) * binom(m + d, d))
+
+proof lem:zchoose
+  "core" choose
+  "ge" choose
+  "with" with[(m + 1)^d <= binom(m + d, d) * prod i in 1..d, i by choose; V]
+  "mono" mono
+  "chain" with[(m + 1)^d <= (prod i in 1..d, i) * binom(m + d, d) by choose; with[L^d <= (q * (m + 1))^d by mono; with[q^d * (m + 1)^d <= q^d * ((prod i in 1..d, i) * binom(m + d, d)) by mono; V]]]
+
+-- The word simplex counts the lattice points of a box [0, c] of NN^r whose coordinates add up to m, every c_(k) at
+-- least m: the weak compositions of m into r = d + 1 parts, binom(m + d, d) (Mathlib's
+-- Finset.card_finsuppAntidiag_nat_eq_choose), either side (flip, with binom(m + d, m)).
+lemma lem:zsimplex [the weak compositions in a box]
+  core: r, m, d in NN, c in Grid(r), r = d + 1, (forall k : m <= c_(k)) : (sum t <= c, iverson(sum k, t_(k) = m)) = binom(m + d, d)
+  fix core zsimplex.model
+  flip: r, m, d in NN, c in Grid(r), r = d + 1, (forall k : c_(k) >= m) : binom(m + d, m) = sum t <= c, iverson(sum k, t_(k) = m)
+
+proof lem:zsimplex
+  "core" simplex
+  "flip" simplex
+
+-- The word dyadic gives the exponent of a number w in (0, 1] on the scale of the powers of a numeral b >= 2,
+-- 1 / b^(z + 1) < w <= 1 / b^z (Mathlib's exists_nat_pow_near_of_lt_one at 1 / b), its bounds 0 < w and w <= 1 by V.
+lemma lem:zdyadic [the dyadic exponent of a number in (0, 1]]
+  core: w in QQ>0, w <= 1 : exists z in NN : 1 / 2^(z + 1) < w, w <= 1 / 2^z
+  three: w in QQ>=0, 0 < w, w <= 1 : exists z in NN : 1 / 3^(z + 1) < w, w <= 1 / 3^z
+  prod: w, x in QQ>0, w <= 1, x <= 1 / 2 : exists z in NN : 1 / 2^(z + 1) < w * x, w * x <= 1 / 2^z
+  coord: n in NN, w in Point(n), (forall i : 0 < w_(i)), (forall i : w_(i) <= 1) : forall i : exists z in NN : 1 / 2^(z + 1) < w_(i), w_(i) <= 1 / 2^z
+
+proof lem:zdyadic
+  "core" dyadic
+  "three" dyadic
+  "prod" dyadic
+  "coord" dyadic
+
+-- sum[W] reads a side r * t (or t * r), r the length of the tuples that the index of the sum on the other side reads
+-- and t free of that index, as the sum of r terms t, then compares the two sums term by term (le, ge, flip, eq; rows:
+-- the index over the rows of a tuple of tuples), in the type of the relation (nat: a sum of natural numbers); a side
+-- t^r against a product over coordinates, the same way (prod).
+lemma lem:zsumconst [a sum of r terms against r times a bound]
+  le: r in NN, x in QQ>=0, F in Point(r), (forall j : F_(j) <= x) : (sum j, F_(j)) <= r * x
+  ge: r in NN, x in QQ>=0, F in Point(r), (forall j : x <= F_(j)) : (sum j, F_(j)) >= x * r
+  flip: r in NN, x in QQ>=0, F in Point(r), (forall j : F_(j) <= x) : r * x >= sum j, F_(j)
+  eq: r in NN, x in QQ>=0, F in Point(r), (forall j : F_(j) = x) : (sum j, F_(j)) = r * x
+  rows: r, n in NN, x, y in QQ>0, A in Rows(r, n), (forall j : y^(sum i, A_(j)_(i)) <= x) : (sum j, y^(sum i, A_(j)_(i))) <= r * x
+  nat: n in NN, b in Grid(n), (forall i : b_(i) = 1) : (sum i, b_(i)) = n * 1
+  prod: n, N in NN, x in Weight(n), (forall i : x_(i) = 1 / 2^(N + 1)) : (prod i, x_(i)) = (1 / 2^(N + 1))^n
+
+proof lem:zsumconst
+  "le" sum
+  "ge" sum
+  "flip" sum
+  "eq" sum
+  "rows" sum
+  "nat" sum
+  "prod" sum
+
+-- A function on points read at a member of a tuple of tuples: the type of the member is the type of the points once
+-- the type rows are unfolded (Forms(r, n) of tuples of QQ>=0, Point(n) := (QQ>=0)^n).
+lemma lem:zalias [a loss at a member of a tuple of points]
+  member: r, n in NN, e in QQ>0, K in Loss(n), F in Forms(r, n), (forall w in Point(n) : K(w) <= e) : forall k : K(F_(k)) <= e
+
+proof lem:zalias
+  "member" logic[logic]
+
+-- At the index of a sum compared term by term: a natural term with a numeral read in QQ has its numerals cast at the
+-- leaves, which are dropped (cast, castprod); a fact over the points of the box whose premise is that the point lies
+-- in the box has the premise discharged by the range of the index (boxprem); a fact over every natural number is read
+-- at the index of a sum over a range (range0).
+lemma lem:zsumat [the facts at the index of a sum]
+  cast: k, j, O in NN, A in Grid(k), F in Point(k), (forall iota : F_(iota) <= A_(iota) * (j + O) + 1) : (sum iota, F_(iota)) <= sum iota, (A_(iota) * (j + O) + 1)
+  castprod: k, j in NN, A in Grid(k), F in Point(k), (forall iota : F_(iota) <= A_(iota) * j + 1) : (prod iota, F_(iota)) <= prod iota, (A_(iota) * j + 1)
+  boxprem: n in NN, b in Grid(n), x in QQ>=0, (forall u in Grid(n) : (forall i : u_(i) <= b_(i)) => iverson(sum i, u_(i) <= 2) <= x) : (sum u <= b, iverson(sum i, u_(i) <= 2)) <= sum u <= b, x
+  range0: J in NN, x in QQ>=0, c_(0..J) in QQ>=0, (forall j in NN : c_(j) <= x) : (sum j in 0..J, c_(j)) <= sum j in 0..J, x
+
+proof lem:zsumat
+  "cast" sum[V]
+  "castprod" sum[V]
+  "boxprem" sum[V]
+  "range0" sum[V]
+
+-- An inequality of two Iverson brackets by logic is the implication of their conditions, proved by the word (as the
+-- equation of two brackets is their equivalence): one bracket (core, ge), with a condition that cannot hold (empty),
+-- and term by term in a sum over the rows (sum).
+lemma lem:zivle [two brackets compared by an implication]
+  core: p, q in QQ>=0, (p < 1 => q < 1) : iverson(p < 1) <= iverson(q < 1)
+  ge: p, q in QQ>=0, (p < 1 => q < 1) : iverson(q < 1) >= iverson(p < 1)
+  empty: p in QQ>=0, p >= 1 : iverson(p < 1) <= iverson(1 <= 0)
+  sum: N, n in NN, l in Forms(N, n), w in Point(n), e in Rows(N, n), (forall k : (forall i : l_(k)_(i) < w_(i)) => (forall i : e_(k)_(i) <= 1)) : (sum k, iverson(forall i : l_(k)_(i) < w_(i))) <= sum k, iverson(forall i : e_(k)_(i) <= 1)
+
+proof lem:zivle
+  "core" logic
+  "ge" logic
+  "empty" logic[V]
+  "sum" sum[logic]
+
+-- The word choice takes a witness at each coordinate as one tuple (Classical.choose): from forall i : exists x in S :
+-- P(i, x), S one of NN, QQ>=0, QQ>0, the tuple z with forall i : P(i, z_(i)) (nat, rat), over the rows and the
+-- coordinates of a tuple of tuples too (rows); with the dyadic exponents of the coordinates of a point (with).
+lemma lem:zchoice [a tuple of witnesses]
+  nat: n in NN, w in Point(n), (forall i : exists x in NN : 1 / 2^(x + 1) < w_(i), w_(i) <= 1 / 2^x) : exists z in Grid(n) : forall i : 1 / 2^(z_(i) + 1) < w_(i), w_(i) <= 1 / 2^(z_(i))
+  rat: n in NN, w in Point(n), (forall i : exists x in QQ>=0 : w_(i) <= x, x <= w_(i) + 1) : exists z in Point(n) : forall i : w_(i) <= z_(i), z_(i) <= w_(i) + 1
+  rows: N, n in NN, l in Forms(N, n), (forall k : forall i : exists x in NN : l_(k)_(i) < x) : exists z in Rows(N, n) : forall k : forall i : l_(k)_(i) < z_(k)_(i)
+  with: n in NN, w in Point(n), (forall i : 0 < w_(i)), (forall i : w_(i) <= 1) : exists z in Grid(n) : forall i : 1 / 2^(z_(i) + 1) < w_(i), w_(i) <= 1 / 2^(z_(i))
+
+proof lem:zchoice
+  "nat" choice
+  "rat" choice
+  "rows" choice
+  "with" with[forall i : exists x in NN : 1 / 2^(x + 1) < w_(i), w_(i) <= 1 / 2^x by dyadic; choice]
+
+-- The word enum lists the lattice points of a box [0, b] of NN^n (or [0, c]^n) that meet a row R: a tuple of N
+-- tuples e, every e_(k) in the cut box, every point of the cut box some e_(k), and each point at most once (Mathlib's
+-- Finset.equivFin of the filtered box); units lists the unit vectors. The word reindex reads a sum over such a list
+-- as the sum over the box of iverson(R) times the term (Finset.sum_nbij), from the three facts of enum in scope.
+lemma lem:zenum [the lattice points of a cut box as a list]
+  core: n in NN, b in Grid(n) : exists N in NN : exists e in Rows(N, n) : (forall k : (forall i : e_(k)_(i) <= b_(i)), sum i, e_(k)_(i) <= 2), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists k : forall i : e_(k)_(i) = u_(i)), (forall u in Grid(n) : (sum k, iverson(forall i : e_(k)_(i) = u_(i))) <= 1)
+  units: n in NN : exists N in NN : exists e in Rows(N, n) : (forall k : (forall i : e_(k)_(i) <= 1), sum i, e_(k)_(i) = 1), (forall u in Grid(n) : (forall i : u_(i) <= 1), sum i, u_(i) = 1 => exists k : forall i : e_(k)_(i) = u_(i)), (forall u in Grid(n) : (sum k, iverson(forall i : e_(k)_(i) = u_(i))) <= 1)
+  reindex: n, N in NN, b in Grid(n), e in Rows(N, n), y in QQ>0, (forall k : (forall i : e_(k)_(i) <= b_(i)), sum i, e_(k)_(i) <= 2), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists k : forall i : e_(k)_(i) = u_(i)), (forall u in Grid(n) : (sum k, iverson(forall i : e_(k)_(i) = u_(i))) <= 1) : (sum k, y^(sum i, e_(k)_(i))) = sum u <= b, iverson(sum i, u_(i) <= 2) * y^(sum i, u_(i))
+  with: n in NN, b in Grid(n), y in QQ>0 : exists N in NN : exists e in Rows(N, n) : (sum k, y^(sum i, e_(k)_(i))) = sum u <= b, iverson(sum i, u_(i) <= 2) * y^(sum i, u_(i))
+
+proof lem:zenum
+  "core" enum
+  "units" enum
+  "reindex" reindex
+  "with" with[exists N in NN : exists e in Rows(N, n) : (forall k : (forall i : e_(k)_(i) <= b_(i)), sum i, e_(k)_(i) <= 2), (forall u in Grid(n) : (forall i : u_(i) <= b_(i)), sum i, u_(i) <= 2 => exists k : forall i : e_(k)_(i) = u_(i)), (forall u in Grid(n) : (sum k, iverson(forall i : e_(k)_(i) = u_(i))) <= 1) by enum; take[N := N, e := e; reindex]]
+
+-- A mathlib: row may name several lemmas that together prove the cited statement, here the floor. logic and with
+-- destruct an existential over a number set (QQ>0, QQ>=0, NN, NN>=k), the sign of its witness a fact, and logic
+-- destructs the existentials among the hypotheses in scope, the rows of a relation too.
+cit fact:zfloor [the floor]
+  mathlib: Nat.floor_le, Nat.lt_floor_add_one (Mathlib.Data.Rat.Floor)
+  core: x in QQ>=0 : exists k in NN : k <= x, x < k + 1
+
+relation (c #zpos L) := c in QQ>=0, L in NN, (exists d in QQ>0 : exists M in NN>=1 : d <= c, L <= M)
+
+lemma lem:zfloors [the floor applied, number witnesses destructed]
+  apply: x in QQ>=0 : exists k in NN : k <= x, x < k + 1
+  relation: c in QQ>=0, L in NN, (c #zpos L) : exists e in QQ>0 : exists N in NN>=1 : e <= c + 1, L <= N + 1
+  given: c in QQ>=0, (exists d in QQ>0 : d <= c) : exists e in QQ>0 : e <= 2 * c
+
+proof lem:zfloors
+  "apply" fact:zfloor(core)
+  "relation" logic[take[e := d, N := M; (V, V)]]
+  "given" logic[take[e := 2 * d; V]]
+
+-- take[R := {w in X : P}; W] names a region by a predicate, in a proof only (a statement takes a region variable with
+-- its characterizing hypothesis). R, of a type row set(X), comes with two facts that
+-- logic applies, forall w in R : P and forall w in X : P => exists v in R : forall i : v_(i) = w_(i) (the membership
+-- of a point as the rows write it); a reference takes R as data. Here a box in a larger one, by a rule on regions.
+lemma lem:zregion [a region named in a proof]
+  cover: n in NN, B, B' in Region(n), (forall w in B : exists v in B' : forall i : v_(i) = w_(i)), (forall w in B' : forall i : w_(i) <= 2) : forall w in B : forall i : w_(i) <= 2
+  box: n in NN : forall w in Point(n) : (forall i : w_(i) <= 1) => forall i : w_(i) <= 2
+
+proof lem:zregion
+  "cover" logic[V]
+  "box" take[R := {w in Point(n) : forall i : w_(i) <= 1}, R' := {w in Point(n) : forall i : w_(i) <= 2}; with[forall u in R : exists v in R' : forall i : v_(i) = u_(i) by logic[with[forall i : u_(i) <= 2 by V; logic]]; with[forall u in R : forall i : u_(i) <= 2 by lem:zregion(cover)[B := R, B' := R']; logic[V]]]]
+
+-- cases[P; W1; W2] splits on the clause P: W1 proves the goal with P as a fact, W2 with its negation as a fact,
+-- pushed in (a relation flipped, forall and exists swapped, a conjunction under not an implication; not n = 0 for a
+-- natural number n is 1 <= n). Here a coordinate zero or at least 1, a point with a large coordinate or none, and two
+-- orders.
+lemma lem:zsplit [a case split]
+  zero: n in NN, a in Grid(n), y in Point(n), x in QQ>=0, (forall i : 1 <= a_(i) => y_(i) <= x), (forall i : a_(i) = 0 => y_(i) <= x) : forall i : y_(i) <= x
+  shell: n in NN, a in Grid(n), s, y in Point(n), K in QQ>=0, (forall i : 1 <= a_(i) => s_(i) <= 2^(a_(i)) * y_(i) => K <= 1), ((forall i : 1 <= a_(i) => 2^(a_(i)) * y_(i) < s_(i)) => K <= 1) : K <= 1
+  order: x, y in QQ>=0, (x <= y => x <= 2), (y < x => x <= 2 + y), y <= 1 : x <= 3
+
+proof lem:zsplit
+  "zero" cases[a_(i) = 0; logic[V]; logic[V]]
+  "shell" cases[exists i : 1 <= a_(i), s_(i) <= 2^(a_(i)) * y_(i); logic[V]; logic[V]]
+  "order" cases[x <= y; logic[V]; logic[V]]
+
+-- A point of a region as the rows write it, exists v in B : forall i : v_(i) = w_(i), is the point w itself (v is
+-- identified with w), so a rule over B applies at w. A rule that the proof brings in (a fact of a region named by
+-- take, a step of with) is applied to the hypotheses already in scope too.
+lemma lem:zmember [a point of a region by its characterization]
+  bound: n in NN, B in Region(n), K in Loss(n), (forall w in B : K(w) <= 1), u in Point(n), (exists v in B : forall i : v_(i) = u_(i)) : K(u) <= 1
+  named: n in NN, K in Loss(n), (forall w in Point(n) : (forall i : w_(i) <= 1) => K(w) <= 1), u in Point(n), (forall i : u_(i) <= 1) : 2 * K(u) <= 2
+
+proof lem:zmember
+  "bound" logic[V]
+  "named" take[R := {w in Point(n) : forall i : w_(i) <= 1}; with[forall w in R : K(w) <= 1 by logic[V]; logic[V]]]
+
+-- logic reads a binder over a number set (its bound, NN>=1 or QQ>0, by arithmetic) and a premise of several
+-- conjuncts (each matched with a fact alone, passed together); a universal goal over several names is introduced
+-- name by name.
+lemma lem:zrules [rules over numbers]
+  rule: lambda in QQ>0, L_0 in NN, (forall L, kappa in NN : (L >= L_0, kappa <= lambda * L, lambda * L < kappa + 1) => exists N in NN>=1 : kappa <= N) : forall L, kappa in NN : (L >= L_0 + 1, kappa <= lambda * L, lambda * L < kappa + 1) => exists N in NN>=1 : kappa <= N
+  guard: (forall L in NN>=1 : L <= 2 => L * L <= 4) : forall L in NN : L = 1 => L * L <= 4
+
+proof lem:zrules
+  "rule" with[L >= L_0 by V; logic[take[N := N; V]]]
+  "guard" with[L <= 2 by V; logic[V]]
+
+-- A reference names a row whose key has several words: lem:y(two words), the Lean name with underscores.
+lemma lem:zkeys [a key of two words]
+  first bound: x in QQ>=0, x <= 1 : x <= 2
+  use: x in QQ>=0, x <= 1 : x <= 3
+
+proof lem:zkeys
+  "first bound" V
+  "use" lem:zkeys(first bound)
+
+-- The closer, last: the conjunctions among the facts split, an exponent with a sum or a factor 0 or 1 distributed
+-- ((l + 1) * a = l * a + a, then the power split), a quotient by a positive term cleared (k <= x / D gives
+-- k * D <= x), a maximum split by cases, a natural goal read in QQ (k <= j as k < j + 1), the relations between
+-- natural numbers of every fact read in QQ, a sign 0 <= t by positivity, and for an equation the equations of the
+-- facts substituted before the quotients are cleared.
+lemma lem:zclose [the closer on powers, quotients, maxima and natural goals]
+  power: n, l in NN, a in Grid(n), y, u, lb in Point(n), sb in Weight(n), (forall i : lb_(i) <= y_(i), 2^((l + 1) * a_(i)) * y_(i) <= lb_(i) + sb_(i)), (forall i : u_(i) = 2^(a_(i)) * y_(i)) : forall i : lb_(i) <= u_(i), 2^(l * a_(i)) * u_(i) <= lb_(i) + sb_(i)
+  zero: n in NN, a in Grid(n), y, lb in Point(n), sb in Weight(n), (forall i : lb_(i) <= y_(i), 2^(0 * a_(i)) * y_(i) <= lb_(i) + sb_(i)) : forall i : y_(i) <= lb_(i) + sb_(i)
+  level: D in NN>=1, L, K in NN : exists l_1 in NN : L + K <= l_1 * D, l_1 * D <= L + K + D
+  deficit: D in NN>=1, L, K in NN, K + 1 <= L : exists g in NN : g * D + K + 1 <= L, L <= g * D + K + D
+  scale: n in NN, a in Grid(n), w, w' in Point(n), h in Weight(n), (forall i : w'_(i) = h_(i) * w_(i)), (forall i : h_(i) = 1 / 2^(a_(i))) : forall i : 2^(a_(i)) * w'_(i) = w_(i)
+  cast: c in QQ>0, J, L in NN, J > 4 / c, L >= 2 * J : 4 / c < L + 1
+
+proof lem:zclose
+  "power" (V, V)
+  "zero" V
+  "level" with[exists k in NN : k <= (L + K) / D, (L + K) / D < k + 1 by fact:zfloor(core)[x := (L + K) / D; (L + K) / D >= 0 by V]; take[l_1 := k + 1; (V, V)]]
+  "deficit" with[exists k in NN : k <= max(L - (K + 1), 0) / D, max(L - (K + 1), 0) / D < k + 1 by fact:zfloor(core)[x := max(L - (K + 1), 0) / D; max(L - (K + 1), 0) / D >= 0 by V]; take[g := k; (V, V)]]
+  "scale" V
+  "cast" with[L >= J by V; V]
+
+-- logic reads an equivalence that ends a hypothesis as its two implications, and takes a membership of a point for
+-- the membership as the rows write it (exists v in C : forall i : v_(i) = w_(i)): a region given by its
+-- characterization, read both ways.
+lemma lem:zchar [a region by its characterization]
+  forward: n in NN, C in Region(n), K in Loss(n), (forall y in Point(n) : (exists v in C : forall i : v_(i) = y_(i)) <=> (forall i : y_(i) <= 1)), (forall y in Point(n) : (forall i : y_(i) <= 1) => K(y) <= 1) : forall w in C : K(w) <= 1
+  back: n in NN, C in Region(n), K in Loss(n), (forall y in Point(n) : (exists v in C : forall i : v_(i) = y_(i)) <=> (forall i : y_(i) <= 1)), (forall w in C : K(w) <= 1), u in Point(n), (forall i : u_(i) <= 1) : K(u) <= 1
+
+proof lem:zchar
+  "forward" logic[V]
+  "back" with[forall i : u_(i) <= 1 by V; logic[V]]
+
+-- One word on a relation goal of several rows: a reference proves it whole; V or logic takes the fact in scope that
+-- states it (a step of with), else closes its fields from the facts.
+lemma lem:zone [one word on a relation goal]
+  site: q in QQ>0, t in QQ>=0, q <= t, t <= q + q : (q #zsite t)
+  again: q in QQ>0, t in QQ>=0, q <= t, t <= q + q : (q #zsite t)
+  step: q in QQ>0, t in QQ>=0, q <= t, t <= q + q : (q #zsite t)
+
+proof lem:zone
+  "site" (V, V)
+  "again" lem:zone(site)
+  "step" with[(q #zsite t) by lem:zone(site); V]
+
+-- logic, with its default word: a membership of a union is split by cases, each case a logic of its own with the
+-- membership in its region (the rules over that region apply at the point), closed by the goal as a fact, by
+-- arithmetic (exfalso; linarith) or by tauto; a membership known already is not drawn again, so that a cycle of
+-- inclusions ends. A relation fact (a step of with, a witness) gives its fields that are rules.
+relation (K #zcapped L #zon B) := n, L in NN, K in Loss(n), B in Region(n), (forall w in B : 2^L * K(w) <= 1 => exists k in NN : K(w) <= k)
+
+lemma lem:zunion [a membership of a union, split]
+  union: n, L in NN, K in Loss(n), B, B_1, B_2 in Region(n), B subseteq B_1 cup B_2, (K #zcapped L #zon B_1), (forall w in B_2 : 1 < 2^L * K(w)) : (K #zcapped L #zon B)
+  cycle: n, L in NN, K in Loss(n), B, B_1, B_2 in Region(n), B subseteq B_1 cup B_2, B_2 subseteq B, (K #zcapped L #zon B_1), (forall w in B_2 : 1 < 2^L * K(w)) : (K #zcapped L #zon B)
+
+proof lem:zunion
+  "union" with[(K #zcapped L #zon B_1) by logic; logic]
+  "cycle" with[(K #zcapped L #zon B_1) by logic; logic]
+
+-- A premise of several parts stays a fact part by part when logic destructs it (an existential among them too), so
+-- a rule whose premise has the same parts applies; a universal over the coordinates inside a conjunction is
+-- instantiated at the index the goal introduces; the closer substitutes an equation between a natural value and a
+-- numeral (a_(i) = 0) before it reads the powers. A relation that a fact states as it is closes by that fact.
+lemma lem:zparts [the parts of a premise]
+  low: n in NN, a in Grid(n), lb, y in Point(n), sb in Weight(n), S in Region(n), c_0 in QQ>0, K in Loss(n), (forall v in Point(n) : (exists u in S : forall i : u_(i) = v_(i)) <=> ((forall i : lb_(i) <= v_(i) <= lb_(i) + sb_(i)), (exists i : 1 <= a_(i), sb_(i) <= 2^(a_(i)) * v_(i)))), (forall w in S : c_0 <= K(w)) : (forall i : lb_(i) <= y_(i) <= lb_(i) + sb_(i)), (exists i : 1 <= a_(i), sb_(i) <= 2^(a_(i)) * y_(i)) => c_0 <= K(y)
+  index: n in NN, lb, y in Point(n), sb in Weight(n) : (forall i : lb_(i) <= y_(i)), (exists i : sb_(i) <= y_(i)) => forall i : lb_(i) <= y_(i) + sb_(i)
+  zero: n in NN, a in Grid(n), u, y, lb in Point(n), (forall i : u_(i) = 2^(a_(i)) * y_(i)), (forall i : y_(i) <= lb_(i)) : forall i : a_(i) = 0 => u_(i) <= lb_(i)
+  same: q in QQ>0, t in QQ>=0, q <= t, t <= q + q : exists r in QQ>0 : (r #zsite t)
+
+proof lem:zparts
+  "low" logic[V]
+  "index" V
+  "zero" V
+  "same" with[(q #zsite t) by (V, V); take[r := q; V]]
+
+-- An existential premise of a rule (exists i : P_1, P_2) is given by its parts at an index in scope (a destructed
+-- existential, a case of cases); the premises and the facts are matched after the arithmetic of numerals that
+-- push_cast does on the goal ((0 + 1) * a as a). In an equation goal the closer substitutes an equation over every
+-- index (forall i : u_(i) = F) at the index of the goal.
+lemma lem:zpack [an existential premise from its parts]
+  part: n in NN, a in Grid(n), y in Point(n), sb in Weight(n), c_0 in QQ>0, K in Loss(n), (forall v in Point(n) : (exists i : 1 <= a_(i), sb_(i) <= 2^(a_(i)) * v_(i)) => c_0 <= K(v)) : (exists i : 1 <= a_(i), sb_(i) <= 2^((0 + 1) * a_(i)) * y_(i)) => c_0 <= K(y)
+  case: n in NN, a in Grid(n), y in Point(n), sb in Weight(n), c_0 in QQ>0, K in Loss(n), (forall v in Point(n) : (forall i : v_(i) <= sb_(i)), (exists i : 1 <= a_(i), sb_(i) <= 2^(a_(i)) * v_(i)) => c_0 <= K(v)), (forall v in Point(n) : (forall i : 1 <= a_(i) => 2^(a_(i)) * v_(i) < sb_(i)) => c_0 <= K(v)) : (forall i : y_(i) <= sb_(i)) => c_0 <= K(y)
+  dilate: n, l in NN, a in Grid(n), u, y in Point(n), sb in Weight(n), (forall i : u_(i) = 2^(a_(i)) * y_(i)), (exists i : sb_(i) <= 2^(l * a_(i)) * u_(i)) : exists i : sb_(i) <= 2^((l + 1) * a_(i)) * y_(i)
+
+proof lem:zpack
+  "part" logic[V]
+  "case" cases[exists i : 1 <= a_(i), sb_(i) <= 2^(a_(i)) * y_(i); logic[V]; logic[V]]
+  "dilate" logic[take[i := i; with[2^((l + 1) * a_(i)) * y_(i) = 2^(l * a_(i)) * u_(i) by V; V]]]
+
+-- A list of one box (k = 1) given by take with a formula that does not read its row: the index of the rows keeps
+-- its range, a universal over the rows is introduced, an existential over them has the only row as its witness,
+-- and a sum or a product over the rows is its term (Fin.sum_univ_one).
+relation (l #zbox s #zin B) := k, n in NN, l in Forms(k, n), s in Sides(k, n), B in Region(n), (forall iota : forall w in Point(n) : (forall i : l_(iota)_(i) <= w_(i) <= l_(iota)_(i) + s_(iota)_(i)) => exists v in B : forall i : v_(i) = w_(i)), (exists iota : forall i : l_(iota)_(i) < l_(iota)_(i) + s_(iota)_(i))
+
+lemma lem:zonebox [a list of one box]
+  one: n in NN, lb in Point(n), sb in Weight(n), B in Region(n), (forall w in Point(n) : (forall i : lb_(i) <= w_(i) <= lb_(i) + sb_(i)) => exists v in B : forall i : v_(i) = w_(i)) : exists l in Forms(1, n), s in Sides(1, n) : (l #zbox s #zin B), sum iota, prod i, s_(iota)_(i) = prod i, sb_(i)
+
+proof lem:zonebox
+  "one" take[l_(iota)_(i) := lb_(i), s_(iota)_(i) := sb_(i); ((logic, V), sum[V])]
+
+-- Quotients and powers in the closer: a quotient by a power of a numeral base at least 1 is at most its numerator,
+-- and times the power it is its numerator; a power whose exponent has a factor 0 is 1; a power against a power of
+-- the same base is monotone in the exponent (tried first); an Iverson bracket is split by cases; V on a chain is V
+-- on each link.
+lemma lem:zquot [quotients and powers in the closer]
+  quot: n in NN, a in Grid(n), w, lb in Point(n), sb in Weight(n), (forall i : w_(i) <= lb_(i) + sb_(i) / 2^(a_(i))) : forall i : w_(i) <= lb_(i) + sb_(i)
+  zero: n, l in NN, a in Grid(n), w, lb in Point(n), sb in Weight(n), (forall i : w_(i) <= lb_(i) + sb_(i) / 2^(l * a_(i))) : forall i : a_(i) = 0 => 2^(l * a_(i)) * w_(i) <= lb_(i) + sb_(i)
+  cancel: n, l in NN, a in Grid(n), w, lb in Point(n), sb in Weight(n), (forall i : lb_(i) = 0), (forall i : w_(i) <= lb_(i) + sb_(i) / 2^(l * a_(i))) : forall i : 2^(l * a_(i)) * w_(i) <= lb_(i) + sb_(i)
+  mono: k, m, l in NN, k + 1 <= m : 2^(l * (k + 1)) <= 2^(l * m)
+  bracket: x in QQ>=0 : iverson(x <= 1) <= 1
+  chain: x, y, z in QQ>=0, x <= y, y <= z : x <= y <= z
+
+proof lem:zquot
+  "quot" V
+  "zero" V
+  "cancel" V
+  "mono" V
+  "bracket" V
+  "chain" V
+
+-- An equation of naturals read in QQ from right to left: the power of the sum replaced by the product of the
+-- powers, after the equation e = sum i, a_(i) is substituted.
+lemma lem:zprod [an equation of naturals read right to left]
+  core: n, l in NN, a in Grid(n) : (prod i, 2^(l * a_(i))) = 2^(l * (sum i, a_(i)))
+  use: n, l, e in NN, a in Grid(n), sb in Weight(n), e = sum i, a_(i) : (prod i, sb_(i) / 2^(l * a_(i))) * 2^(l * e) = prod i, sb_(i)
+
+proof lem:zprod
+  "core" ind
+  "use" with[(prod i, sb_(i) / 2^(l * a_(i))) * (prod i, 2^(l * a_(i))) = prod i, sb_(i) by sum[V]; with[(prod i, 2^(l * a_(i))) = 2^(l * (sum i, a_(i))) by lem:zprod(core)[n := n, l := l, a := a]; V]]
+
+-- A reference that concludes a universal over points proves the goal at the point the goal introduced.
+lemma lem:zall [a reference that concludes a universal]
+  first: n in NN, K in Loss(n), c in QQ>0, (forall y in Point(n) : c <= K(y)) : forall y in Point(n) : c <= K(y) + c
+  second: n in NN, K in Loss(n), c in QQ>0, (forall y in Point(n) : c <= K(y)) : forall y in Point(n) : c <= K(y) + c
+
+proof lem:zall
+  "first" logic[V]
+  "second" lem:zall(first)
+
+-- A universal case clause holds at the index in scope; in the other case the witness of its negation, an index
+-- named apart (i_2), carries the facts over every index.
+lemma lem:zcase [a universal case clause at the index in scope]
+  one: n in NN, w, lb in Point(n), sb in Weight(n), (forall i : w_(i) <= lb_(i) + sb_(i)) : forall i : w_(i) <= lb_(i) + 2 * sb_(i)
+
+proof lem:zcase
+  "one" logic[cases[forall i : w_(i) <= lb_(i) + sb_(i); V; V]]
+
+-- A name bound in a relation that is free in an argument (C below) is renamed in the instance; take gives it by
+-- its own name.
+relation (x #zroom B) := x, B in QQ>0, x <= B, (exists C in QQ>0 : C * x <= B)
+
+lemma lem:zcap [a bound name of a relation free in an argument]
+  one: c, C in QQ>0, c <= C : (c #zroom C)
+
+proof lem:zcap
+  "one" V, take[C := 1; V]
+
+-- The sign of a product of coordinates in QQ>0, alone or over a power, in a side goal of take.
+lemma lem:zprodpos [the sign of a product of coordinates in QQ>0]
+  one: n, k in NN, sb in Weight(n), P in QQ>0, P = prod i, sb_(i) : exists c in QQ>0 : c * 2^k = P
+
+proof lem:zprodpos
+  "one" take[c := (prod i, sb_(i)) / 2^k; V]
+
+-- A price of nonnegative sign that a strict hypothesis makes strict (0 < kq): the price kq / (1 + eta) is used
+-- from above.
+lemma lem:progstrict [a price made strict by a hypothesis]
+  given: kq, eta in QQ>=0
+  (1): 0 < kq : prog(x in QQ>=0, (1 + eta) * x >= 1 : kq * x) = (kq / (1 + eta), 1)
+
+proof lem:progstrict
+  (1) prog[kq / (1 + eta); x := 1 / (1 + eta)]
+
+-- A program row of two scales.
+lemma lem:zprogrow [a program of two scales]
+  given: N in QQ>0
+  (1): prog(x, y in QQ>=0, 4 * x + 2 * y >= 1 : N * x + N * y) = (N / 4, 1)
+
+proof lem:zprogrow
+  (1) prog[N / 4; x := 1 / 4]
+
+-- The reading of a program row at a point (at x := a, y := b): its least value is at most the cost there, the point
+-- feasible by the facts; the goal is the reading (1), or follows from it by linear arithmetic (2), also for a row with
+-- a guard (3).
+lemma lem:zprogread [the reading of a program at a point]
+  given: N, a, b in QQ>0, 1 <= 4 * a + 2 * b
+  (1): N / 4 <= N * a + N * b
+  (2): N <= 4 * N * a + 4 * N * b
+
+proof lem:zprogread
+  (1) lem:zprogrow(1)[N := N; at x := a, y := b]
+  (2) lem:zprogrow(1)[N := N; at x := a, y := b]
+
+-- A relation at the level L read from one at the level L' + D: an equation of natural numbers L = t, L a name of
+-- the goal and t free of L, is substituted when logic destructs it (a premise or a witness, both orientations) or
+-- when with states it; the goal then reads t, and the relation is the fact as it is. A fact that binds L again (a
+-- rule over every level, the hypothesis of an induction) keeps its binder, and its number binders are matched to
+-- terms (L := L' + D, rule); the casts of L' + D to QQ are pushed, as a with-clause writes them (cast).
+relation (x #zlvl L) := x, L in NN, x <= 2^L, 2^L <= x + 2^L
+
+lemma lem:zlvlbase [a relation at every level]
+  core: K in NN : (2^K #zlvl K)
+
+proof lem:zlvlbase
+  "core" V, V
+
+lemma lem:zsubst [an equation of natural numbers substituted]
+  core: D in NN : forall L in NN : (exists L' in NN : L = L' + D) => exists x in NN : (x #zlvl L)
+  right: D in NN : forall L in NN : (exists L' in NN : L' + D = L) => exists x in NN : (x #zlvl L)
+  premise: D, M in NN : forall L in NN : L = M + D => exists x in NN : (x #zlvl L)
+  with: D in NN : forall L in NN : (exists L' in NN : L = L' + D) => exists x in NN : (x #zlvl L)
+  rule: D in NN : (forall L, x in NN : (x #zlvl L) => (2 * x #zlvl L + 1)) => forall L in NN : (exists L' in NN : L = L' + D + 1) => exists x in NN : (x #zlvl L)
+  cast: D in NN, q in QQ>=0 : forall L in NN : (exists L' in NN : L = L' + D, q <= L') => q + D <= L
+
+proof lem:zsubst
+  "core" logic[with[(2^(L' + D) #zlvl L' + D) by lem:zlvlbase(core)[K := L' + D]; take[x := 2^(L' + D); V]]]
+  "right" logic[with[(2^(L' + D) #zlvl L' + D) by lem:zlvlbase(core)[K := L' + D]; take[x := 2^(L' + D); V]]]
+  "premise" logic[with[(2^(M + D) #zlvl M + D) by lem:zlvlbase(core)[K := M + D]; take[x := 2^(M + D); V]]]
+  "with" with[exists L' in NN : L = L' + D by logic; with[(2^(L' + D) #zlvl L' + D) by lem:zlvlbase(core)[K := L' + D]; take[x := 2^(L' + D); V]]]
+  "rule" logic[with[(2^(L' + D) #zlvl L' + D) by lem:zlvlbase(core)[K := L' + D]; logic[take[x := 2 * 2^(L' + D); V]]]]
+  "cast" logic[with[q + D <= L' + D by V; logic]]
+
+-- logic on a goal A subseteq B: the point w and its membership in A introduced, the goal its membership in B (a
+-- union read as the disjunction of the memberships); the rules read the membership, and the word after them (with, a
+-- case split on the point by cases) names the point w. The parts of a premise that logic destructs are rules as the
+-- hypotheses are (conj).
+lemma lem:zsubset [a subset of regions by logic]
+  inc: n in NN, K in Loss(n), R, S in Region(n), (forall y in Point(n) : (exists v in R : forall i : v_(i) = y_(i)) <=> K(y) <= 1), (forall y in Point(n) : (exists v in S : forall i : v_(i) = y_(i)) <=> K(y) <= 2) : R subseteq S
+  union: n in NN, K in Loss(n), R, S, U in Region(n), (forall y in Point(n) : (exists v in R : forall i : v_(i) = y_(i)) <=> K(y) <= 3), (forall y in Point(n) : (exists v in S : forall i : v_(i) = y_(i)) <=> K(y) <= 1), (forall y in Point(n) : (exists v in U : forall i : v_(i) = y_(i)) <=> 1 <= K(y)) : R subseteq S cup U
+  conj: n in NN, K in Loss(n), R, S in Region(n) : (forall y in R : K(y) <= 1), (forall y in Point(n) : K(y) <= 2 => exists v in S : forall i : v_(i) = y_(i)) => R subseteq S
+
+proof lem:zsubset
+  "inc" logic[with[K(w) <= 2 by V; logic]]
+  "union" logic[cases[K(w) <= 1; logic; with[1 <= K(w) by V; logic]]]
+  "conj" logic[with[K(w) <= 2 by V; logic]]
+
+-- A universal goal on a name in scope: after with destructs exists i : P, a goal forall i : Q introduces its index as
+-- i_2 (as logic names a clashing witness), so that the facts on the witness i keep their meaning and their Lean text.
+lemma lem:zfresh [a universal goal on the name of a witness]
+  wit: n in NN, a in Grid(n), (exists i : 2 <= a_(i)) : (exists j : 1 <= a_(j)), (forall i : 1 <= a_(i) => 2 <= a_(i) + a_(i))
+  rule: n in NN, a, b in Grid(n), (exists i : 1 <= a_(i)), (forall i : 1 <= a_(i) => 1 <= b_(i)) : (exists j : 1 <= a_(j)), (forall i : 1 <= a_(i) => 2 <= b_(i) + b_(i))
+
+proof lem:zfresh
+  "wit" with[exists i : 2 <= a_(i) by logic; (take[j := i; V], V)]
+  "rule" with[exists i : 1 <= a_(i) by logic; (take[j := i; V], logic[V])]
+
+lemma lem:zprogguard [the reading of a program row with a guard]
+  given: kq, eta, z in QQ>=0, 0 < kq, (1 + eta) * z >= 1
+  (1): kq / (1 + eta) <= kq * z
+
+proof lem:zprogguard
+  (1) lem:progstrict(1)[kq := kq, eta := eta; at x := z]
+
+-- A bundle: a relation on it as a hypothesis, read by its fields; inside a bracket, decided classically; the
+-- word unfold reads the relations of a goal by their fields (R_iff), so that two sides that read the same once
+-- unfolded are equal.
+lemma lem:zbundle [a program as one object]
+  hyp: k, n, L in NN, Pr in Prog(k, n), s in Grid(n), (s #zfeasible Pr #zlevel L) : forall iota : (sum i, Pr.P_(iota)_(i) * s_(i)) + Pr.op_(iota) >= Pr.om_(iota)
+  fix hyp zbundle
+  count: k, n, L in NN, Pr in Prog(k, n), b in Grid(n) : (sum s <= b, iverson((s #zfeasible Pr #zlevel L))) <= sum s <= b, 1
+  unfold: k, n, L in NN, Pr in Prog(k, n), b in Grid(n) : (sum s <= b, iverson((s #zfeasible Pr #zlevel L))) = sum s <= b, iverson(forall iota : (sum i, Pr.P_(iota)_(i) * s_(i)) + Pr.op_(iota) >= (sum i, Pr.N_(iota)_(i) * s_(i)) + Pr.om_(iota) + Pr.eps_(iota) * L)
+  build: k, n, a in NN : exists Pr in Prog(k, n) : forall iota : (forall i : Pr.P_(iota)_(i) + Pr.N_(iota)_(i) = 2), Pr.op_(iota) = a + 1, Pr.om_(iota) + Pr.eps_(iota) = 1
+  cert: k, a in NN : exists C in ZCert(k) : C.d = a + 1, forall iota : C.y_(iota) >= C.d
+  diag: n, a in NN : exists Pr in Prog(n, n) : forall iota : (forall i : Pr.P_(iota)_(i) = 2 * iverson(iota = i)), (sum i, Pr.P_(iota)_(i)) = 2
+
+proof lem:zbundle
+  "hyp" logic[V]
+  "count" sum[cases V]
+  "unfold" unfold[V]
+  "build" take[Pr.P_(iota)_(i) := 2, Pr.N_(iota)_(i) := 0, Pr.op_(iota) := a + 1, Pr.om_(iota) := 0, Pr.eps_(iota) := 1; (V, V, V)]
+  "cert" take[C.y_(iota) := a + 2, C.d := a + 1; (V, V)]
+  "diag" take[Pr.P_(iota)_(i) := 2 * iverson(iota = i), Pr.N_(iota)_(i) := 0, Pr.op_(iota) := a + 1, Pr.om_(iota) := 0, Pr.eps_(iota) := 1; (V, sum)]
+
+-- Indices are counts, with their order and equality: two indices of one range compare, in an indicator or as a
+-- guard; the indicator of equality picks the coordinate out of a sum.
+lemma lem:zindex [two indices compare]
+  pick: n in NN, x in Grid(n) : forall i : (sum iota, iverson(iota = i) * x_(iota)) = x_(i)
+  below: n in NN, x in Grid(n) : forall i : (sum iota, iverson(iota < i) * x_(iota)) <= sum iota, iverson(iota <= i) * x_(iota)
+  guard: n in NN, x in Grid(n), (forall i : forall j : i <= j => x_(i) <= x_(j)) : forall i : forall j : i < j => x_(i) <= x_(j)
+
+proof lem:zindex
+  "pick" sum
+  "below" sum[cases V]
+  "guard" logic[V]
+
+-- An index compares with an index of another range, or with a count, as the count it is: the rows iota of a
+-- tuple of tuples against the coordinates i of a row, an index up to a count t, the indicator of two indices of two
+-- ranges in a sum, read term by term (no pick: the two ranges differ), and the rows of a second block, the row iota
+-- at the coordinate i when iota = K + i.
+lemma lem:zcross [an index compares with an index of another range or with a count]
+  cross: k, n in NN, f in Rows(k, n), (forall iota : forall i : iota <= i => f_(iota)_(i) <= 1) : forall iota : forall i : iota < i => f_(iota)_(i) <= 1
+  count: n, t in NN, x in Grid(n), (forall i : i <= t => x_(i) <= 1) : forall i : i < t => x_(i) <= 1
+  diag: k, n in NN, x in Grid(n), y in Grid(k) : forall iota : (sum i, iverson(iota = i) * y_(iota) * x_(i)) <= y_(iota) * sum i, x_(i)
+  block: k, n, K in NN, f in Rows(k, n), (forall iota : forall i : iota = K + i => f_(iota)_(i) <= 1) : forall iota : forall i : K + i = iota => f_(iota)_(i) <= 1
+
+proof lem:zcross
+  "cross" logic[V]
+  "count" logic[V]
+  "diag" sum[cases V]
+  "block" logic[V]
+
+-- A relation used at other names of its dimensions: the dimensions of the use are read from the declarations of its
+-- arguments (k, n := n, k, at once), so that its field n <= t reads k <= t at the use, and casts to the goal over QQ.
+relation (f #zwide t) := k, n in NN, f in Rows(k, n), t in NN, n <= t
+
+lemma lem:zwide [a relation at other names of its dimensions]
+  swap: k, n, t in NN, x in QQ>=0, g in Rows(n, k), (g #zwide t), x <= k : x <= t
+
+proof lem:zwide
+  "swap" V
+
+-- A bundle that take builds part by part, at other names of its dimensions: the fields of the relation read them from
+-- the set of the existential (r, h for k, n), as for a declared argument.
+type ZBox(k, n) := {lo, hi in Grid(n), w in Grid(k), d in NN}
+relation (B #zfit t) := k, n in NN, B in ZBox(k, n), t in NN, n = B.d + 1, k <= t
+
+lemma lem:ztake [a bundle built by take at other names of its dimensions]
+  build: r, h, t in NN, h = 3, r <= t : exists B in ZBox(r, h) : B #zfit t
+
+proof lem:ztake
+  "build" take[B.lo_(i) := 0, B.hi_(i) := 1, B.w_(j) := 0, B.d := 2; (V, V)]
+
+-- One reference proves a conjunction whole, as it proves any goal: its conclusion is the conjunction.
+lemma lem:zpair [one reference for a conjunction]
+  core both: x, y in QQ>=0, x <= y : x <= y + 1, x <= y + 2
+  pair: x, y in QQ>=0, x <= y : x <= y + 1, x <= y + 2
+
+proof lem:zpair
+  "core both" (V, V)
+  "pair" lem:zpair(core both)[x := x, y := y]
+
+-- A function on points given by a formula in its point (`K(v) := t`, as a family by a formula in its index): the rule
+-- of a loss at the loss that sums the coordinates, its hypothesis and its conclusion read at the formula.
+lemma lem:zpointfun [a loss given by a formula]
+  base: n in NN, K in Loss(n), w in Point(n), a in QQ>=0, K(w) <= a : K(w) <= a + 1
+  inst: n in NN, w in Point(n), a in QQ>=0, (sum i, w_(i)) <= a : (sum i, w_(i)) <= a + 1
+
+proof lem:zpointfun
+  "base" V
+  "inst" lem:zpointfun(base)[n := n, K(v) := (sum i, v_(i)), w := w, a := a]
+
+-- A family of functions on points given by a formula in its index and its point (`W_(p)(s) := t`, as `K(v) := t` for
+-- one function): the sum of the bounds of a family of weights on a box, at weights 2^(-s) scaled by a family of masses.
+type Mesh(n) := Grid(n) -> QQ>=0
+lemma lem:zfamfun [a family of functions given by a formula]
+  base: P, n in NN, b in Grid(n), W_(1..P) in Mesh(n), U_(1..P) in QQ>=0, (forall p in NN>=1 : p <= P => (sum s <= b, W_(p)(s)) <= U_(p)) : (sum p in 1..P, sum s <= b, W_(p)(s)) <= sum p in 1..P, U_(p)
+  inst: P, n in NN, b in Grid(n), a_(1..P) in QQ>=0, (forall p in NN>=1 : p <= P => (sum s <= b, a_(p) / 2^(sum i, s_(i))) <= a_(p) + 1) : (sum p in 1..P, sum s <= b, a_(p) / 2^(sum i, s_(i))) <= sum p in 1..P, (a_(p) + 1)
+
+proof lem:zfamfun
+  "base" sum[logic]
+  "inst" lem:zfamfun(base)[P := P, n := n, b := b, W_(p)(s) := a_(p) / 2^(sum i, s_(i)), U_(p) := a_(p) + 1]
+
+-- An index over the coordinates read as the count it is in a term, as the coefficient 2 * iota of a
+-- row: a count read from an index indexes nothing.
+lemma lem:zidxcount [an index read as a count]
+  core: n in NN, x in Grid(n) : (sum i, 2 * x_(i)) <= (sum i, 2 * i * x_(i))
+
+proof lem:zidxcount
+  "core" sum[V]
+
+-- The bound of an index and the guard of a name, each by name. An index over the coordinates of the tuples of length
+-- n is a count from 1 to n: its bound i <= n is a fact of the step (Lean: i.isLt), which a certificate names hb(i)
+-- and a case reads by name; the guard of a name of the given, k <= x for x in NN>=k, 0 < x for x in QQ>0, is named
+-- hp(x). An index above the last index but one is the last: a value from an inner and an outer bound.
+lemma lem:zidxbound [the bound of an index and the guard of a name, by name]
+  core le: n in NN, d in Grid(n), (forall alpha : d_(alpha) = 1 + alpha) : forall alpha : d_(alpha) <= 1 + n
+  core top: J, n in NN, n = J + 1, d in Grid(n), (forall alpha : d_(alpha) = 1 + alpha) : forall alpha : J < alpha => d_(alpha) = 1 + n
+  core unit: J, m, n, a in NN, n = J + 1, m <= J, 1 <= a, d in Grid(n), (forall alpha : d_(alpha) = 2 * iverson(alpha <= m) + iverson(m < alpha) * iverson(alpha <= J) + a * iverson(alpha = n)) : forall alpha : 1 <= d_(alpha)
+  core guard: D in NN>=1, x in QQ>=0, x <= 1 : x <= D
+
+proof lem:zidxbound
+  "core le" V[1 * h_1(alpha), 1 * hb(alpha)]
+  "core top" with[alpha = n by V[1 * hb(alpha)], V[1 * h_1, 1 * hi1]; V[1 * h_2(alpha), 1 * hw1]]
+  "core unit" cases[alpha <= m; V[| 1 * h_4(alpha)]; cases[alpha <= J; with[m < alpha by V[1 * hn1]; with[alpha < n by V[1 * hc2 | 1 * h_1]; V[| 1 * h_4(alpha)]]]; with[alpha = n by V[1 * hb(alpha)], V[1 * h_1, 1 * hn2]; V[1 * h_3 | 1 * h_4(alpha)]]]]
+  "core guard" V[1 * h_2, 1 * hp(D)]
+
+-- The tie of a denominator. A certificate whose multipliers or facts are quotients is exact once the ties d * d^-1 = 1
+-- of its denominators are added, each denominator above 0 by the signs of its names; a mass substituted into a program
+-- gives the fact of its denominator too, so that the identity of the value reads its tie.
+lemma lem:zdentie [the tie of a denominator, by name]
+  cell: A, B, D in NN>=1, A = B + D : B / A + D / A = 1
+  mass: a, b, d in QQ>0, a = b + d : b / a + d / a = 1
+  floor: A, T in NN>=1, A <= T : 1 <= T / A
+  sub: t, alpha in QQ>0, alpha = 2 * t / (2 + 2 * t) : prog(v in QQ>=0, v >= 1 : alpha * v) = (2 * t / (2 + 2 * t), 1)
+
+proof lem:zdentie
+  "cell" V[(1 / A) * h_1]
+  "mass" V[(1 / a) * h_1]
+  "floor" V[(1 / A) * h_1]
+  "sub" prog[t / (1 + t); v := 1]
+
+-- The signs and the ties of a certificate, by name. A sum is above 0 when one of its parts is and the others
+-- are at least 0 (a count plus one, as a denominator or as a multiplier of a strict fact). The inverse of a sum is
+-- read with its tie d * d^-1 = 1, for a sum of masses as for a count plus one. A multiplier that cancels a quotient
+-- of a fact reads the tie of its denominator, and so does an identity of quotients whose two sides are one element of
+-- the Laurent ring. A product of two strict facts is strict.
+lemma lem:zcertsign [the signs and the ties of a certificate, by name]
+  core den: J in NN, k, x in QQ>0, 2 * (J + 1) * x >= k : x >= k / (2 * (J + 1))
+  core densum: a, b, k, x in QQ>0, (a + b) * x >= k : x >= k / (a + b)
+  core denat: J in NN, k, x in QQ>0, x * (J + 1) = k : x = k / (J + 1)
+  core factquot: k, D, x in QQ>0, k * x = k / D : k * D * x = k
+  core prod: a, b, c, d in QQ>0, b < a, d < c : b * c + a * d < a * c + b * d
+  core mult: J in NN, r, w in QQ>=0, r < w : (J + 1) * r < (J + 1) * w
+  core laurent: x, y in QQ>0 : (x / y) * (y / x) + x * (1 / x) = 2
+
+proof lem:zcertsign
+  "core den" V[(1 / (2 * (J + 1))) * h_1]
+  "core densum" V[(1 / (a + b)) * h_1]
+  "core denat" V[(1 / (J + 1)) * h_1]
+  "core factquot" V[D * h_1]
+  "core prod" V[h_1 * h_2]
+  "core mult" V[(J + 1) * h_3]
+  "core laurent" V
+
+-- A reference read by rule: its conclusion at the data is the goal, a conjunct of it, or the goal with its two
+-- sides reversed, and its proof is the term of the reference, with its projection or `.symm`.
+lemma lem:zrefread [a reference read by rule]
+  core base: a, b in QQ>=0 : a * b + a = a * (b + 1)
+  core rev: x, y in QQ>=0 : x * (y + 1) = x * y + x
+  core pair: a, b in QQ>=0 : a + b = b + a, a * b = b * a
+  core part: x, y in QQ>=0 : x * y = y * x
+  core same: x, y in QQ>=0 : x * y + x = x * (y + 1)
+
+proof lem:zrefread
+  "core base" V[0]
+  "core rev" lem:zrefread(core base)[a := x, b := y]
+  "core pair" (V[0], V[0])
+  "core part" lem:zrefread(core pair)[a := x, b := y]
+  "core same" lem:zrefread(core base)[a := x, b := y]
+
+-- A least whose term is a least, nested or written flat (min(a, b, c) is min(a, min(b, c)), as Lean writes it), read
+-- at its branch by a fact of the step that names both of its terms: the tie min(a, min(b, c)) = a by
+-- a <= min(b, c), no case split.
+lemma lem:znestmin [a least of a least, at its branch]
+  nested: a, b, c, y in QQ>=0, y >= min(a, min(b, c)), b <= c, a <= b : y >= a
+  flat: a, b, c, y in QQ>=0, y >= min(a, b, c), b <= c, a <= b : y >= a
+
+proof lem:znestmin
+  "nested" with[a <= min(b, c) by V[1 * h_7]; V[1 * h_5]]
+  "flat" with[a <= min(b, c) by V[1 * h_7]; V[1 * h_5]]
+
+type Starz(k) := {N0, w0 in NN>=1, N, w in (NN>=1)^k}
+
+relation (St #zplane s) := k, s in NN>=1, St in Starz(k), St.N0 * s = (sum j, St.N_(j)), St.w0 * s + k = 2 + (sum j, St.w_(j))
+
+-- The ties of a certificate read at its branches: the sides of a goal rewritten at the branch of its least, where the
+-- branch brings a quotient (rewrite); a quotient by a count or a coordinate plus a positive constant, with the tie of
+-- its inverse, and a rest at least 0 read with the denominator cleared (sumnat, sumpair); a least of a least decided
+-- by a strict fact and a fact (strictmin); the leasts of an equation decided by the facts of a with (value); the
+-- premise of an implication in the step of an induction, as its clause states it (walk); and the bound of the size of
+-- a bundle as a field of a relation (plane).
+lemma lem:zfollow [the ties of a certificate at its branches, and the premises of a step]
+  rewrite: F in QQ>0 : F * min(1 / 2, 1 / F) <= 1
+  sumnat: b in QQ>0, eta in NN, b >= 2 : b / 2 > 1 / 2 + max(b - 1, 0) / (3 + eta)
+  sumpair: b in QQ>0, eta in QQ>=0, b >= 1 : b / 2 >= 1 / 2 + max(b - 1, 0) / (3 + eta)
+  strictmin: a, b, c, s in QQ>=0, s >= min(c, min(a, b)), a <= b, min(a, b) < c : s >= a
+  value: k', eta in QQ>=0 : min(1 + (1 + k') / (3 + eta), (3 + k') / 3) = 1 + min(k' / 3, (1 + k') / (3 + eta))
+  (walk): N in NN, n in NN>=1, p_(1..N + 1) in QQ>=0, (forall j in NN>=1 : j <= N => p_(j) <= p_(j + 1)) : n <= N + 1 => p_(1) <= p_(n)
+  plane: k, s in NN>=1, St in Starz(k), St #zplane s : 1 <= k
+
+proof lem:zfollow
+  "rewrite" cases[F <= 2; with[1 / 2 <= 1 / F by V[(1 / (2 * F)) * hc1]; V[(1 / 2) * hc1]]; with[1 / F <= 1 / 2 by V[(1 / (2 * F)) * hn1]; V[0]]]
+  "sumnat" with[max(b - 1, 0) = b - 1 by V[0]; V[((1 + eta) / (2 * (3 + eta))) * h_1 | (1 / (3 + eta)) * hw1]]
+  "sumpair" with[max(b - 1, 0) = b - 1 by V[0]; V[((1 + eta) / (2 * (3 + eta))) * h_2 | (1 / (3 + eta)) * hw1]]
+  "strictmin" V[1 * h_5]
+  "value" cases[k' / 3 <= (1 + k') / (3 + eta); with[(3 + k') / 3 <= 1 + (1 + k') / (3 + eta) by V[1 * hc1]; V[0]]; with[(1 + k') / (3 + eta) <= k' / 3 by V[1 * hn1]; with[1 + (1 + k') / (3 + eta) <= (3 + k') / 3 by V[1 * hw2]; V[0]]]]
+  (walk) ind[n; V; with[n <= N by V[1 * hi2]; with[n <= N + 1 by V; with[p_(1) <= p_(n) by logic; with[p_(n) <= p_(n + 1) by logic; V[1 * hw3, 1 * hw4]]]]]]
+  "plane" logic
+
+-- The inverse of a count, and a product of facts with its sides: a strict goal through the tie
+-- pi_(i) = 1 / E_(i), with the sign of 1 / E_(i) by the fact 1 <= E_(X) at its index (face, span); and a product of
+-- two facts times a quotient by a count plus one, whose ties are read from the sides of the product (product).
+lemma lem:zinvcount [the inverse of a count, and the sides of a product of facts]
+  face: n in NN, E in Grid(n), pi in Point(n), (forall j : pi_(j) = 1 / E_(j)), (forall X : 1 <= E_(X)) : forall i : 0 < pi_(i)
+  span: n in NN, E in Grid(n), pi in Point(n), (forall j : pi_(j) = 1 / E_(j)), (forall X : 1 <= E_(X)) : forall i : 0 < pi_(i) + pi_(i)
+  product: J in NN, k in QQ>0, c, x, w in QQ>=0, v_(1..J) in QQ>=0, J * (J + 1) <= 2 * k, 2 * k <= (J + 1) * (J + 2), 2 * c >= 1, 2 * (J + 1) * x + 2 * w >= 1, (sum i in 1..J, v_(i)) + J * (J + 1) / 2 * x >= J / 2 : c + k * x + (sum i in 1..J, v_(i)) + w >= (J + 2) / 4 + k / (2 * (J + 1))
+
+proof lem:zinvcount
+  "face" logic[with[pi_(i) = 1 / E_(i) by logic; with[0 < 1 / E_(i) by V; V[1 * hw2 | 1 * hw1]]]]
+  "span" logic[with[pi_(i) = 1 / E_(i) by logic; with[0 < 1 / E_(i) by V; V[2 * hw2 | 2 * hw1]]]]
+  "product" V[(1 / 2) * h_7, 1 * h_9, (1 / (4 * (J + 1))) * h_5 * h_8, (w / (2 * (J + 1))) * h_6]
+
+-- A power of a count as a coefficient of a certificate, read with its cast pushed in as the goal reads it; and a
+-- universal fact at an index 0, its index term reduced before the cast.
+lemma lem:zpowcoef [a power of a count as a coefficient, and a fact at 0]
+  core: p, L in NN, x, y, z in QQ>=0, x = y, y = z : p^L * x = p^L * z
+  inst: N, nu, p in NN, c in Line, (forall L in NN : c(L + N) * p^nu = c(L)) : c(N) * p^nu = c(0)
+
+proof lem:zpowcoef
+  "core" V[p^L * h_4, p^L * h_5]
+  "inst" h_1[L := 0]
+
+-- A fact of the step at a given term: a universal over the points of Grid(n) read at the point whose coordinate l
+-- is iverson(l = j), each sum of a term times the indicator of its index collapsed to the term at j.
+lemma lem:zfactat [a fact at a given point]
+  core: n in NN, N in Rows(n, n), c in Grid(n), (forall i : forall x in Grid(n) : x_(i) + (sum l, N_(i)_(l) * x_(l)) = c_(i) + (sum l, N_(l)_(i) * x_(l))) : forall i : forall j : iverson(i = j) + N_(i)_(j) = c_(i) + N_(j)_(i)
+
+proof lem:zfactat
+  "core" h_1(i)[x_(l) := iverson(l = j)]
+
+-- An equation of terms with sums by `eq`, each place where the sides differ given by one law: an identity of rings
+-- over the same sums, a sum of a sum split, a sum against the indicator of its index collapsed, a factor moved into
+-- a sum, two sums exchanged, a factor moved out of a sum; the places reached through the sums and the terms.
+lemma lem:zsumlaws [the laws of sums, one at each place]
+  core: n in NN, c in Grid(n), A in Forms(n, n), N in Rows(n, n) : forall j : (sum i, c_(i) * (iverson(i = j) + (sum a, A_(i)_(a) * N_(a)_(j)))) = c_(j) + (sum a, (sum i, c_(i) * A_(i)_(a)) * N_(a)_(j))
+
+proof lem:zsumlaws
+  "core" chain[(sum i, c_(i) * (iverson(i = j) + (sum a, A_(i)_(a) * N_(a)_(j)))) = (sum i, (c_(i) * iverson(i = j) + c_(i) * (sum a, A_(i)_(a) * N_(a)_(j)))) by eq; = (sum i, c_(i) * iverson(i = j)) + (sum i, c_(i) * (sum a, A_(i)_(a) * N_(a)_(j))) by eq; = c_(j) + (sum i, c_(i) * (sum a, A_(i)_(a) * N_(a)_(j))) by eq; = c_(j) + (sum i, (sum a, c_(i) * (A_(i)_(a) * N_(a)_(j)))) by eq; = c_(j) + (sum a, (sum i, c_(i) * (A_(i)_(a) * N_(a)_(j)))) by eq; = c_(j) + (sum a, (sum i, c_(i) * A_(i)_(a) * N_(a)_(j))) by eq; = c_(j) + (sum a, (sum i, c_(i) * A_(i)_(a)) * N_(a)_(j)) by eq]
+
+-- The place where two sides differ given by a fact over two indices, and by a fact over an index and a point, each
+-- read at the names of the place by matching its two sides.
+lemma lem:zfactplace [a fact read at the names of a place]
+  core: n in NN, D, E, F, G in Forms(n, n), (forall i : forall x in Grid(n) : (sum a, E_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) = x_(i)), (forall i : forall a : F_(i)_(a) = E_(i)_(a) + G_(i)_(a)) : forall i : forall x in Grid(n) : (sum a, F_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) = x_(i) + (sum a, G_(i)_(a) * (sum b, D_(a)_(b) * x_(b)))
+
+proof lem:zfactplace
+  "core" chain[(sum a, F_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) = (sum a, (E_(i)_(a) + G_(i)_(a)) * (sum b, D_(a)_(b) * x_(b))) by eq; = (sum a, (E_(i)_(a) * (sum b, D_(a)_(b) * x_(b)) + G_(i)_(a) * (sum b, D_(a)_(b) * x_(b)))) by eq; = (sum a, E_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) + (sum a, G_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) by eq; = x_(i) + (sum a, G_(i)_(a) * (sum b, D_(a)_(b) * x_(b))) by eq]
+
+-- The bideterminant: bidetP(T, U) and bidetM(T, U), the two halves of the determinant of a couple of square
+-- tables (T, U) standing for T - U, over the semiring of couples (Akian, Gaubert and Guterman, arXiv:0812.3496,
+-- Def. 4.14); of one table, bidetP(A) and bidetM(A), the bideterminant (|A|^+, |A|^-) of Gondran and Minoux, the sums
+-- over the even and over the odd permutations, so that det A = |A|^+ - |A|^- over a ring. A half is an atom of a
+-- certificate, never unfolded, and a tie, a comparison or a deficit reads each couple only through T - U: the
+-- difference of its sides is invariant under one mass added to both halves of a couple, as in the tie of crossed
+-- products of two couples, the form of the law of Binet and Cauchy (core cross).
+lemma lem:zbidet [the halves of the bideterminant, the two sides of a tie]
+  core: n in NN, T, U in Forms(n, n), k in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k) : bidetM(T, U) <= bidetP(T, U)
+  fix core zbidet.core
+  core two: n in NN, T, U, R, S in Forms(n, n), k in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k), (bidetP(R, S) = bidetM(R, S) + k) : bidetP(T, U) + bidetM(R, S) = bidetM(T, U) + bidetP(R, S)
+  fix core two zbidet.two
+  eqfix core two zbidet.eq
+  core one: n in NN, A in Forms(n, n), k in QQ>=0, (bidetM(A) + k = bidetP(A)) : bidetM(A) <= bidetP(A)
+  fix core one zbidet.one
+  neqfix core one zbidet.neq
+  core deficit: n in NN, T, U in Forms(n, n), k in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k) : max(bidetP(T, U) - bidetM(T, U), 0) = k
+  eqfix core deficit zbidet.deficit
+  core cross: n in NN, T, U, R, S in Forms(n, n), k, l in QQ>=0, (bidetP(T, U) = bidetM(T, U) + k), (bidetP(R, S) = bidetM(R, S) + l) : bidetP(T, U) * bidetP(R, S) + bidetM(T, U) * bidetM(R, S) = bidetP(T, U) * bidetM(R, S) + bidetM(T, U) * bidetP(R, S) + k * l
+  fix core cross zbidet.cross
+
+proof lem:zbidet
+  "core" V[1 * h_1 | 1 * h_2]
+  "core two" V[1 * h_2, 1 * h_3]
+  "core one" V[1 * h_1, 1 * h_2]
+  "core deficit" with[bidetM(T, U) <= bidetP(T, U) by V[1 * h_1 | 1 * h_2]; V[1 * h_2]]
+  "core cross" V[bidetP(R, S) * h_3, bidetM(R, S) * h_3, k * h_4]
+
+-- The certificate of an order step reads the cast of a sum or a product of counts as the sum or the product of
+-- their casts.
+lemma lem:zcountcast [the cast of a product of counts]
+  core: n, K in NN, x in QQ>=0, x = (n + 1) * K : x = n * K + K
+
+proof lem:zcountcast
+  "core" V[1 * h_2]
+
+-- A strict order of counts a < b is a + 1 <= b (the strict order of counts is the order of the successor): where
+-- the strict reading leaves the data of V no certificate, the strict orders of counts that they name are read so.
+lemma lem:zsucc [the integer rounding of a strict order of counts]
+  core: a, b, c in NN, a < b, b < c : a + 2 <= c
+
+proof lem:zsucc
+  "core" V[1 * h_1, 1 * h_2]
+
+-- An order step whose multiplier has several terms: the inequality scaled by it, its sign written term by term
+-- by name (a count by its cast, a sum of counts term by term); an equation times such a multiplier as it is.
+lemma lem:zmultsign [a multiplier of several terms, its sign by name]
+  core mult: n, k, s in NN, y, z in QQ>=0, w in Grid(n), s = (sum i, w_(i)), y <= z : (sum i, w_(i)) * y + k * y <= (sum i, w_(i)) * z + k * z
+  core tie: n, k in NN, y, z in QQ>=0, y = z : (n + k) * y = (n + k) * z
+
+proof lem:zmultsign
+  "core mult" V[((sum i, w_(i)) + k) * h_4]
+  "core tie" V[(n + k) * h_3]
+
+-- The guards of the binders by name: a goal that is the bound of a member of a family of counts or the sign of a
+-- member of a family of masses is closed by the guard of the family at the member; a reference that reads a family
+-- whole takes the family's guard for its own (hp_e), the strict sign weakened where it asks for 0 <= e_(i).
+lemma lem:zguardname [the guards of binders by name]
+  core bound: N in NN, c_(1..N) in NN>=1, r in NN : 1 <= c_(r)
+  core sign: N, r in NN, e_(1..N) in QQ>0 : 0 < e_(r)
+  core ref: N, r in NN, e_(1..N) in QQ>0 : 0 < e_(r)
+
+proof lem:zguardname
+  "core bound" logic
+  "core sign" logic
+  "core ref" lem:zguardname(core sign)[N := N, r := r, e := e]
+
+-- A witness that is the deficit max(p - 1, 0) of two counts: the certificate reads it as p - 1 by the bound
+-- 1 <= p that a fact states (max_eq_left, Nat.sub_add_cancel), with no search on the truncated difference; a case
+-- whose negation is pushed in by one proof term.
+lemma lem:zdeficitwit [a deficit of counts as a witness]
+  core: p in NN, 1 <= p : exists a in NN : p = a + 1
+  core split: p, q in NN : exists a in NN : p + q = a + q
+
+proof lem:zdeficitwit
+  "core" take[a := max(p - 1, 0); V]
+  "core split" cases[p = 0; take[a := 0; V[1 * hc1]]; take[a := max(p - 1, 0) + 1; V]]
+
+lemma lem:zrestsign [the rest of a certificate signed by name]
+  core: p, q in NN, p + q = 0 : p = 0
+
+proof lem:zrestsign
+  "core" V[1 * h_1], V[0]
+
+lemma lem:zcondname [the conditionals of a goal decided by the facts of the step]
+  core: i, p in NN, e in QQ>0, i = p : e * iverson(i = p) = e
+  core off: i, p in NN, e in QQ>0, i < p : e * iverson(i = p) = 0
+  core lt: i, p in NN, e in QQ>0, p <= i : e * iverson(i < p) + e = e
+  core deficit: y in QQ>=0, y <= 1 / 2 : 2 * (y + 1) = 2 + 4 * max(y - 1 / 2, 0) + 2 * y
+  core above: y in QQ>=0, 1 / 2 <= y : 2 * y = 1 + 2 * max(y - 1 / 2, 0)
+  core min: x, y in QQ>0, x <= y : min(x, y) + max(x, y) = x + y
+  core scaled: y in QQ>=0, y <= 1 : 2 * y + max(2 - 2 * y, 0) = 2
+  core ratio: x, y, e in QQ>0, 2 * x <= y : e * iverson(x < y) = e
+  core flip: i, p in NN, e in QQ>0, p = i : e * iverson(i = p) = e
+  core equal: i, p in NN, e in QQ>0, i = p : e * iverson(i < p) + e * iverson(i <= p) = e
+  core twin: i, p in NN, e, x in QQ>0, a in QQ>=0, a = e * iverson(p = i) : a * x = iverson(i = p) * (e * x)
+
+proof lem:zcondname
+  "core" cases V
+  "core off" cases V
+  "core lt" cases V
+  "core deficit" cases V
+  "core above" cases V
+  "core min" cases V
+  "core scaled" cases V
+  "core ratio" cases V
+  "core flip" cases V
+  "core equal" cases V
+  "core twin" V[x * h_2]
+
+lemma lem:zrangelaw [the laws of a range by name]
+  core last: n in NN, u_(0..n + 1) in QQ>=0 : (sum m in 0..n + 1, u_(m)) = (sum m in 0..n, u_(m)) + u_(n + 1)
+  core one: u_(0..1) in QQ>=0 : (sum m in 0..0, u_(m)) = u_(0)
+  core prod: n in NN, r_(1..n + 1) in QQ>0 : (prod g in 1..n + 1, r_(g)) = (prod g in 1..n, r_(g)) * r_(n + 1)
+  core empty: x in QQ>0, r_(1..1) in QQ>0 : (prod g in 1..0, r_(g)) * x = x
+
+proof lem:zrangelaw
+  "core last" sum
+  "core one" sum
+  "core prod" sum
+  "core empty" V[0]
+
+-- The index of a range shifted by an offset free of it, either side, a term free of the index summed over a range (the
+-- count of the range times it), and a sum over a range at most the sum of the same terms over a larger range, the
+-- terms at least 0.
+lemma lem:zrangeshift [the shift of an index, a term free of the index, a smaller range]
+  core shift: N, s in NN, T_(1..s + N) in QQ>=0 : (sum i in 1..N, T_(s + i)) = sum c in s + 1..s + N, T_(c)
+  core right: n in NN, u_(0..n + 1) in QQ>=0 : (sum c in 1..n + 1, u_(c)) = sum i in 0..n, u_(i + 1)
+  core const: p in NN, X in QQ>=0 : (sum s in 0..p, X) = (p + 1) * X
+  core count: p, q in NN : (sum s in q + 1..q + p, 2) = 2 * p
+  core sub: N, s, p in NN, T_(1..p + N) in QQ>=0, s + N <= p + N : (sum c in s + 1..s + N, T_(c)) <= sum c in 1..p + N, T_(c)
+  core sup: m, n in NN, T_(1..m) in QQ>=0, n <= m : (sum c in 1..m, T_(c)) >= sum c in 1..n, T_(c)
+
+proof lem:zrangeshift
+  "core shift" sum
+  "core right" sum
+  "core const" sum
+  "core count" sum
+  "core sub" sum[V]
+  "core sup" sum[V]
+
+-- The law of a box: a sum over the lattice points of boxes of a product over the coordinates is the product
+-- over the coordinates of the sums over their ranges, for one box, for two boxes, either side, and at each value of
+-- a shared scale with a factor free of the points.
+lemma lem:zboxprod [the sum over a box of a product over the coordinates]
+  core: Z, L in NN, b, g in Grid(Z) : (sum s <= b, prod z, iverson(2 * g_(z) * s_(z) >= L) / 2^(s_(z))) = prod z, (sum t in 0..b_(z), iverson(2 * g_(z) * t >= L) / 2^t)
+  core two: Z, L in NN, b, b2, g, f in Grid(Z) : (sum s <= b, sum e <= b2, prod z, iverson(2 * g_(z) * s_(z) + f_(z) * e_(z) >= g_(z) * L) / 2^(s_(z) + e_(z))) = prod z, (sum t in 0..b_(z), sum t2 in 0..b2_(z), iverson(2 * g_(z) * t + f_(z) * t2 >= g_(z) * L) / 2^(t + t2))
+  core star: J, L, a, d, K, B in NN, b in Grid(J) : (sum x in 0..B, sum v <= b, iverson(a * x >= d * L) / 2^(K * x) * (prod i, iverson(L <= 2 * v_(i) + 2 * i * x) / 2^(v_(i)))) = sum x in 0..B, iverson(a * x >= d * L) / 2^(K * x) * (prod i, (sum t in 0..b_(i), iverson(L <= 2 * t + 2 * i * x) / 2^t))
+  core flip: Z in NN, b in Grid(Z), w in Point(Z) : (prod z, (sum t in 0..b_(z), w_(z)^t)) = sum s <= b, prod z, w_(z)^(s_(z))
+
+proof lem:zboxprod
+  "core" eq
+  "core two" eq
+  "core star" eq
+  "core flip" eq
+
+lemma lem:zsumsign [the strict sign of a sum over a nonempty range by name]
+  core: a, q in NN, L_(1..a + 1), r_(1..q) in QQ>0 : 0 < (sum j in 1..a + 1, L_(j)) + (sum j in 1..q, r_(j))
+  core quot: t in QQ>=0, c in QQ>0 : t / c * c = t
+
+proof lem:zsumsign
+  "core" V[0]
+  "core quot" V
+
+lemma lem:znatbound [a bound of counts by name]
+  core: c, P in NN, c < P : c + 1 <= P
+  core le: c, P in NN, c < P : c <= P
+  core zero: P in NN : 0 <= P
+
+proof lem:znatbound
+  "core" V
+  "core le" V
+  "core zero" V
+
+lemma lem:zwholeref [a universal goal by a reference whole]
+  core all: P in NN, x_(0..P) in QQ>0 : forall p in NN : p <= P => 0 < x_(p)
+  core whole: P in NN, x_(0..P) in QQ>0 : forall p in NN : p <= P => 0 < x_(p)
+
+proof lem:zwholeref
+  "core all" V[0]
+  "core whole" lem:zwholeref(core all)[P := P, x := x]
+
+lemma lem:zdeficitsum [a deficit of two sums read by the bound that names them]
+  core: n in NN, s_(0..n), t_(0..n) in QQ>=0, (sum m in 0..n, t_(m)) <= (sum m in 0..n, s_(m)) : max((sum m in 0..n, s_(m)) - (sum m in 0..n, t_(m)), 0) + (sum m in 0..n, t_(m)) = (sum m in 0..n, s_(m))
+
+proof lem:zdeficitsum
+  "core" V[0]
+
+lemma lem:zgoalpoint [a rule read at the point that the goal names]
+  core: P, Q, c, q in NN, x_(0..P), y_(0..Q) in QQ>0, (forall a in NN : forall b in NN : a <= P => b <= Q => x_(a) <= y_(b)), c < P, q <= Q : x_(c + 1) <= y_(0)
+
+proof lem:zgoalpoint
+  "core" with[c + 1 <= P by V; with[0 <= Q by V; logic]]
+
+lemma lem:zfamformula [a family on the counts by a formula]
+  core base: P in NN, W_(0..P) in Line, (forall p in NN : p <= P => W_(p)(0) <= 1) : forall p in NN : p <= P => W_(p)(0) * 2 <= 2
+  core use: P in NN, x_(0..P) in QQ>0, (forall p in NN : p <= P => x_(p) <= 1) : forall p in NN : p <= P => x_(p) * 2 <= 2
+
+proof lem:zfamformula
+  "core base" with[W_(p)(0) <= 1 by logic; V[2 * hw1]]
+  "core use" lem:zfamformula(core base)[P := P, W_(c)(d) := x_(c)]
+
+lemma lem:zfamdef [a family by its formula meets its defining hypothesis]
+  core def: P in NN, x_(0..P) in QQ>=0, U_(0..P) in Line, (forall b in NN : b <= P => forall c in NN : c <= P => U_(b)(c) = x_(b) + x_(c)) : U_(P)(P) = 2 * x_(P)
+  core use: P in NN, x_(0..P) in QQ>=0 : x_(P) + x_(P) = 2 * x_(P)
+
+proof lem:zfamdef
+  "core def" with[P <= P by V; with[U_(P)(P) = x_(P) + x_(P) by logic; V[1 * hw2]]]
+  "core use" lem:zfamdef(core def)[P := P, x := x, U_(b)(c) := x_(b) + x_(c)]
+
+lemma lem:zrulenamed [the goal as an instance of a fact, by name]
+  core two: P, c in NN, x_(0..P), y_(0..P) in QQ>0, (forall a in NN : forall b in NN : x_(a) <= y_(b)) : x_(c) <= y_(c + 1)
+  core part: P, c in NN, x_(0..P), y_(0..P) in QQ>0, (forall a in NN : x_(a) <= y_(a), y_(a) <= 1) : y_(c) <= 1
+
+proof lem:zrulenamed
+  "core two" logic
+  "core part" logic
+
+lemma lem:zdisjnamed [a disjunction resolved by the negation of a case]
+  core: x, y in QQ>=0, (x + y = 1 or x + 1 = y) : y <= x + 1
+
+proof lem:zdisjnamed
+  "core" cases[x + y = 1; V; with[x + 1 = y by logic; V]]
+
+lemma lem:zfactkey [a fact named up to the name its sum binds, a bound read either way round, two facts that clash]
+  core sum: n in NN, w, v in Point(n), K in QQ>0, (sum i, w_(i) * v_(i)) <= K : (sum j, w_(j) * v_(j)) <= K
+  core ge: m in NN>=1, x in QQ>=0, x <= m : m >= 1
+  core clash: x, y in QQ>=0, x < y, y <= x : x = y + 1
+
+proof lem:zfactkey
+  "core sum" logic
+  "core ge" logic
+  "core clash" logic
+
+-- Tuples of a size n + n' of two counts, read by the Mathlib reading at the sizes n and n' on its n + n'
+-- coordinates: a loss at a joined point, a point, a sum and a box of that size.
+lemma lem:wsize [tuples of a size n + n']
+  core: n, n' in NN, K in Loss(n + n'), x in Point(n), y in Point(n'), K(join(x, y)) <= 1 : 2 * K(join(x, y)) <= 2
+  core point: n, n' in NN, z in Point(n + n'), (forall i : z_(i) <= 1) : forall i : 2 * z_(i) <= 2
+  core sum: n, n' in NN, z in Point(n + n'), (forall i : z_(i) <= 1) : (sum i, z_(i)) <= sum i, 1
+  core box: n, n' in NN, b in Grid(n + n') : (sum u <= b, 1) = prod i, (b_(i) + 1)
+
+proof lem:wsize
+  "core" V
+  "core point" V
+  "core sum" sum[V]
+  "core box" box
+
+-- A tuple written in its binder, x in X^n or x in (X^n)^k with X one of QQ>0, QQ>=0, NN: the binder
+-- reads as the type row it unfolds to, over Mathlib and over the kernel (Weight(n) := (QQ>0)^n is the same binder).
+lemma lem:ztuplebind [a tuple binder on a positive set]
+  core pos: n in NN, x in (QQ>0)^n : forall i : 0 < x_(i)
+  core nonneg: n in NN, x in (QQ>=0)^n : forall i : 0 <= x_(i)
+  core count: n in NN, x in NN^n : forall i : x_(i) <= x_(i) + 1
+  core rows: k, n in NN, s in ((QQ>0)^n)^k, l in ((QQ>=0)^n)^k : forall iota : forall i : l_(iota)_(i) < l_(iota)_(i) + s_(iota)_(i)
+
+proof lem:ztuplebind
+  "core pos" V
+  "core nonneg" V
+  "core count" V
+  "core rows" V
+
+-- A row whose names are all in QQ>0 or NN>=1 (a tuple of them), its terms built by +, *, / and powers from them and
+-- from numerals at least 1: over the kernel it is printed over Mass and Count themselves, with no
+-- Mass0.of and no Count0 in its terms; the size of a tuple stays a Count0 (Idx is on Count0). A row with one name
+-- that holds zero is printed over the zero layer (core zero).
+lemma lem:zpositive [a row over the positive masses and counts]
+  core side: a, b, c, d, D, x, y in QQ>0, d * a = c * b + D, a * x + b * y >= 1 : a * (c * x + d * y) >= c + D * y
+  core count: p, q in NN>=1, p < q : p + 1 <= q
+  core mixed: p in NN>=1, a in QQ>0 : a * p >= a
+  core tuple: n in NN>=1, x in (QQ>0)^n, c in QQ>0 : forall i : x_(i) < x_(i) + c
+  core rows: k, n in NN>=1, s in ((QQ>0)^n)^k, a in QQ>0 : forall iota : forall i : a * s_(iota)_(i) < (a + 1) * s_(iota)_(i)
+  core pow: p in NN>=1, a in QQ>0 : a^p * a = a^(p + 1)
+  core quot: a, b in QQ>0, p, q in NN>=1 : a / b * b = a, p / q * q = p
+  core exists: a in QQ>0 : exists b in QQ>0 : b < a
+  core zero: a in QQ>0, t in QQ>=0 : a <= a + t
+
+proof lem:zpositive
+  "core side" V[c * h_2 | y * h_1]
+  "core count" V
+  "core mixed" V[a * hp(p)]
+  "core tuple" V
+  "core rows" V
+  "core pow" V
+  "core quot" (V, V)
+  "core exists" take[b := a / 2; V]
+  "core zero" V
+
+-- The positive counts as coordinates, and functions with positive values: a tuple of NN>=1, a
+-- tuple of such tuples, a function to QQ>0 or to NN>=1, and a part of a bundle in NN>=1 (a tuple of them, or one),
+-- each bound or taken as a witness. Over the kernel a coordinate in NN>=1 is a Count and a value in QQ>0 is a Mass;
+-- the bound of each (at least 1, positive) is read by the bridge and is not a hypothesis of the row.
+type PosGrid(n) := (NN>=1)^n
+type PosRows(k, n) := ((NN>=1)^n)^k
+type PosLine := NN -> QQ>0
+type StepLine := NN -> NN>=1
+type PosValues(n) := Grid(n) -> QQ>0
+type PosCert(k) := {e in PosGrid(k), m in NN>=1, d in NN}
+
+lemma lem:zposcount [tuples of positive counts and functions with positive values]
+  core tuple: n in NN, x in PosGrid(n) : forall i : 1 <= x_(i)
+  core bind: n in NN, x in (NN>=1)^n : forall i : x_(i) < x_(i) + 1
+  core rows: k, n in NN, s in PosRows(k, n) : forall iota : forall i : 1 <= s_(iota)_(i)
+  core line: f in PosLine, u in NN : 0 < f(u)
+  core steps: g in StepLine, u, v in NN : g(u) + g(v) >= 2
+  core values: n in NN, G in PosValues(n), u in Grid(n) : G(u) < G(u) + 1
+  core hyp: f in PosLine, u in NN, b in QQ>0, b <= f(u) : 2 * f(u) > b
+  core part: k in NN, B in PosCert(k) : 1 <= B.m
+  core witness: k in NN : exists B in PosCert(k) : forall i : B.e_(i) >= B.m + B.d
+  core take: n in NN, x, y in PosGrid(n) : exists A in Weight(n) : forall i : A_(i) = x_(i) * y_(i)
+  core take part: k in NN, B in PosCert(k) : exists A in Weight(k) : forall i : A_(i) = B.m * B.e_(i)
+
+proof lem:zposcount
+  "core tuple" V
+  "core bind" V
+  "core rows" V
+  "core line" V
+  "core steps" V
+  "core values" V
+  "core hyp" V
+  "core part" V
+  "core witness" take[B.e_(i) := 3, B.m := 2, B.d := 1; V]
+  "core take" take[A_(i) := x_(i) * y_(i); V]
+  "core take part" take[A_(i) := B.m * B.e_(i); V]

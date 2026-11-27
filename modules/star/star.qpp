@@ -1,0 +1,41 @@
+-- Q++ 0.2
+module star
+uses theory
+
+subsection sec:star The cost and the quotient of a star
+
+-- A star is a centre of weight \(b\) and cost \(a\) with \(k\) arms, each a string of determinant \(n_i\) from the cost \(1\) at its free end (\cref{lem:string}), tied at the centre by \(ba+m=2+\sum_ic_i\), where \(m\) counts the arms and twice the genus. Its cost is its charge \(o\) at the weights \(1/n_i\) over its reduced weight \(e\) (centre), its quotient is its charge \(p\) at the dual weights \(n_i\) over its cost (share), and so \(Co=ep\) (dual).
+lemma lem:star [the cost and the quotient of a star]
+  (centre): k, m in NN>=1, a, b, e, o in QQ>0, n, q, r, c in Weight(k), (forall i : r_(i) * n_(i) = 1), (forall i : c_(i) * n_(i) = q_(i) * a + 1), b * a + m = 2 + (sum i, c_(i)), e + (sum i, q_(i) * r_(i)) = b, o + m = 2 + (sum i, r_(i)) : a * e = o
+  fix (centre) star.centre
+  neqfix (centre) star.centre.nomass
+  neqfix (centre) star.centre.noarm
+  neqfix (centre) star.centre.nonode
+  neqfix (centre) star.centre.noreduced
+  neqfix (centre) star.centre.nocharge
+  (share): k, m in NN>=1, a, x, C, p in QQ>0, n, s in Weight(k), x * a = 1, (forall i : s_(i) * a = n_(i)), C + m * x = 2 * x + (sum i, s_(i)), p + m = 2 + (sum i, n_(i)) : C * a = p
+  fix (share) star.share
+  neqfix (share) star.share.nomass
+  neqfix (share) star.share.noarm
+  neqfix (share) star.share.nosum
+  neqfix (share) star.share.nocharge
+  (dual): k, m in NN>=1, a, b, e, o, x, C, p in QQ>0, n, q, r, c, s in Weight(k), (forall i : r_(i) * n_(i) = 1), (forall i : c_(i) * n_(i) = q_(i) * a + 1), b * a + m = 2 + (sum i, c_(i)), e + (sum i, q_(i) * r_(i)) = b, o + m = 2 + (sum i, r_(i)), x * a = 1, (forall i : s_(i) * a = n_(i)), C + m * x = 2 * x + (sum i, s_(i)), p + m = 2 + (sum i, n_(i)) : C * o = e * p
+  fix (dual) star.dual
+  neqfix (dual) star.dual.nomass
+  neqfix (dual) star.dual.noarm
+  neqfix (dual) star.dual.nonode
+  neqfix (dual) star.dual.noreduced
+  neqfix (dual) star.dual.nocharge
+  neqfix (dual) star.dual.noshare
+  neqfix (dual) star.dual.noarmshare
+  neqfix (dual) star.dual.nosum
+  neqfix (dual) star.dual.nochargeN
+  origin: ?{\text{form proved: the node tie of a star with the first costs and the terms of its arms from \cref{lem:string}; the spherical side, where the charge at the weights}\ 1/n_i\ \text{is positive}}
+
+-- Since \(r_in_i=1\), the first cost of each arm is \(c_i=r_i(aq_i+1)\); with the reduced weight \(e\) the node tie
+-- becomes \(ae+m=2+\sum_ir_i\), the tie of the charge, so \(ae=o\) (centre). The tie of the dual weights, times \(a\)
+-- with \(xa=1\), is the tie of \(p\), so \(Ca=p\) (share), and \(Co=Cae=ep\) (dual).
+proof lem:star
+  (centre) with[(sum i, c_(i)) = sum i, (q_(i) * a * r_(i) + r_(i)) by sum[V[r_(i) * h_2(i), c_(i) * h_1(i)]]; with[(sum i, (q_(i) * a * r_(i) + r_(i))) = (sum i, a * (q_(i) * r_(i))) + (sum i, r_(i)) by sum[V]; with[(sum i, a * (q_(i) * r_(i))) = a * (sum i, q_(i) * r_(i)) by sum[V]; V[a * h_4, 1 * h_5, 1 * h_3, 1 * hw1, 1 * hw2, 1 * hw3]]]]
+  (share) with[(sum i, s_(i) * a) = sum i, n_(i) by sum[V[1 * h_2(i)]]; with[(sum i, s_(i) * a) = (sum i, s_(i)) * a by sum[V]; V[a * h_3, m * h_1, 2 * h_1, 1 * h_4, 1 * hw2, 1 * hw1]]]
+  (dual) with[a * e = o by lem:star(centre)[k := k, m := m, a := a, b := b, e := e, o := o, n := n, q := q, r := r, c := c]; with[C * a = p by lem:star(share)[k := k, m := m, a := a, x := x, C := C, p := p, n := n, s := s]; V[C * hw1, e * hw2]]]

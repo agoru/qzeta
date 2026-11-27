@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "n * eps <= m", "note": "eps up to m: the row m <= K (1 + eps) e + eps holds at any gap e", "rows": [{"n": 8, "m": 1, "K": 1, "e": "1/10", "eps": 1}, {"n": 8, "m": "1/2", "K": 3, "e": "1/100", "eps": "1/2"}]}

@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "3^(3 * C + 1) <= 2^C * 2^((3 * C + 1) * t)", "note": "at t = 1 neither bound holds: 81 > 2 * 16 and 2 * 81 > 16", "rows": [
+ {"C": 1, "t": 1},
+ {"C": 2, "t": 1}
+]}

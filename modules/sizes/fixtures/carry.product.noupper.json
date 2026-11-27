@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "b * (X * Y) < b^(E + 1)", "note": "without the upper bound of the count of the product, E = 1 bounds 30 from below but the counts 2 and 3 of 3 and 5 exceed it by more than one", "rows": [
+ {"b": 2, "A": 2, "C": 3, "E": 1, "X": "3", "Y": "5"}
+]}

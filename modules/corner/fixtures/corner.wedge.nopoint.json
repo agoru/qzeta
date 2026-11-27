@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "m * c = 2 * D", "note": "a point of order m = 4 at (k0, delta) = (2, 1) is not the one point of order delta D, and its cost at s_S is not -1", "rows": [
+ {"c": "2", "m": "4", "D": "3", "b": "2/3", "a": "5/3"}
+]}

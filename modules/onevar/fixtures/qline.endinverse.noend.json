@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "y * e + 1 = (e + 1) * U", "note": "a mass y = 1 that is not the mass of qU", "rows": [
+ {"e": "1", "T": "1/3", "U": "3", "u": "2", "w": "2/3", "y": "1"}
+]}

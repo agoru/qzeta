@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "3 <= m + e", "note": "n = 3, delta = 2, k0 = 2: A + B = 454 exceeds C = 256, and Q is read on A - B + C instead", "rows": [
+ {"k1": 1, "e": 1, "m": 1}
+]}

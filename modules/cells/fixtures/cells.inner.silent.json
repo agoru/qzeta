@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "a <= T", "note": "a silent cell: its slope vanishes, its term is 0 and bounds no power of its gap", "rows": [{"eta": 0, "c": 1, "a": 1, "x": 1, "e": 1, "T": 0, "Y": 0}, {"eta": 2, "c": "1/4", "a": "1/2", "x": 2, "e": "1/2", "T": 0, "Y": 0}]}

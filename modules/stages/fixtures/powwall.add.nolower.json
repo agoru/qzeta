@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "p^E <= p * q^(N + M)", "note": "without the lower bound of the stage of the sum, E = 20 bounds 2 * 3^6 = 1458 from above but exceeds the sum 10 of the stages at 3 and 3", "rows": [
+ {"p": 2, "q": 3, "N": 3, "M": 3, "A": 5, "C": 5, "E": 20}
+]}

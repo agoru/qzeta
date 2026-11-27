@@ -1,0 +1,46 @@
+-- Q++ 0.2
+paper means
+bib references.bib
+advertise lem:mean(1), lem:square, lem:sumsq(1)
+-- Elementary comparisons of masses.
+
+section sec:means Means and squares
+
+-- The power mean inequality at the exponent $E + 1$: H\"older's inequality against the vector of ones, with the
+-- source's constant $J^E$.
+cit fact:powermean [power means]
+  doi: 10.1017/CBO9781139020411
+  given: J, E in NN>=1, u_(1..J) in QQ>0
+  (1): (sum j in 1..J, u_(j))^(E + 1) <= J^E * (sum j in 1..J, u_(j)^(E + 1))
+
+-- The mean of two masses lies strictly between them.
+lemma lem:mean [the mean of two masses]
+  given: u, v in QQ>0, u < v
+  (1): u < (u + v) / 2
+  (2): (u + v) / 2 < v
+
+-- Half the gap on each side.
+proof lem:mean
+  (1) V[1 / 2 * h_1]
+  (2) V[1 / 2 * h_1]
+
+-- The square of a sum, with its cross term named.
+lemma lem:square [the square of a sum]
+  given: u, v in QQ>0, c := 2 * u * v
+  (1): (u + v)^2 = u^2 + v^2 + c
+  (2): c < (u + v)^2
+
+-- The cross term is a name: the identity uses its definition, never its expansion.
+proof lem:square
+  (1) eq[h_c]
+  (2) V[h_c]
+
+-- The square of a sum of masses is at most their number times the sum of their squares.
+lemma lem:sumsq [a sum of squares]
+  given: J in NN>=1, u_(1..J) in QQ>0
+  (1): (sum j in 1..J, u_(j))^2 <= J * (sum j in 1..J, u_(j)^2)
+  (2): ?{\text{equality exactly when the}\ u_j\ \text{are all equal}}
+
+-- The power mean inequality at the exponent two.
+proof lem:sumsq
+  (1) fact:powermean(1)[E := 1]

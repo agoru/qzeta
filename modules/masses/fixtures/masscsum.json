@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "lem:mass(csum): the join with the monomials y^(u+v) and y^x", "rows": [{"x": 3, "u": 1, "v": 2, "y": "2", "px": "63", "pu": "3", "pv": "15"}, {"x": 4, "u": 2, "v": 2, "y": "3/2", "px": "6305/256", "pu": "65/16", "pv": "65/16"}]}

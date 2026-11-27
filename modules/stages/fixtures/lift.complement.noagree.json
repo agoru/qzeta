@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "m * D + n = N * w", "note": "the mass 1 does not complete the root 2 of x^2 + 1 = 0 to a multiple of 5, and 1 + 2 is not 1", "rows": [
+ {"N": 5, "m": 1, "n": 1, "a": 2, "b": 1, "D": 2, "w": 1, "c": 1}
+]}

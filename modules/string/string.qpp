@@ -1,0 +1,51 @@
+-- Q++ 0.2
+module string
+uses theory, onevar
+
+subsection sec:string The string of a chain
+
+-- A chain of cells of weights \(b_j\) carries costs \(c_j\) tied cell by cell, \(c_j+c_{j+2}=b_jc_{j+1}\), and its determinants \(d_j\) obey the same tie from its left end. So every edge is a block with the left spoke on one side (edge), the terms \(x_jx_{j+1}\) of the edges, with the masses \(x_jc_j=1\), add to \(x_1x_{N+2}d_{N+1}\) (share), and at the tie every cost is the first times a determinant (tie).
+-- On a chain of a resolution of a plane curve the weight of a cell \(E_j\) is \(b_j=-E_j^2\), and the adjunction
+-- formula on a smooth rational curve gives \(K\cdot E_j=b_j-2\) \cite[Ch.~V, Proposition~1.5]{Hartshorne1977}: the
+-- weight \(1\), a blowing-up, gives \(K\cdot E_j=-1\); the self-dual weight \(2\), at which a string of one weight is
+-- one arithmetic progression, gives \(K\cdot E_j=0\), as on the chains of type A of the Du Val singularities; and from
+-- \(3\) on, where a string of one weight with \(c_1<c_2\) grows, as \(c_j+c_{j+2}=bc_{j+1}\) exceeds
+-- \(c_{j+1}+c_{j+1}\), \(K\cdot E_j\) is positive. So the two sides of the weight \(2\) are the two signs of
+-- \(K\cdot E_j\).
+lemma lem:string [the string of a chain]
+  core edge: n, N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 2) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), (forall j in NN>=1 : j <= N => c_(j) + c_(j + 2) = b_(j) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)) : n <= N => d_(n + 1) * c_(n + 1) = d_(n) * c_(n + 2) + c_(1)
+  core share: n, N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 2) in QQ>0, x_(1..N + 2) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), (forall j in NN>=1 : j <= N => c_(j) + c_(j + 2) = b_(j) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)), (forall j in NN>=1 : j <= N + 2 => x_(j) * c_(j) = 1) : n <= N + 1 => (sum j in 1..n, x_(j) * x_(j + 1)) = x_(1) * x_(n + 1) * d_(n)
+  core tie: n, N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 1) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), b_(1) * c_(1) = c_(2), (forall j in NN>=1 : j + 1 <= N => c_(j) + c_(j + 2) = b_(j + 1) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)) : n <= N => (c_(n) = c_(1) * d_(n), c_(n + 1) = c_(1) * d_(n + 1))
+  (edge): N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 2) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), (forall j in NN>=1 : j <= N => c_(j) + c_(j + 2) = b_(j) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)) : forall j in NN>=1 : j <= N => d_(j + 1) * c_(j + 1) = d_(j) * c_(j + 2) + c_(1)
+  fix (edge) string.edge
+  neqfix (edge) string.edge.nostring
+  neqfix (edge) string.edge.nostart
+  neqfix (edge) string.edge.nosecond
+  neqfix (edge) string.edge.nocount
+  (share): N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 2) in QQ>0, x_(1..N + 2) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), (forall j in NN>=1 : j <= N => c_(j) + c_(j + 2) = b_(j) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)), (forall j in NN>=1 : j <= N + 2 => x_(j) * c_(j) = 1) : (sum j in 1..N + 1, x_(j) * x_(j + 1)) = x_(1) * x_(N + 2) * d_(N + 1)
+  fix (share) string.share
+  neqfix (share) string.share.nostring
+  neqfix (share) string.share.nomass
+  neqfix (share) string.share.nostart
+  neqfix (share) string.share.nosecond
+  neqfix (share) string.share.nocount
+  (tie): N in NN>=1, b_(1..N) in QQ>0, c_(1..N + 1) in QQ>0, d_(1..N + 1) in QQ>0, d_(1) = 1, d_(2) = b_(1), b_(1) * c_(1) = c_(2), (forall j in NN>=1 : j + 1 <= N => c_(j) + c_(j + 2) = b_(j + 1) * c_(j + 1)), (forall j in NN>=1 : j + 1 <= N => d_(j) + d_(j + 2) = b_(j + 1) * d_(j + 1)) : c_(N + 1) = c_(1) * d_(N + 1)
+  fix (tie) string.tie
+  neqfix (tie) string.tie.nofirst
+  neqfix (tie) string.tie.nostring
+  neqfix (tie) string.tie.nostart
+  neqfix (tie) string.tie.nosecond
+  neqfix (tie) string.tie.nocount
+  origin: ?{\text{form proved: the costs of a chain and the determinants of its first cells obey one recurrence, so every edge carries the same tie, and the terms of the edges telescope}}
+
+-- By induction along the chain. The costs and the determinants obey one recurrence, so the cross tie
+-- \(d_{j+1}c_{j+1}=d_jc_{j+2}+c_1\) passes from each edge to the next (core edge); times \(x_1x_{j+1}x_{j+2}\) it adds
+-- the term \(x_{j+1}x_{j+2}\) of the next edge to the partial sum (core share). From a tied first cost \(c_2=b_1c_1\)
+-- the costs follow the determinants (core tie).
+proof lem:string
+  "core edge" ind[n; with[c_(1) + c_(1 + 2) = b_(1) * c_(1 + 1) by logic; with[b_(1) * c_(1 + 1) = c_(1) + c_(1 + 2) by V[1 * hw1]; with[1 = d_(1) by V[1 * h_1]; V[c_(1 + 1) * h_2, 1 * hw2, c_(1 + 2) * hw3]]]]; with[n <= N by V[1 * hi2]; with[c_(n + 1) + c_(n + 1 + 2) = b_(n + 1) * c_(n + 1 + 1) by logic; with[d_(n) + d_(n + 1 + 1) = b_(n + 1) * d_(n + 1) by logic; with[d_(n + 1) * c_(n + 1) = d_(n) * c_(n + 1 + 1) + c_(1) by logic; V[d_(n + 1) * hw5, c_(n + 1 + 1) * hw6, 1 * hw7]]]]]]
+  "core share" ind[n; with[(sum j in 1..1, x_(j) * x_(j + 1)) = x_(1) * x_(1 + 1) by sum; V[1 * hw1, x_(1) * x_(1 + 1) * h_1]]; with[n <= N by V[1 * hi2]; with[n <= N + 1 by V[1 * hi2]; with[1 <= N + 2 by V; with[n + 1 <= N + 2 by V[1 * hi2]; with[n + 1 + 1 <= N + 2 by V[1 * hi2]; with[(sum j in 1..n + 1, x_(j) * x_(j + 1)) = (sum j in 1..n, x_(j) * x_(j + 1)) + x_(n + 1) * x_(n + 1 + 1) by sum; with[(sum j in 1..n, x_(j) * x_(j + 1)) = x_(1) * x_(n + 1) * d_(n) by logic; with[(n <= N => d_(n + 1) * c_(n + 1) = d_(n) * c_(n + 2) + c_(1)) by lem:string(core edge)[n := n, N := N, b := b, c := c, d := d]; with[d_(n + 1) * c_(n + 1) = d_(n) * c_(n + 1 + 1) + c_(1) by logic; with[x_(1) * c_(1) = 1 by logic; with[x_(n + 1) * c_(n + 1) = 1 by logic; with[x_(n + 1 + 1) * c_(n + 1 + 1) = 1 by logic; with[n + 1 <= N + 1 by V[1 * hi2]; with[d_(n) / (c_(1) * c_(n + 1)) + 1 / (c_(n + 1) * c_(n + 1 + 1)) = d_(n + 1) / (c_(1) * c_(n + 1 + 1)) by lem:cone(countsplit)[b := d_(n + 1), b1 := d_(n), b2 := 1, c := c_(1), d := c_(n + 1 + 1), w := c_(n + 1); d_(n + 1) * c_(n + 1) = 1 * c_(1) + d_(n) * c_(n + 1 + 1) by V[1 * hw10]]; V[1 * hw7, 1 * hw8, 1 * hw15, (d_(n) * x_(n + 1) / c_(1)) * hw11, (d_(n) / (c_(1) * c_(n + 1))) * hw12, (x_(n + 1 + 1) / c_(n + 1)) * hw12, (1 / (c_(n + 1) * c_(n + 1 + 1))) * hw13, (d_(n + 1) * x_(n + 1 + 1) / c_(1)) * hw11, (d_(n + 1) / (c_(1) * c_(n + 1 + 1))) * hw13]]]]]]]]]]]]]]]]
+  "core tie" ind[n; with[1 = d_(1) by V[1 * h_1]; with[c_(2) = b_(1) * c_(1) by V[1 * h_3]; with[b_(1) = d_(2) by V[1 * h_2]; (V[c_(1) * hw1], V[1 * hw2, c_(1) * hw3])]]]; with[n <= N by V[1 * hi2]; with[c_(n) = c_(1) * d_(n) by logic; with[c_(n + 1) = c_(1) * d_(n + 1) by logic; with[c_(n) + c_(n + 1 + 1) = b_(n + 1) * c_(n + 1) by logic; with[d_(n) + d_(n + 1 + 1) = b_(n + 1) * d_(n + 1) by logic; (V[1 * hw6], V[1 * hw7, c_(1) * hw8, 1 * hw5, b_(n + 1) * hw6])]]]]]]
+  (edge) with[(j <= N => d_(j + 1) * c_(j + 1) = d_(j) * c_(j + 2) + c_(1)) by lem:string(core edge)[n := j, N := N, b := b, c := c, d := d]; logic]
+  (share) with[1 <= N + 1 by V; with[N + 1 <= N + 1 by V; with[(N + 1 <= N + 1 => (sum j in 1..N + 1, x_(j) * x_(j + 1)) = x_(1) * x_(N + 1 + 1) * d_(N + 1)) by lem:string(core share)[n := N + 1, N := N, b := b, c := c, x := x, d := d]; logic]]]
+  (tie) with[N <= N by V; with[(N <= N => (c_(N) = c_(1) * d_(N), c_(N + 1) = c_(1) * d_(N + 1))) by lem:string(core tie)[n := N, N := N, b := b, c := c, d := d]; logic]]

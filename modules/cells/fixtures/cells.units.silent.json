@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "(forall h : d_(h) <= b / (2 * k))", "note": "the true weights (2, -1) sum to 1 and the weights (3/2, -3/2) to 0: moved by 1/2 each, the partial sum of the two units vanishes", "rows": [{"k": 2, "b": 1, "P": 0, "Q": 1, "R": 1, "d": ["1/2", "1/2"]}]}

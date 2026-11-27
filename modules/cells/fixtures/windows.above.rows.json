@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "(forall i : (sum j, W_(i)_(j)) <= w_(i))", "note": "one window whose weight is half its row sum", "rows": [{"N": 1, "W": [[2]], "B": [1], "w": [1], "K": 2}]}

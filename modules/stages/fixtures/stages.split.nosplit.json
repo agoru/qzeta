@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "S + E = k", "note": "3 + 5 is not 9: 33 + 56 = 89", "rows": [
+ {"B": 10, "k": 9, "M": 1, "S": 3, "E": 5}
+]}

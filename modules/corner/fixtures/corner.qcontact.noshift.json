@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "h + q * L * X = 1", "note": "h is 1 - X_S, the cost of the composite cell read without the shift by q", "rows": [
+ {"q": "2", "X": "1/8", "T": "1/2", "L": "1/3", "e": "1", "u": "1/2", "v": "7/8", "w": "15/16", "z": "3/2", "r": "3/4", "a": "2/3", "g": "23/24", "h": "23/24", "b": "5/3"}
+]}

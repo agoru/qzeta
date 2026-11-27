@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "u * c = v * e + 1", "note": "1/2 written as 2/4: no certificate u * 2 = v * 4 + 1 exists, and the tie fails at N = 2", "rows": [
+ {"c": 2, "e": 4, "q": "1/2", "N": 2, "m": 1, "u": 3, "v": 1}
+]}

@@ -1,0 +1,205 @@
+-- Q++ 0.2
+module stages
+uses onevar, root, sizes
+
+subsection sec:stages The stages of a base
+
+-- The block \(1=y+x\) of an integral cost \(B=1+k\) \cref{lem:twist}, nested \(M\) times into its zoom share \(x=1/B\),
+-- is again a block of three counts: the whole \(N=B^{M+1}\), the open part \(kT\) with the stage \(T=1+B+\dots+B^M\),
+-- and the cap \(1\) (tower). The next stage is the zoomed stage with one more digit at the bottom (nest), or the stage
+-- with one more digit at the top (grow). A mass \(q\) is a point when its open share is a count, \(kq=S\): its zoom
+-- exceeds it by \(ST\) at every depth (point), and a mass whose zoom exceeds it by a count is a point (self). Read in
+-- units of the whole, \(ST\) is the floor of \(Nq\) when \(q<1\) (floor); read in units of the cap, with \(S+E=k\), the
+-- count \(ET+1\) below \(N\) is \(q\) up to a multiple of \(N\) (base), the only such count, since \(N=kT+1\)
+-- certifies that \(k\) and \(N\) have no common factor (unique). The point splits the tower, \(N=ST+(ET+1)\) (split).
+-- A point of two towers is a point of the tower of the product of the bases (product).
+lemma lem:stages [the stages of a base]
+  (tower): B, k, M in NN>=1, B = 1 + k : 1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1)
+  fix (tower) stages.tower
+  neqfix (tower) stages.tower.nobase
+  (nest): B, M in NN>=1 : 1 + (sum j in 1..M + 1, B^j) = 1 + B * (1 + (sum j in 1..M, B^j))
+  fix (nest) stages.nest
+  (grow): B, M in NN>=1 : 1 + (sum j in 1..M + 1, B^j) = (1 + (sum j in 1..M, B^j)) + B^(M + 1)
+  fix (grow) stages.grow
+  (point): B, k, M, S in NN>=1, q in QQ>0, B = 1 + k, k * q = S : B^(M + 1) * q = q + S * (1 + (sum j in 1..M, B^j))
+  fix (point) stages.point
+  neqfix (point) stages.point.nobase
+  neqfix (point) stages.point.noshare
+  (self): B, k, S in NN>=1, q in QQ>0, B = 1 + k, B * q = q + S : k * q = S
+  fix (self) stages.self
+  neqfix (self) stages.self.nobase
+  neqfix (self) stages.self.nozoom
+  (floor): B, k, M, S in NN>=1, q in QQ>0, B = 1 + k, k * q = S, q < 1 : S * (1 + (sum j in 1..M, B^j)) < B^(M + 1) * q, B^(M + 1) * q < S * (1 + (sum j in 1..M, B^j)) + 1
+  fix (floor) stages.floor
+  neqfix (floor) stages.floor.noshare
+  neqfix (floor) stages.floor.nointerval
+  (base): B, k, M, S, E in NN>=1, q in QQ>0, B = 1 + k, k * q = S, S + E = k : k * (E * (1 + (sum j in 1..M, B^j)) + 1) = k * q + B^(M + 1) * E, E * (1 + (sum j in 1..M, B^j)) + 1 < B^(M + 1)
+  fix (base) stages.base
+  neqfix (base) stages.base.noshare
+  neqfix (base) stages.base.nosplit
+  (unique): B, k, M, S, E, D, c in NN>=1, q in QQ>0, B = 1 + k, k * q = S, S + E = k, D < B^(M + 1), k * D = k * q + B^(M + 1) * c : D = E * (1 + (sum j in 1..M, B^j)) + 1
+  fix (unique) stages.unique
+  neqfix (unique) stages.unique.nobase
+  neqfix (unique) stages.unique.nobelow
+  neqfix (unique) stages.unique.nomultiple
+  (split): B, k, M, S, E in NN>=1, B = 1 + k, S + E = k : B^(M + 1) = S * (1 + (sum j in 1..M, B^j)) + (E * (1 + (sum j in 1..M, B^j)) + 1)
+  fix (split) stages.split
+  neqfix (split) stages.split.nosplit
+  (product): B, C, k, h, S, R in NN>=1, q in QQ>0, B = 1 + k, C = 1 + h, k * q = S, h * q = R : (k + h + k * h) * q = S + B * R, S + B * R = R + C * S
+  fix (product) stages.product
+  neqfix (product) stages.product.noshare
+  neqfix (product) stages.product.nobase
+  origin: ?{\text{form proved: the block of an integral cost nested into its zoom share by the geometric tie \cref{lem:onevar}, its points, and the stage of a point read in units of the whole and in units of the cap}}
+
+-- The tower is the geometric tie; a point scales it; a stage below the whole that agrees with the point up to a
+-- multiple of the whole is the stage, since a multiple of the whole below the whole is none.
+proof lem:stages
+  (tower) with[B + B * (sum j in 1..M, B^j) = (sum j in 1..M, B^j) + B^(M + 1) by lem:qsum(shift)[M := M, t := B]; V[(1 + (sum j in 1..M, B^j)) * h_1, 1 * hw1]]
+  (nest) with[(sum j in 1..M + 1, B^j) = (sum j in 1..M, B^j) + B^(M + 1) by sum; with[B + B * (sum j in 1..M, B^j) = (sum j in 1..M, B^j) + B^(M + 1) by lem:qsum(shift)[M := M, t := B]; V[1 * hw1, 1 * hw2]]]
+  (grow) with[(sum j in 1..M + 1, B^j) = (sum j in 1..M, B^j) + B^(M + 1) by sum; V[1 * hw1]]
+  (point) with[1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1) by lem:stages(tower)[B := B, k := k, M := M]; V[q * hw1, (1 + (sum j in 1..M, B^j)) * h_2]]
+  (self) V[1 * h_2, q * h_1]
+  (floor) with[B^(M + 1) * q = q + S * (1 + (sum j in 1..M, B^j)) by lem:stages(point)[B := B, k := k, M := M, S := S, q := q]; (V[| 1 * hw1], V[1 * hw1, 1 * h_3])]
+  (base) with[1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1) by lem:stages(tower)[B := B, k := k, M := M]; (V[E * hw1, 1 * h_2, 1 * h_3], V[1 * hw1, (1 + (sum j in 1..M, B^j)) * h_3])]
+  (unique) with[1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1) by lem:stages(tower)[B := B, k := k, M := M]; with[k * D = S + B^(M + 1) * c by V[1 * h_5, 1 * h_2]; with[B^(M + 1) * D + E * (1 + (sum j in 1..M, B^j)) + 1 = D + B^(M + 1) * (c * (1 + (sum j in 1..M, B^j)) + 1) by V[(1 + (sum j in 1..M, B^j)) * hw2, 1 * hw1, D * hw1, (1 + (sum j in 1..M, B^j)) * h_3]; with[E * (1 + (sum j in 1..M, B^j)) + 1 < B^(M + 1) by V[1 * hw1, (1 + (sum j in 1..M, B^j)) * h_3]; with[D <= E * (1 + (sum j in 1..M, B^j)) + 1 by cases[c * (1 + (sum j in 1..M, B^j)) + 1 < D; with[c * (1 + (sum j in 1..M, B^j)) + 1 + 1 <= D by V[1 * hc1]; with[B^(M + 1) * (c * (1 + (sum j in 1..M, B^j)) + 1 + 1) <= B^(M + 1) * D by mono; with[B^(M + 1) <= D by V[1 * hw7, 1 * hw3]; logic]]]; with[B^(M + 1) * D <= B^(M + 1) * (c * (1 + (sum j in 1..M, B^j)) + 1) by mono; V[1 * hw9 | 1 * hw3]]]; with[E * (1 + (sum j in 1..M, B^j)) + 1 <= D by cases[c * (1 + (sum j in 1..M, B^j)) + 1 <= D; with[B^(M + 1) * (c * (1 + (sum j in 1..M, B^j)) + 1) <= B^(M + 1) * D by mono; V[1 * hw3, 1 * hw11]]; with[D + 1 <= c * (1 + (sum j in 1..M, B^j)) + 1 by V[1 * hn2]; with[B^(M + 1) * (D + 1) <= B^(M + 1) * (c * (1 + (sum j in 1..M, B^j)) + 1) by mono; with[B^(M + 1) <= E * (1 + (sum j in 1..M, B^j)) + 1 by V[1 * hw13 | 1 * hw3]; logic]]]]; V[1 * hw5], V[1 * hw10]]]]]]]
+  (split) with[1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1) by lem:stages(tower)[B := B, k := k, M := M]; V[1 * hw1, (1 + (sum j in 1..M, B^j)) * h_2]]
+  (product) (V[1 * h_3, (1 + k) * h_4, R * h_1], V[R * h_1, S * h_2, h * h_3, k * h_4])
+
+-- Every count \(m\) prime to the base \(b\) has a power \(b^l=1+mh\), \(l,h\ge1\); coprimality is certified by Bezout.
+cit fact:euler [Euler's theorem]
+  (1): b, m, u, v in NN>=1, 1 < b, u * m = v * b + 1 : exists l in NN>=1 : exists h in NN>=1 : b^l = 1 + m * h
+  doi: 10.1093/oso/9780199219858.001.0001
+  stmt: Theorem 72
+  fix (1) euler
+  origin: ?{\text{cited: \cite[Theorem~72]{HardyWright2008}, Euler's theorem}\ b^{\varphi(m)}\equiv1\pmod m\ \text{for}\ m\ \text{prime to}\ b\text{, at}\ l=\varphi(m)\text{; in Mathlib}\ \texttt{Nat.ModEq.pow\_totient}}
+
+-- A mass \(q=n/m<1\) with \(m\) prime to the base \(b\) is a point of the tower of \(B=b^l=1+k\) \cref{fact:euler},
+-- with the shares \(S=kq\) and \(E\), where \(S+E=k\). At every depth its stage in units of the whole is the floor of \(Nq\), its
+-- stage in units of the cap is the count below \(N\) that is \(q\) up to a multiple of \(N\) \cref{lem:stages}, and
+-- the next depth truncates to them: by its last digit in units of the whole, by its leading digit in units of the cap.
+-- The two towers of stages with their truncations are the finite depths of the completions at the archimedean place
+-- and at the base, and a mass prime to the base is a point of both.
+theorem thm:completion [the completion of a base at finite depth]
+  (1): b, m, n, u, v in NN>=1, q in QQ>0, 1 < b, q * m = n, n < m, u * m = v * b + 1 : exists l in NN>=1 : exists B in NN>=1 : exists k in NN>=1 : exists S in NN>=1 : exists E in NN>=1 : B = b^l, B = 1 + k, k * q = S, S + E = k, (forall M in NN>=1 : (S * (1 + (sum j in 1..M, B^j)) < B^(M + 1) * q, B^(M + 1) * q < S * (1 + (sum j in 1..M, B^j)) + 1), (k * (E * (1 + (sum j in 1..M, B^j)) + 1) = k * q + B^(M + 1) * E, E * (1 + (sum j in 1..M, B^j)) + 1 < B^(M + 1)), S * (1 + (sum j in 1..M + 1, B^j)) = B * (S * (1 + (sum j in 1..M, B^j))) + S, E * (1 + (sum j in 1..M + 1, B^j)) + 1 = (E * (1 + (sum j in 1..M, B^j)) + 1) + B^(M + 1) * E)
+  fix (1) completion
+  neqfix (1) completion.noprime
+  neqfix (1) completion.nointerval
+  origin: ?{\text{form proved from Euler's theorem \cite[Theorem~72]{HardyWright2008}: the expansions in base}\ B\ \text{of a fraction prime to the base, with the digit}\ S\ \text{repeated at the real place and the digits}\ E+1,E,E,\dots\ \text{at the base, as the stages of one tower with their truncations}}
+
+-- The period from Euler's theorem, the shares from the gap of the numerator, the stages from the tower.
+proof thm:completion
+  (1) with[exists l in NN>=1 : exists h in NN>=1 : b^l = 1 + m * h by fact:euler(1)[b := b, m := m, u := u, v := v]; with[b^l = 1 + m * h by logic; with[exists g in NN>=1 : n + g = m by fact:gap(core)[u := n, v := m]; with[n + g = m by logic; with[q < 1 by V[(1 / m) * h_3, (1 / m) * h_2]; with[m * h * q = n * h by V[h * h_2]; with[n * h + g * h = m * h by V[h * hw4]; with[1 * 1 <= m * h by mono; with[1 * 1 <= n * h by mono; with[1 * 1 <= g * h by mono; with[1 <= m * h by V[1 * hw8]; with[1 <= n * h by V[1 * hw9]; with[1 <= g * h by V[1 * hw10]; with[1 <= b^l by V[1 * hw11 | 1 * hw2]; take[l := l, B := b^l, k := m * h, S := n * h, E := g * h; (eq, logic, logic, logic, with[1 + (sum j in 1..M + 1, (b^l)^j) = 1 + b^l * (1 + (sum j in 1..M, (b^l)^j)) by lem:stages(nest)[B := b^l, M := M]; with[1 + (sum j in 1..M + 1, (b^l)^j) = (1 + (sum j in 1..M, (b^l)^j)) + (b^l)^(M + 1) by lem:stages(grow)[B := b^l, M := M]; (lem:stages(floor)[B := b^l, k := m * h, M := M, S := n * h, q := q], lem:stages(base)[B := b^l, k := m * h, M := M, S := n * h, E := g * h, q := q], V[(n * h) * hw15], V[(g * h) * hw16])]])]]]]]]]]]]]]]]]
+
+-- The factorial zoom splits a cell of depth \(K\), the stage \(A\) at the denominator \(F=K!\), into \(Z=K+1\) cells:
+-- the child of share \(d\) is the stage \(ZA+d\) at the denominator \(ZF\). A share \(1\le d\le Z-2\) puts the child
+-- strictly inside its cell, so a mass whose denominator divides \(F\) lies below or above the child (step). The stages
+-- \(A_K=\sum_{j\le K}K!/j!\) of \(e\) are the branch of share \(1\) at every depth (stream), and every mass
+-- \(n/(K+1)\) lies outside the cell of \(e\) at the depth \(K+2\) (cut): no mass lies on \(e\).
+lemma lem:factorial [the cut of the factorial zoom]
+  (step): F, A, Z, d, m, h, n in NN>=1, F = m * h, d + 2 <= Z : n * (Z * F) < m * (Z * A + d) or m * (Z * A + d + 1) < n * (Z * F)
+  fix (step) factorial.step
+  neqfix (step) factorial.step.noshare
+  neqfix (step) factorial.step.nodivide
+  (stream): K in NN>=1 : (sum j in 1..K + 1 + 1, prod i in j..K + 1, i) = (K + 1) * (sum j in 1..K + 1, prod i in j..K, i) + 1
+  fix (stream) factorial.stream
+  (cut): K, n in NN>=1 : n * ((K + 2) * (prod i in 1..K + 1, i)) < (K + 1) * ((K + 2) * (sum j in 1..K + 1 + 1, prod i in j..K + 1, i) + 1) or (K + 1) * ((K + 2) * (sum j in 1..K + 1 + 1, prod i in j..K + 1, i) + 1 + 1) < n * ((K + 2) * (prod i in 1..K + 1, i))
+  fix (cut) factorial.cut
+  origin: ?{\text{form proved over}\ \Q\text{: Fourier's proof that}\ e=\sum_j1/j!\ \text{is irrational \cite[Section~1.1, Theorem~1]{Chattopadhyay2026}, read on the factorial zoom: the stage}\ A_K\ \text{at the denominator}\ K!\ \text{is}\ K!\ \text{times the partial sum, and every mass is outside a cell of}\ e\ \text{at a depth given by its denominator}}
+
+-- A count below or above the stage scales to a mass below or above the child; the last term of each range splits off;
+-- the cut is the step at the denominator \((K+1)!\), the share \(1\) and the zoom \(K+2\).
+proof lem:factorial
+  (step) cases[n * h <= A; with[n * (Z * F) < m * (Z * A + d) by V[(m * Z) * hc1, (n * Z) * h_1]; logic]; with[A + 1 <= n * h by V[1 * hn1]; with[m * (Z * A + d + 1) < n * (Z * F) by V[(m * Z) * hw2, m * h_2 | (n * Z) * h_1]; logic]]]
+  (stream) with[(prod i in K + 1 + 1..K + 1, i) = 1 by sum; with[(sum j in 1..K + 1, prod i in j..K + 1, i) = (sum j in 1..K + 1, (prod i in j..K, i) * (K + 1)) by sum[sum]; chain[(sum j in 1..K + 1 + 1, prod i in j..K + 1, i) = (sum j in 1..K + 1, prod i in j..K + 1, i) + (prod i in K + 1 + 1..K + 1, i) by sum; = (sum j in 1..K + 1, prod i in j..K + 1, i) + 1 by eq; = (sum j in 1..K + 1, (prod i in j..K, i) * (K + 1)) + 1 by eq; = (sum j in 1..K + 1, prod i in j..K, i) * (K + 1) + 1 by eq; = (K + 1) * (sum j in 1..K + 1, prod i in j..K, i) + 1 by eq]]]
+  (cut) with[(prod i in 1..K + 1, i) = (K + 1) * (prod i in 1..K, i) by chain[(prod i in 1..K + 1, i) = (prod i in 1..K, i) * (K + 1) by sum; = (K + 1) * (prod i in 1..K, i) by eq]; with[0 < (prod i in 1..K, i) by mono; with[1 <= (prod i in 1..K, i) by chain[1 = 0 + 1 by V; <= (prod i in 1..K, i) by V[1 * hw4]]; with[0 < (prod i in 1..K + 1, i) by mono; with[1 <= (prod i in 1..K + 1, i) by chain[1 = 0 + 1 by V; <= (prod i in 1..K + 1, i) by V[1 * hw8]]; with[(sum j in 1..K + 1 + 1, prod i in j..K + 1, i) = (K + 1) * (sum j in 1..K + 1, prod i in j..K, i) + 1 by lem:factorial(stream)[K := K]; with[1 <= (sum j in 1..K + 1 + 1, prod i in j..K + 1, i) by chain[1 <= (K + 1) * (sum j in 1..K + 1, prod i in j..K, i) + 1 by mono; = (sum j in 1..K + 1 + 1, prod i in j..K + 1, i) by eq]; with[1 <= K + 1 by V[1 * hp(K)]; with[1 <= K + 2 by V[1 * hp(K)]; with[1 + 2 <= K + 2 by V[1 * hp(K)]; lem:factorial(step)[F := (prod i in 1..K + 1, i), A := (sum j in 1..K + 1 + 1, prod i in j..K + 1, i), Z := K + 2, d := 1, m := K + 1, h := (prod i in 1..K, i), n := n]]]]]]]]]]]
+
+-- A square tie \(P^2=DQ^2+E\) of counts is a block: the square of \(P\) exceeds \(D\) times the square of \(Q\) by \(E\).
+-- Two ties of the same \(D\) compose, and their excesses multiply (compose). A tie whose excess is small against a
+-- whole, \(EN^2<Q^2\), names the floor stage of the wall \(x^2=D\) at the whole \(N\): the floor \(A\) of \(PN/Q\) has
+-- \(A^2\le DN^2<(A+1)^2\) (stage). Composing with a unit \(x^2=Dy^2+1\) keeps the excess \(1\) and grows \(Q\) by at
+-- least one (grow), so every whole has its stage, read off a composed tie (read).
+lemma lem:wall [the floor stage of a square tie]
+  (compose): D, P, Q, E, R, S, F in NN>=1, P^2 = D * Q^2 + E, R^2 = D * S^2 + F : (P * R + D * Q * S)^2 = D * (P * S + Q * R)^2 + E * F
+  fix (compose) wall.compose
+  (stage): D, N, P, Q, E, A in NN>=1, P^2 = D * Q^2 + E, E * N^2 < Q^2, A * Q <= P * N, P * N < (A + 1) * Q : A^2 <= D * N^2, D * N^2 < (A + 1)^2
+  fix (stage) wall.stage
+  neqfix (stage) wall.stage.nowhole
+  (grow): D, x, y, j in NN>=1, x^2 = D * y^2 + 1 : exists P in NN>=1 : exists Q in NN>=1 : P^2 = D * Q^2 + 1, j <= Q
+  fix (grow) wall.grow
+  (read): D, N, x, y in NN>=1, x^2 = D * y^2 + 1 : exists A in NN>=1 : A^2 <= D * N^2, D * N^2 < (A + 1)^2
+  fix (read) wall.read
+  origin: ?{\text{form proved over}\ \Q\text{: Brahmagupta's composition of the ties}\ P^2=DQ^2+E\text{, in the matrix form of \cite[Proposition~1]{Abrate2013}, with Heron's step as a tie composed with itself \cite[Theorem~2]{Abrate2013}, and the approximation of the wall}\ x^2=D\ \text{by a solution of Pell's equation \cite[Section~3]{Davies2011}, read as the floor stage at a whole}}
+
+-- The excesses multiply by the two ties. The floor squared is at most \(DN^2\), else \(Q^2\le EN^2\); the next count
+-- squared is above \(DN^2\), else \(P^2N^2<DQ^2N^2\), below the tie. The unit composes at each depth, and the stage at
+-- \(N\) is the floor of a tie composed past \(N\).
+proof lem:wall
+  (compose) V[R^2 * h_1, E * h_2 | (D * S^2) * h_1]
+  (stage) (cases[A^2 <= D * N^2; logic; with[D * N^2 + 1 <= A^2 by V[1 * hn1]; with[(A * Q)^2 <= (P * N)^2 by mono; with[(D * N^2 + 1) * Q^2 <= A^2 * Q^2 by mono; with[Q^2 <= E * N^2 by V[1 * hw3, 1 * hw2, N^2 * h_1]; logic]]]]], cases[D * N^2 < (A + 1)^2; logic; with[(P * N) * (P * N) < ((A + 1) * Q) * ((A + 1) * Q) by mono; with[(A + 1)^2 * Q^2 <= D * N^2 * Q^2 by mono; with[D * N^2 * Q^2 + E * N^2 < D * N^2 * Q^2 by V[1 * hw5, 1 * hw6 | N^2 * h_1]; with[D * N^2 * Q^2 <= D * N^2 * Q^2 + E * N^2 by mono; logic]]]]])
+  (grow) ind[j; take[P := x, Q := y; (V[1 * h_1], V[1 * hp(y)])]; with[P^2 = D * Q^2 + 1 by logic; with[j <= Q by logic; with[(P * x + D * Q * y)^2 = D * (P * y + Q * x)^2 + 1 * 1 by lem:wall(compose)[D := D, P := P, Q := Q, E := 1, R := x, S := y, F := 1]; with[1 * 1 <= P * x by mono; with[1 <= P * x + D * Q * y by V[1 * hw4]; with[Q * 1 <= Q * x by mono; with[1 * 1 <= P * y by mono; with[j + 1 <= P * y + Q * x by V[1 * hw2, 1 * hw6, 1 * hw7]; with[1 <= P * y + Q * x by V[1 * hw8]; with[exists U in NN>=1 : exists W in NN>=1 : U^2 = D * W^2 + 1, j + 1 <= W by take[U := P * x + D * Q * y, W := P * y + Q * x; (V[1 * hw3], V[1 * hw8])]; with[U^2 = D * W^2 + 1 by logic; with[j + 1 <= W by logic; take[P := U, Q := W; (V[1 * hw11], V[1 * hw12])]]]]]]]]]]]]]]
+  (read) with[1 <= N + 1 by V[1 * hp(N)]; with[exists P in NN>=1 : exists Q in NN>=1 : P^2 = D * Q^2 + 1, N + 1 <= Q by lem:wall(grow)[D := D, x := x, y := y, j := N + 1]; with[P^2 = D * Q^2 + 1 by logic; with[N + 1 <= Q by logic; with[exists k in NN : k <= P * N / Q, P * N / Q < k + 1 by fact:floor(core)[x := P * N / Q]; with[k <= P * N / Q by logic; with[P * N / Q < k + 1 by logic; with[k * Q <= P * N by V[Q * hw6]; with[P * N < (k + 1) * Q by V[Q * hw7]; with[Q <= P by cases[Q <= P; logic; with[P + 1 <= Q by V[1 * hn1]; with[(P + 1)^2 <= Q^2 by mono; with[1 * Q^2 <= D * Q^2 by mono; with[P^2 + 1 <= P^2 by V[1 * hw12, 1 * hw13 | 1 * hw3]; with[P^2 < P^2 + 1 by V; logic]]]]]]; with[Q * 1 <= P * N by mono; with[1 <= k by cases[1 <= k; logic; with[k + 1 <= 1 by V[1 * hn2]; with[(k + 1) * Q <= 1 * Q by mono; with[P * N < Q * 1 by V[1 * hw9, 1 * hw19]; logic]]]]; with[N < Q by V[1 * hw4]; with[N * N < Q * Q by mono; with[1 * N^2 < Q^2 by V[1 * hw22]; take[A := k; lem:wall(stage)[D := D, N := N, P := P, Q := Q, E := 1, A := k]]]]]]]]]]]]]]]]]
+
+-- The digits of a count in a base: the count \(A\) of the digits of \(x\) in the base \(b\) puts \(bx\) between two
+-- consecutive powers of \(b\).
+cit fact:digits [the digits of a count in a base]
+  mathlib: Nat.log_pos, Nat.pow_log_le_self, Nat.lt_pow_succ_log_self (Mathlib.Data.Nat.Log)
+  (1): b, x in NN>=1, 2 <= b : exists A in NN>=1 : b^A <= b * x, b * x < b^(A + 1)
+  fix (1) digits
+
+-- The wall of two powers \(p^a\) against \(q^b\): at the whole \(N\), its stage is the count \(A\) of the digits of
+-- \(q^N\) in the base \(p\), so \(p^{A}\le pq^N<p^{A+1}\) (stage), and it is one (unique). The stages of two wholes
+-- add up to the stage of their sum, up to a carry of one: \(A+C\le E+1\) and \(E\le A+C\) (add).
+lemma lem:powwall [the stages of the wall of two powers]
+  (stage): p, q, N in NN>=1, 2 <= p : exists A in NN>=1 : p^A <= p * q^N, p * q^N < p^(A + 1)
+  fix (stage) powwall.stage
+  (unique): p, q, N, A, C in NN>=1, 2 <= p, p^A <= p * q^N, p * q^N < p^(A + 1), p^C <= p * q^N, p * q^N < p^(C + 1) : A = C
+  fix (unique) powwall.unique
+  (add): p, q, N, M, A, C, E in NN>=1, 2 <= p, p^A <= p * q^N, p * q^N < p^(A + 1), p^C <= p * q^M, p * q^M < p^(C + 1), p^E <= p * q^(N + M), p * q^(N + M) < p^(E + 1) : A + C <= E + 1, E <= A + C
+  fix (add) powwall.add
+  neqfix (add) powwall.add.nolower
+  origin: ?{\text{form proved over}\ \Q\text{: the stages of the wall}\ p^a=q^b\ \text{read by the digits of}\ q^N\ \text{in the base}\ p\text{, with their carry law}}
+
+-- The digits of \(q^N\) give the stage. Of two stages, the power one above the smaller is at most the power of the
+-- larger, so it would lie below \(pq^N\). A sum of stages two above the stage of the sum puts \(p^Ap^C\) below itself,
+-- and one below puts \(p\,p^{A+C+1}\) below itself.
+proof lem:powwall
+  (stage) with[1 <= q^N by chain[1 = 1^N by eq; <= q^N by mono]; fact:digits(1)[b := p, x := q^N]]
+  (unique) cases[A <= C; logic; with[C + 1 <= A by V[1 * hn1]; with[p^(C + 1) <= p^A by mono; with[p^(C + 1) <= p * q^N by V[1 * hw2, 1 * h_2]; logic]]]], cases[C <= A; logic; with[A + 1 <= C by V[1 * hn2]; with[p^(A + 1) <= p^C by mono; with[p^(A + 1) <= p * q^N by V[1 * hw5, 1 * h_4]; logic]]]]
+  (add) (lem:carry(product)[b := p, A := A, C := C, E := E, X := q^N, Y := q^M; p^E <= p * (q^N * q^M) by V[1 * h_6]; p * (q^N * q^M) < p^(E + 1) by V[1 * h_7]], lem:carry(product)[b := p, A := A, C := C, E := E, X := q^N, Y := q^M; p^E <= p * (q^N * q^M) by V[1 * h_6]; p * (q^N * q^M) < p^(E + 1) by V[1 * h_7]])
+
+subsection sec:lift The lift of a square tie
+
+-- A root of a square tie at the depth \(M\) of a base \(B=1+k\), \(D^2+a=b+B^{M+1}c\) with \(D=z+Bt\), lifts to the
+-- next depth by the closed share \(e=kuc\), where \(u\cdot2z=1+Bv\) inverts \(2z\) up to the base: the factor \(k\)
+-- stands for the sign, and the carry \(c+2De=Bc(1+k(v+2tu))\) is a tie of counts (step). A root up to the base gives a
+-- root at every depth (exist). Two roots with the same start agree up to a multiple of the whole: with \(1+x=u(D+D')\)
+-- and \(y=kTx\), the stage \(G=1+y+\dots+y^M\) inverts \(1+x\) up to the whole \cref{lem:stages} (unique). A mass that
+-- agrees with a root up to a whole \(N\) above \(n^2+am^2\) and \(bm^2\) is a root of the tie (rational), and so is a
+-- mass that completes a root to a multiple of that whole (complement).
+lemma lem:lift [the lift of a square tie]
+  (step): B, k, z, u, v, a, b, t, c, M in NN>=1, B = 1 + k, u * (2 * z) = 1 + B * v, (z + B * t)^2 + a = b + B^(M + 1) * c : (z + B * (t + B^M * (k * u * c)))^2 + a = b + B^(M + 2) * (c * (1 + k * (v + 2 * t * u)) + B^M * (k * u * c)^2)
+  fix (step) lift.step
+  neqfix (step) lift.step.nobase
+  neqfix (step) lift.step.noinverse
+  (exist): B, k, z, u, v, a, b, s, M in NN>=1, B = 1 + k, u * (2 * z) = 1 + B * v, z^2 + a = b + B * s : exists t in NN>=1 : exists c in NN>=1 : (z + B * t)^2 + a = b + B^(M + 1) * c
+  fix (exist) lift.exist
+  (unique): B, k, z, u, v, M, a, b, t, r, c, d in NN>=1, B = 1 + k, u * (2 * z) = 1 + B * v, (z + B * t)^2 + a = b + B^(M + 1) * c, (z + B * r)^2 + a = b + B^(M + 1) * d : exists P in NN>=1 : exists Q in NN>=1 : z + B * t + B^(M + 1) * P = z + B * r + B^(M + 1) * Q
+  fix (unique) lift.unique
+  (rational): N, m, n, a, b, D, w, c in NN>=1, m * D = n + N * w, D^2 + a = b + N * c, n^2 + a * m^2 < N, b * m^2 < N : n^2 + a * m^2 = b * m^2
+  fix (rational) lift.rational
+  neqfix (rational) lift.rational.noagree
+  neqfix (rational) lift.rational.nobelow
+  (complement): N, m, n, a, b, D, w, c in NN>=1, m * D + n = N * w, D^2 + a = b + N * c, n^2 + a * m^2 < N, b * m^2 < N : n^2 + a * m^2 = b * m^2
+  fix (complement) lift.complement
+  neqfix (complement) lift.complement.noagree
+  neqfix (complement) lift.complement.nobelow
+  origin: ?{\text{form proved over}\ \Q\text{: Hensel's lemma for a simple root of a square \cite[Section~5]{Lewis2019}, at every finite depth, with a closed step and a closed certificate of uniqueness}}
+
+-- The step expands the square and carries by the inverse; a root exists at every depth by induction on the depth; two
+-- roots are tied through the inverse of their sum; a mass on a root, or on its complement, squares its own tie.
+proof lem:lift
+  (step) V[1 * h_3, (B^(M + 1) * k * c) * h_2, (B^(M + 1) * c) * h_1]
+  (exist) ind[M; with[1 <= 1 + k * u * (s + 2 * z + B) by V; with[1 <= (s + 2 * z + B) * (1 + k * (v + 2 * u)) + (k * u * (s + 2 * z + B))^2 by V[1 * hp(s)]; take[t := 1 + k * u * (s + 2 * z + B), c := (s + 2 * z + B) * (1 + k * (v + 2 * u)) + (k * u * (s + 2 * z + B))^2; V[1 * h_3, (B * k * (s + 2 * z + B)) * h_2, (B * (s + 2 * z + B)) * h_1]]]]; with[(z + B * t)^2 + a = b + B^(M + 1) * c by logic; with[t <= t + B^M * (k * u * c) by V; with[1 <= t + B^M * (k * u * c) by V[1 * hp(t), 1 * hw4]; with[c <= c + (c * (k * (v + 2 * t * u)) + B^M * (k * u * c)^2) by V; with[1 <= c * (1 + k * (v + 2 * t * u)) + B^M * (k * u * c)^2 by V[1 * hp(c), 1 * hw6]; take[t := t + B^M * (k * u * c), c := c * (1 + k * (v + 2 * t * u)) + B^M * (k * u * c)^2; lem:lift(step)[B := B, k := k, z := z, u := u, v := v, a := a, b := b, t := t, c := c, M := M]]]]]]]]
+  (unique) with[1 + k * (1 + (sum j in 1..M, B^j)) = B^(M + 1) by lem:stages(tower)[B := B, k := k, M := M]; with[(k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r)))) + (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r)))) * (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i) = (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i) + (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^(M + 1) by lem:qsum(shift)[M := M, t := k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r)))]; with[(k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^(M + 1) = B^(M + 1) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) by eq; with[(1 + (B * (v + u * (t + r)))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) + B^(M + 1) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) = 1 + B^(M + 1) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) by V[1 * hw2, 1 * hw3, ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) * hw1]; with[u * ((z + B * t) + (z + B * r)) = 1 + (B * (v + u * (t + r))) by V[1 * h_2]; with[(z + B * t) * ((z + B * t) + (z + B * r)) + B^(M + 1) * d = (z + B * r) * ((z + B * t) + (z + B * r)) + B^(M + 1) * c by V[1 * h_3, 1 * h_4]; with[u * ((z + B * t) + (z + B * r)) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) + B^(M + 1) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) = 1 + B^(M + 1) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) by V[(1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * hw5, 1 * hw4]; with[(z + B * t) * (u * ((z + B * t) + (z + B * r)) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + B^(M + 1) * (u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d) = (z + B * r) * (u * ((z + B * t) + (z + B * r)) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + B^(M + 1) * (u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c) by V[(u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) * hw6]; with[1 <= (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) by V; with[1 * 1 * 1 <= u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d by mono; with[u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d <= (z + B * t) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * r) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d by V; with[1 <= (z + B * t) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * r) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d by V[1 * hw10, 1 * hw11]; with[1 * 1 * 1 <= u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c by mono; with[u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c <= (z + B * r) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * t) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c by V; with[1 <= (z + B * r) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * t) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c by V[1 * hw13, 1 * hw14]; take[P := (z + B * t) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * r) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * d, Q := (z + B * r) * ((B * (v + u * (t + r))) * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i))) + (z + B * t) * (k * (1 + (sum j in 1..M, B^j)) * (v + u * (t + r)))^(M + 1) + u * (1 + (sum i in 1..M, (k * (1 + (sum j in 1..M, B^j)) * (B * (v + u * (t + r))))^i)) * c; V[1 * hw8, (z + B * t) * hw7, (z + B * r) * hw7]]]]]]]]]]]]]]]]]
+  (rational) with[m^2 * D^2 = n^2 + N * (2 * n * w + N * w^2) by V[(m * D + n + N * w) * h_1]; with[n^2 + a * m^2 + N * (2 * n * w + N * w^2) = b * m^2 + N * (m^2 * c) by V[1 * hw1, m^2 * h_2]; with[b * m^2 + N * (m^2 * c) = n^2 + a * m^2 + N * (2 * n * w + N * w^2) by V[1 * hw2]; with[n^2 + a * m^2 <= b * m^2 by cases[2 * n * w + N * w^2 < m^2 * c; with[2 * n * w + N * w^2 + 1 <= m^2 * c by V[1 * hc1]; with[N * (2 * n * w + N * w^2 + 1) <= N * (m^2 * c) by mono; with[N <= n^2 + a * m^2 by V[1 * hw3, 1 * hw6]; logic]]]; with[N * (m^2 * c) <= N * (2 * n * w + N * w^2) by mono; V[1 * hw2, 1 * hw8]]]; with[b * m^2 <= n^2 + a * m^2 by cases[m^2 * c < 2 * n * w + N * w^2; with[m^2 * c + 1 <= 2 * n * w + N * w^2 by V[1 * hc2]; with[N * (m^2 * c + 1) <= N * (2 * n * w + N * w^2) by mono; with[N <= b * m^2 by V[1 * hw2, 1 * hw11]; logic]]]; with[N * (2 * n * w + N * w^2) <= N * (m^2 * c) by mono; V[1 * hw3, 1 * hw13]]]; V[1 * hw4], V[1 * hw9]]]]]]
+  (complement) with[N * w = m * D + n by V[1 * h_1]; with[m^2 * D^2 + N * (2 * n * w) = n^2 + N * (N * w^2) by V[(m * D + n + N * w) * h_1, (2 * n) * hw1]; with[n^2 + a * m^2 + N * (N * w^2) = b * m^2 + N * (m^2 * c + 2 * n * w) by V[1 * hw2, m^2 * h_2]; with[b * m^2 + N * (m^2 * c + 2 * n * w) = n^2 + a * m^2 + N * (N * w^2) by V[1 * hw3]; with[n^2 + a * m^2 <= b * m^2 by cases[N * w^2 < m^2 * c + 2 * n * w; with[N * w^2 + 1 <= m^2 * c + 2 * n * w by V[1 * hc1]; with[N * (N * w^2 + 1) <= N * (m^2 * c + 2 * n * w) by mono; with[N <= n^2 + a * m^2 by V[1 * hw4, 1 * hw7]; logic]]]; with[N * (m^2 * c + 2 * n * w) <= N * (N * w^2) by mono; V[1 * hw3, 1 * hw9]]]; with[b * m^2 <= n^2 + a * m^2 by cases[m^2 * c + 2 * n * w < N * w^2; with[m^2 * c + 2 * n * w + 1 <= N * w^2 by V[1 * hc2]; with[N * (m^2 * c + 2 * n * w + 1) <= N * (N * w^2) by mono; with[N <= b * m^2 by V[1 * hw3, 1 * hw12]; logic]]]; with[N * (N * w^2) <= N * (m^2 * c + 2 * n * w) by mono; V[1 * hw4, 1 * hw14]]]; V[1 * hw5], V[1 * hw10]]]]]]]

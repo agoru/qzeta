@@ -1,0 +1,25 @@
+{
+ "kind": "model",
+ "set": {
+  "alpha": 1,
+  "d": 1
+ },
+ "note": "a silent gap is a surplus unit at alpha = d = 1",
+ "rows": [
+  {
+   "D": 1,
+   "alpha": 1,
+   "d": 1
+  },
+  {
+   "D": "1/2",
+   "alpha": 1,
+   "d": 1
+  },
+  {
+   "D": "19/10",
+   "alpha": 1,
+   "d": 1
+  }
+ ]
+}

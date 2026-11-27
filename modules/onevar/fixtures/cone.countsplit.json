@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "a cone of index 2 split into two unimodular cones, and a cone of index 5 split by a ray of index 2 and 3", "rows": [{"b": "2", "b1": "1", "b2": "1", "c": "1", "d": "3", "w": "2"}, {"b": "5", "b1": "2", "b2": "3", "c": "2", "d": "7", "w": "4"}, {"b": "1", "b1": "1", "b2": "1", "c": "1/2", "d": "3/2", "w": "2"}]}

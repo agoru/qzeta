@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "x * D = n + d * r / k", "note": "x is not the lift of -r: the first row is carried from the counterexample nolift of the row (lift) of cor:levelmonodromy, at d = 1; the second is the lift of d = 1 read at d = 2", "rows": [
+ {"k": "2", "n": "3", "N": "2", "D": "5", "nu": "2", "r": "5/6", "x": "1", "d": "1"},
+ {"k": "2", "n": "3", "N": "2", "D": "6", "d": "2", "nu": "2", "r": "5/6", "x": "41/60"}
+]}

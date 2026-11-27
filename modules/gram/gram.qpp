@@ -1,0 +1,70 @@
+-- Q++ 0.2
+module gram
+uses table
+
+subsection sec:gram The Gram form
+
+-- The second moment of a cluster is a Gram form \(|Y^{\mathsf T}SY|^2\) with \(S\) of inertia \((p,q)\) (Sylvester's
+-- law of inertia), whose zeros of rank \(\rho\) are the frames of the totally isotropic subspaces, up to
+-- \(k=\min(d,p,q)\). At a zero of rank \(k\) it reads three blocks, each one scale, at the prices
+-- \(\frac12,\frac12,\frac14\): the value \(\frac14(k(k+1)+2ke+se)\), \(s=m-2k\), \(e=d-k\), at one point or on an edge
+-- at \(k=1\), \(s=0\) (form, formedge), and with a third moment \(\frac1{12}(5k^2+k+6ke+2ks+3se)\) (depth, depthedge);
+-- at \(s=0\) the zeros of rank \(k-1\) have the same value (formtie, depthtie). The programs are stated here; that they
+-- are the content of the form is not.
+lemma lem:gram [the strata of a Gram form]
+  (form): k in QQ>0, s, e in QQ>=0, 1 < k + s : prog(x, t_1, t_2, u in QQ>=0, 2 * k * (k + 1) * x + 2 * t_1 >= k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 >= k * e, 4 * s * e * x + 4 * u >= s * e : (2 * k + s) * (k + e) * x + t_1 + t_2 + u) = ((k * (k + 1) + 2 * k * e + s * e) / 4, 1)
+  fix (form) gram.form
+  neqfix (form) gram.offform
+  (formedge): k in QQ>0, s, e in QQ>=0, k = 1, s = 0 : prog(x, t_1, t_2, u in QQ>=0, 2 * k * (k + 1) * x + 2 * t_1 >= k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 >= k * e, 4 * s * e * x + 4 * u >= s * e : (2 * k + s) * (k + e) * x + t_1 + t_2 + u) = ((1 + e) / 2, 2)
+  fix (formedge) gram.formedge
+  (formtie): r in QQ>0, e in QQ>=0 : prog(t_1, t_2, t_3, t_4, x, y in QQ>=0, 2 * r * (r + 1) * x + 2 * t_1 >= r * (r + 1) / 2, 4 * r * (e + 1) * x + 2 * t_2 >= r * (e + 1), 4 * x + 4 * y + 2 * t_3 >= 1, 4 * e * x + 4 * e * y + 2 * t_4 >= e : 2 * (r + 1) * (r + 1 + e) * x + t_1 + t_2 + 2 * (e + 1) * y + t_3 + t_4) = ((r + 1) * (r + 2 + 2 * e) / 4, 2)
+  fix (formtie) gram.formtie
+  (depth): k in QQ>0, s, e in QQ>=0, 1 < k + s : prog(x, t_1, t_2, u in QQ>=0, 2 * k * (k + 1) * x + 2 * t_1 >= k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 >= k * e, 4 * s * e * x + 4 * u >= s * e, 6 * x >= 1 : (2 * k + s) * (k + e) * x + t_1 + t_2 + u) = ((5 * k^2 + k + 6 * k * e + 2 * k * s + 3 * s * e) / 12, 1)
+  fix (depth) gram.depth
+  neqfix (depth) gram.offdepth
+  (depthedge): k in QQ>0, s, e in QQ>=0, k = 1, s = 0 : prog(x, t_1, t_2, u in QQ>=0, 2 * k * (k + 1) * x + 2 * t_1 >= k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 >= k * e, 4 * s * e * x + 4 * u >= s * e, 6 * x >= 1 : (2 * k + s) * (k + e) * x + t_1 + t_2 + u) = ((1 + e) / 2, 2)
+  fix (depthedge) gram.depthedge
+  (depthtie): r in QQ>0, e in QQ>=0 : prog(t_1, t_2, t_3, t_4, x, y in QQ>=0, 2 * r * (r + 1) * x + 2 * t_1 >= r * (r + 1) / 2, 4 * r * (e + 1) * x + 2 * t_2 >= r * (e + 1), 4 * x + 4 * y + 2 * t_3 >= 1, 4 * e * x + 4 * e * y + 2 * t_4 >= e, 6 * x >= 1 : 2 * (r + 1) * (r + 1 + e) * x + t_1 + t_2 + 2 * (e + 1) * y + t_3 + t_4) = ((r + 1) * (5 * r + 6 + 6 * e) / 12, 2)
+  fix (depthtie) gram.depthtie
+  core strata: r, q, s, e in QQ>=0 : (r * (r + 1) + 2 * r * (q + e)) / 4 + (q * (q + 1) + 2 * q * e + s * e) / 4 = ((r + q) * (r + q + 1) + 2 * (r + q) * e + s * e) / 4
+  fix core strata gram.strata
+  origin: ?{\text{elementary, proved here by prices}}
+
+-- The rows of the form carry \(\frac12,\frac12,\frac14\) in every case. With the row of depth, it carries the reduced
+-- cost of the radius, \(\frac{k(k+s-1)}6\), and \(\frac{r(r+1)}6\) at the zeros of rank \(r\); there the radius \(y\) of
+-- the hyperbolic plane has the reduced cost zero, and its edge ends where the rows of \(t_3\) and \(t_4\) go slack.
+proof lem:gram
+  (form) face[V[1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10, k * x * h_3]; t_1 := k * (k + 1) / 4, t_2 := k * e / 2, u := s * e / 4 by V[0], V[0], V[0], V[0], V[0], V[0], V[0]; x = 0, 2 * k * (k + 1) * x + 2 * t_1 = k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 = k * e, 4 * s * e * x + 4 * u = s * e by with[k * (k + s - 1) * x = 0 by (V[1 * h_11, 1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10], V[k * x * h_3]); V[1 / (k * (k + s - 1)) * hw1]], (V[2 * h_11, 1 * h_9, 1 / 2 * h_10, 2 * k * x * h_3], V[1 * h_8]), (V[2 * h_11, 1 * h_8, 1 / 2 * h_10, 2 * k * x * h_3], V[1 * h_9]), (V[4 * h_11, 2 * h_8, 2 * h_9, 4 * k * x * h_3], V[1 * h_10])]
+  (formedge) face[V[1 / 2 * h_9, 1 / 2 * h_10, 1 / 4 * h_11, (k * x + e / 4) * h_4 | (k * x + (k + 2 + 2 * e) / 4) * h_3]; t_1 := 1 / 2, t_2 := e / 2 by V[0], V[0], V[(k + 2) / 2 * h_3], V[1 * e * h_3], V[1 * e * h_4], V[0]; x := 1 / 4 by V[0], V[0], V[0], V[0], V[(k + 1 + e) / 2 * h_3, (k + e) / 4 * h_4]; 2 * k * (k + 1) * x + 2 * t_1 = k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 = k * e, 4 * s * e * x + 4 * u = s * e by (V[2 * h_12, 1 * h_10, 1 / 2 * h_11, (2 * k * x + e / 2) * h_4 | (2 * k * x + (k + 2 + 2 * e) / 2) * h_3], V[1 * h_9]), (V[2 * h_12, 1 * h_9, 1 / 2 * h_11, (2 * k * x + e / 2) * h_4 | (2 * k * x + (k + 2 + 2 * e) / 2) * h_3], V[1 * h_10]), (V[4 * h_12, 2 * h_9, 2 * h_10, (4 * k * x + e) * h_4 | (4 * k * x + k + 2 + 2 * e) * h_3], V[1 * h_11]); V[0]]
+  (formtie) prog[1 / 2, 1 / 2, 1 / 2, 1 / 2; t_1 := r * (r + 1) / 4, t_2 := r * (e + 1) / 2, t_3 := 1 / 2, t_4 := e / 2; t_1 := r * (r + 1) / 4, t_2 := r * (e + 1) / 2, y := 1 / 4]
+  (depth) face[V[1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10, k / 6 * h_11 * h_3]; x := 1 / 6, t_1 := k * (k + 1) / 12, t_2 := k * e / 6, u := s * e / 12 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0]; 6 * x = 1, 2 * k * (k + 1) * x + 2 * t_1 = k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 = k * e, 4 * s * e * x + 4 * u = s * e by with[k * (k + s - 1) * (6 * x - 1) = 0 by (V[6 * h_12, 3 * h_8, 3 * h_9, 3 / 2 * h_10], V[k * h_11 * h_3]); V[1 / (k * (k + s - 1)) * hw1]], (V[2 * h_12, 1 * h_9, 1 / 2 * h_10, k / 3 * h_11 * h_3], V[1 * h_8]), (V[2 * h_12, 1 * h_8, 1 / 2 * h_10, k / 3 * h_11 * h_3], V[1 * h_9]), (V[4 * h_12, 2 * h_8, 2 * h_9, 2 * k / 3 * h_11 * h_3], V[1 * h_10])]
+  (depthedge) face[V[1 / 2 * h_9, 1 / 2 * h_10, 1 / 4 * h_11, (k * x + e / 4) * h_4 | (k * x + (k + 2 + 2 * e) / 4) * h_3]; x := 1 / 6, t_1 := 1 / 6, t_2 := e / 6 by V[0], V[0], V[0], V[(k + 2) / 6 * h_3], V[1 * e / 3 * h_3], V[1 * e / 3 * h_4], V[0], V[(k + 1 + e) / 3 * h_3, (k + e) / 6 * h_4]; x := 1 / 4 by V[0], V[0], V[0], V[0], V[0], V[(k + 1 + e) / 2 * h_3, (k + e) / 4 * h_4]; 2 * k * (k + 1) * x + 2 * t_1 = k * (k + 1) / 2, 4 * k * e * x + 2 * t_2 = k * e, 4 * s * e * x + 4 * u = s * e by (V[2 * h_13, 1 * h_10, 1 / 2 * h_11, (2 * k * x + e / 2) * h_4 | (2 * k * x + (k + 2 + 2 * e) / 2) * h_3], V[1 * h_9]), (V[2 * h_13, 1 * h_9, 1 / 2 * h_11, (2 * k * x + e / 2) * h_4 | (2 * k * x + (k + 2 + 2 * e) / 2) * h_3], V[1 * h_10]), (V[4 * h_13, 2 * h_9, 2 * h_10, (4 * k * x + e) * h_4 | (4 * k * x + k + 2 + 2 * e) * h_3], V[1 * h_11]); V[0]]
+  (depthtie) prog[1 / 2, 1 / 2, 1 / 2, 1 / 2, r * (r + 1) / 6; x := 1 / 6, t_1 := r * (r + 1) / 12, t_2 := r * (e + 1) / 6, t_3 := 1 / 6, t_4 := e / 6; x := 1 / 6, t_1 := r * (r + 1) / 12, t_2 := r * (e + 1) / 6, y := 1 / 12]
+  "core strata" eq
+
+-- In the plane, \(d=2\) and \(m=H-1\) at \(H\) units: \cref{lem:gram} gives the values \(\frac{5H+15}{12}\) at index
+-- one and \(\frac{H+5}3\) at index at least two, the order two at \(H=5\), index two, and \cref{lem:onescale} at index
+-- zero; the programs of \cref{lem:planeprog} are its cases. At \(k=1\) the third moment, where it vanishes, is one more
+-- coordinate, and the fourth moment lowers the value by \(\frac{s-3}{24}\) above \(s=3\), with a tie at \(s=3\) (below,
+-- tie, above), in the plane by \(\frac{H-6}{24}\) from seven units on. The programs are stated here; that they are the
+-- content of the cluster is not.
+lemma lem:gramcubic [a third moment vanishing at the zeros of rank one]
+  (below): s in QQ>0, e in QQ>=0, s < 3 : prog(x, t_1, t_2, u, c in QQ>=0, 4 * x + 2 * t_1 >= 1, 4 * e * x + 2 * t_2 >= e, 4 * s * e * x + 4 * u >= s * e, 6 * x + 2 * c >= 1, 8 * x >= 1 : (2 + s) * (1 + e) * x + t_1 + t_2 + u + c) = ((6 + 2 * s + 6 * e + 3 * s * e) / 12, 1)
+  fix (below) gramcubic.below
+  (tie): s in QQ>0, e in QQ>=0, s = 3 : prog(x, t_1, t_2, u, c in QQ>=0, 4 * x + 2 * t_1 >= 1, 4 * e * x + 2 * t_2 >= e, 4 * s * e * x + 4 * u >= s * e, 6 * x + 2 * c >= 1, 8 * x >= 1 : (2 + s) * (1 + e) * x + t_1 + t_2 + u + c) = ((4 + 5 * e) / 4, 2)
+  fix (tie) gramcubic.tie
+  neqfix (tie) gramcubic.offtie
+  (above): s in QQ>0, e in QQ>=0, 3 < s : prog(x, t_1, t_2, u, c in QQ>=0, 4 * x + 2 * t_1 >= 1, 4 * e * x + 2 * t_2 >= e, 4 * s * e * x + 4 * u >= s * e, 6 * x + 2 * c >= 1, 8 * x >= 1 : (2 + s) * (1 + e) * x + t_1 + t_2 + u + c) = ((5 + s + 4 * e + 2 * s * e) / 8, 1)
+  fix (above) gramcubic.above
+  neqfix (above) gramcubic.offabove
+  core drop: s, e in QQ>=0 : (5 + s + 4 * e + 2 * s * e) / 8 + s / 24 = (6 + 2 * s + 6 * e + 3 * s * e) / 12 + 1 / 8
+  fix core drop gramcubic.drop
+  origin: ?{\text{elementary, proved here by prices}}
+
+-- The rows of the form carry \(\frac12,\frac12,\frac14\); below \(s=3\) the reduced cost of \(c\) is \(1-\frac s3\), so that
+-- \(c\) is zero on the face.
+proof lem:gramcubic
+  (below) face[V[1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10, s / 6 * h_11, 1 / 3 * c * h_2]; x := 1 / 6, t_1 := 1 / 6, t_2 := e / 6, u := s * e / 12 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0]; 6 * x = 1, 4 * x + 2 * t_1 = 1, 4 * e * x + 2 * t_2 = e, 4 * s * e * x + 4 * u = s * e, c = 0 by (V[6 / s * h_13, 3 / s * h_8, 3 / s * h_9, 3 / (2 * s) * h_10, 6 / s * h_7], with[(3 - s) * c = 0 by (V[3 * h_13, 3 / 2 * h_8, 3 / 2 * h_9, 3 / 4 * h_10, s / 2 * h_11], V[c * h_2]); V[1 * h_11, 2 / (3 - s) * hw1]]), (V[2 * h_13, 1 * h_9, 1 / 2 * h_10, s / 3 * h_11, 2 / 3 * c * h_2], V[1 * h_8]), (V[2 * h_13, 1 * h_8, 1 / 2 * h_10, s / 3 * h_11, 2 / 3 * c * h_2], V[1 * h_9]), (V[4 * h_13, 2 * h_8, 2 * h_9, 2 * s / 3 * h_11, 4 / 3 * c * h_2], V[1 * h_10]), with[(3 - s) * c = 0 by (V[3 * h_13, 3 / 2 * h_8, 3 / 2 * h_9, 3 / 4 * h_10, s / 2 * h_11], V[c * h_2]); V[1 / (3 - s) * hw2]]]
+  (tie) face[V[1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10, 1 / 2 * h_11 | (x + e / 4) * h_2]; x := 1 / 8, t_1 := 1 / 4, t_2 := e / 4, u := 3 * e / 8, c := 1 / 8 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[1 * e / 2 * h_2], V[0], V[0], V[(1 + e) / 8 * h_2]; x := 1 / 6, t_1 := 1 / 6, t_2 := e / 6, u := e / 4 by V[0], V[0], V[0], V[0], V[0], V[0], V[1 * e / 3 * h_2], V[0], V[0], V[(1 + e) / 6 * h_2]; 4 * x + 2 * t_1 = 1, 4 * e * x + 2 * t_2 = e, 4 * s * e * x + 4 * u = s * e, 6 * x + 2 * c = 1 by (V[2 * h_13, 1 * h_9, 1 / 2 * h_10, 1 * h_11 | (2 * x + e / 2) * h_2], V[1 * h_8]), (V[2 * h_13, 1 * h_8, 1 / 2 * h_10, 1 * h_11 | (2 * x + e / 2) * h_2], V[1 * h_9]), (V[4 * h_13, 2 * h_8, 2 * h_9, 2 * h_11 | (4 * x + e) * h_2], V[1 * h_10]), (V[2 * h_13, 1 * h_8, 1 * h_9, 1 / 2 * h_10 | (2 * x + e / 2) * h_2], V[1 * h_11]); V[0]]
+  (above) face[V[1 / 2 * h_8, 1 / 2 * h_9, 1 / 4 * h_10, 1 / 2 * h_11, 1 / 8 * h_12 * h_2]; x := 1 / 8, t_1 := 1 / 4, t_2 := e / 4, u := s * e / 8, c := 1 / 8 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0]; 8 * x = 1, 4 * x + 2 * t_1 = 1, 4 * e * x + 2 * t_2 = e, 4 * s * e * x + 4 * u = s * e, 6 * x + 2 * c = 1 by with[(s - 3) * (8 * x - 1) = 0 by (V[8 * h_13, 4 * h_8, 4 * h_9, 2 * h_10, 4 * h_11], V[h_12 * h_2]); V[1 / (s - 3) * hw1]], (V[2 * h_13, 1 * h_9, 1 / 2 * h_10, 1 * h_11, 1 / 4 * h_12 * h_2], V[1 * h_8]), (V[2 * h_13, 1 * h_8, 1 / 2 * h_10, 1 * h_11, 1 / 4 * h_12 * h_2], V[1 * h_9]), (V[4 * h_13, 2 * h_8, 2 * h_9, 2 * h_11, 1 / 2 * h_12 * h_2], V[1 * h_10]), (V[2 * h_13, 1 * h_8, 1 * h_9, 1 / 2 * h_10, 1 / 4 * h_12 * h_2], V[1 * h_11])]
+  "core drop" eq

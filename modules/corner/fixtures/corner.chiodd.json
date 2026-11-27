@@ -1,0 +1,7 @@
+{"kind": "witness", "note": "e = delta - 1 at least 2: delta chi(Sigma) = n delta - 1 + (-e)^n is below 0 for odd n", "rows": [
+ {"e": 2, "n": 5},
+ {"e": 2, "n": 4},
+ {"e": 3, "n": 5},
+ {"e": 2, "n": 7},
+ {"e": 6, "n": 9}
+]}

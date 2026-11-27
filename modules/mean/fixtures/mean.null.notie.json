@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(sum i, sum j, P_(i)_(j) * u_(i) * u_(j)) = sum i, b_(i) * u_(i)^2", "note": "two cells that meet once at the weights one: at u = (1, 0) the form 1 is above the cross terms 0", "rows": [
+ {"n": 2, "P": [[0, 1], [1, 0]], "b": [1, 1], "x": [1, 1], "u": [1, 0]}
+]}

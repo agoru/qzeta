@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "the rows p = 0, 1, 2 at the binomial row itself (the case of equality, sum_i binom(p, i)^2 = binom(2p, p)), and a row at p = 3 with a zero", "rows": [{"p": 0, "G[]": [3]}, {"p": 1, "G[]": [1, 1]}, {"p": 2, "G[]": [1, 2, 1]}, {"p": 3, "G[]": ["1/2", 0, 2, "5/3"]}]}

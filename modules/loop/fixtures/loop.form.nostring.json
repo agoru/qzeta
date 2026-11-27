@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall i : (sum j, P_(i)_(j) * x_(j)) = b_(i) * x_(i)", "note": "the closed chain of three cells at the weights one: (1, 1, 1) is no string, and the form is above the weighted squares", "rows": [
+ {"n": 3, "P": [[0, 1, 1], [1, 0, 1], [1, 1, 0]], "e[]": [1, 2, 3], "f[]": [2, 3, 1], "b": [1, 1, 1], "x": [1, 1, 1], "u": [1, 1, 1]}
+]}

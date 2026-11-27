@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "u * m = v * b + 1", "note": "4 shares the prime 2 with 10: no 10^l - 1 is a multiple of 4", "bounds": {"l": 2, "B": 10, "k": 9, "S": 9, "E": 9, "M": 3}, "rows": [
+ {"b": 10, "m": 4, "n": 1, "q": "1/4", "u": 1, "v": 1}
+]}

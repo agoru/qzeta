@@ -1,0 +1,6 @@
+{"kind": "witness", "note": "the stage of a wall at a whole is one: the rows of powwall.stage with C = A", "rows": [
+ {"p": 2, "q": 3, "N": 3, "A": 5, "C": 5},
+ {"p": 3, "q": 2, "N": 5, "A": 4, "C": 4},
+ {"p": 7, "q": 2, "N": 1, "A": 1, "C": 1},
+ {"p": 10, "q": 2, "N": 10, "A": 4, "C": 4}
+]}

@@ -1,0 +1,31 @@
+{
+ "kind": "counterexample",
+ "drop": "B subseteq C",
+ "note": "on the model: w^2 on B = [0, 1] has (1/2, 1) and on C = [1, 2] top, and top <= (1/2, 1) fails",
+ "rows": [
+  {
+   "n": 1,
+   "K": [
+    [
+     2
+    ]
+   ],
+   "B": [
+    [
+     [
+      0,
+      1
+     ]
+    ]
+   ],
+   "C": [
+    [
+     [
+      1,
+      2
+     ]
+    ]
+   ]
+  }
+ ]
+}

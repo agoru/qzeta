@@ -1,0 +1,33 @@
+{
+ "kind": "model",
+ "note": "the weak compositions of 2 into 2 parts, of 1 into 3 parts, of 3 into 1 part, in boxes that do not cut them",
+ "rows": [
+  {
+   "r": 2,
+   "m": 2,
+   "d": 1,
+   "c": [
+    2,
+    3
+   ]
+  },
+  {
+   "r": 3,
+   "m": 1,
+   "d": 2,
+   "c": [
+    1,
+    1,
+    2
+   ]
+  },
+  {
+   "r": 1,
+   "m": 3,
+   "d": 0,
+   "c": [
+    4
+   ]
+  }
+ ]
+}

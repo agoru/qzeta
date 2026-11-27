@@ -1,0 +1,3 @@
+{"kind": "model", "note": "emptied: alpha D < 2 d; ReLU in Q^2 at eta = 0 (alpha = 1, D = 3, d = 2) and mixtures merged below alpha = N/2", "rows": [
+ {"alpha": 1, "D": 3, "d": 2}, {"alpha": 1, "D": 4, "d": 3}, {"alpha": "1/2", "D": 4, "d": 2}
+]}

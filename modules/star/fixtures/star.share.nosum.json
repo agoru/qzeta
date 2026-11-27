@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "C + m * x = 2 * x + (sum i, s_(i))", "note": "D_4 with C = 6, not 2 - 3 + 6: C a is not p = 5", "rows": [
+ {"k": 3, "m": 3, "a": 1, "x": 1, "C": 6, "p": 5, "n": [2, 2, 2], "s": [2, 2, 2]}
+]}

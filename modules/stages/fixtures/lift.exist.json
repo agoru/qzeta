@@ -1,0 +1,6 @@
+{"kind": "model", "note": "the roots 7 and 57 of x^2 + 1 = 0 in base 5 up to 25 and 125, 10 of x^2 = 2 in base 7 up to 49, 4 of x^2 + 2 = 0 in base 3 up to 9, each with its carry", "rows": [
+ {"B": 5, "k": 4, "z": 2, "u": 4, "v": 3, "a": 2, "b": 1, "s": 1, "M": 1, "t": 1, "c": 2},
+ {"B": 5, "k": 4, "z": 2, "u": 4, "v": 3, "a": 2, "b": 1, "s": 1, "M": 2, "t": 11, "c": 26},
+ {"B": 7, "k": 6, "z": 3, "u": 6, "v": 5, "a": 1, "b": 3, "s": 1, "M": 1, "t": 1, "c": 2},
+ {"B": 3, "k": 2, "z": 1, "u": 2, "v": 1, "a": 3, "b": 1, "s": 1, "M": 1, "t": 1, "c": 2}
+]}

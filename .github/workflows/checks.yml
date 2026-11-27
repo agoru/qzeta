@@ -1,0 +1,201 @@
+# The checks of this repository, on every push to main, on every pull request and by hand.
+#
+# sources: the Python tests of qpp/tests, the check of the module sources, the fixtures of every module on its rows,
+#   and the generated Lean: the generator, run again, writes the committed lean/ byte for byte.
+# lean: the kernel qpp/lean (Lean core) and its checks, the Lake project lean/ (Mathlib from its build cache), the
+#   axiom audits (only propext, Classical.choice and Quot.sound), the replay of the kernel's checks in Lean's kernel,
+#   NanoDa and con-ron, and Palomar's mechanical check of the entry of lean/: `lake comparator` judges the Challenge
+#   lean/QppPalomar/Corner/Challenge.lean against the Solution under lean/comparator.json, in the three kernels.
+#
+# The verdicts of passing fixtures (.memo/modfix) and the builds of the two Lake projects (.lake/build) are kept in
+# the Actions cache, so that a run checks again only what its inputs changed.
+
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sources:
+    name: Q++ sources, fixtures and the generated Lean
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --disable-pip-version-check pytest==9.2.0
+      - name: The Python tests
+        run: python3 -m pytest qpp/tests -q
+      - name: The module sources (uses, vocabulary, row keys, no hole, the list of primitives)
+        run: python3 -m qpp.modules check
+      - uses: actions/cache@v4
+        with:
+          path: .memo/modfix
+          key: modfix-${{ github.sha }}
+          restore-keys: modfix-
+      - name: The fixtures of every module
+        run: |
+          status=0
+          for dir in modules/*/; do
+            name=$(basename "$dir")
+            [ -f "$dir/$name.qpp" ] || continue
+            echo "::group::$name"
+            python3 -m qpp.modfix "$name" || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+      - name: The generated Lean is the committed one
+        run: |
+          python3 -m qpp.modlean --all
+          python3 -m qpp.modlean --palomar corner
+          changed=$(git status --porcelain -- lean)
+          if [ -n "$changed" ]; then
+            echo "$changed"
+            git diff --stat -- lean
+            echo "::error::the generator does not write the committed Lean"
+            exit 1
+          fi
+
+  lean:
+    name: Lean build, axiom audits and the Palomar comparator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - name: elan, and the toolchain of lean-toolchain
+        run: |
+          curl -fsSL --retry 5 -o "$RUNNER_TEMP/elan.tar.gz" \
+            https://github.com/leanprover/elan/releases/download/v4.2.3/elan-x86_64-unknown-linux-gnu.tar.gz
+          tar -xzf "$RUNNER_TEMP/elan.tar.gz" -C "$RUNNER_TEMP"
+          "$RUNNER_TEMP/elan-init" -y --no-modify-path --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/elan" toolchain install "$(cat lean/lean-toolchain)"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            lean/.lake/build
+            qpp/lean/.lake/build
+          key: lake-${{ hashFiles('lean/lean-toolchain', 'lean/lake-manifest.json') }}-${{ hashFiles('lean/**/*.lean', 'qpp/lean/**/*.lean') }}
+          restore-keys: lake-${{ hashFiles('lean/lean-toolchain', 'lean/lake-manifest.json') }}-
+      - name: The kernel and its checks (Lean core)
+        working-directory: qpp/lean
+        run: lake build QppKernel QppTests
+      - name: Mathlib from its build cache
+        working-directory: lean
+        run: lake exe cache get
+      - name: The bridge, the modules, the examples and the Palomar entry
+        working-directory: lean
+        # the Challenge states each theorem of comparator.json with `sorry`, by design: one warning each
+        run: |
+          lake build
+          lake build QppPalomar
+      - name: The axiom audits
+        # Two kinds of audit: a list of `#print axioms` commands, each report read here; and a command that walks
+        # every declaration of its library (the bridge, the kernel), fails on another axiom and reports its count.
+        run: |
+          python3 - <<'PYTHON'
+          import re, subprocess, sys
+          from pathlib import Path
+          ALLOWED = {"propext", "Classical.choice", "Quot.sound"}
+          REPORT = re.compile(r"^'(.+?)' (?:depends on axioms: \[(.*?)\]|does not depend on any axioms)", re.M | re.S)
+          WALK = re.compile(r"(\d+) declarations of [^:]+: only propext, Classical.choice, Quot.sound")
+          audits = [("lean", f) for f in ("Axioms.lean", "QppBridge/Axioms.lean", "QppExamples/Axioms.lean",
+                                          "QppExamples/KernelAxioms.lean", "QppExamples/MeansAxioms.lean",
+                                          "QppExamples/ProgramsAxioms.lean", "QppExamples/PairsAxioms.lean")]
+          audits.append(("qpp/lean", "QppTests/Axioms.lean"))
+          bad = 0
+          for project, audit in audits:
+              src = (Path(project) / audit).read_text(encoding="utf-8")
+              out = subprocess.run(["lake", "env", "lean", audit], cwd=project, capture_output=True, text=True)
+              text = out.stdout + out.stderr
+              problems = [line for line in text.splitlines() if re.search(r":\d+:\d+: error", line)]
+              if out.returncode:
+                  problems.append(f"lean exited with {out.returncode}")
+              names = re.findall(r"^#print axioms\s+(\S+)", src, re.M)
+              if names:
+                  reports = {n: {a.strip() for a in ax.split(",") if a.strip()} for n, ax in REPORT.findall(text)}
+                  for name in names:
+                      if name not in reports:
+                          problems.append(f"{name}: no report")
+                      elif reports[name] - ALLOWED:
+                          problems.append(f"{name}: depends on {', '.join(sorted(reports[name] - ALLOWED))}")
+                  used = sorted(set().union(*reports.values())) if reports else []
+                  print(f"{project}/{audit}: {len(names)} declarations; axioms used: {', '.join(used) or 'none'}")
+              else:
+                  walk = WALK.search(text)
+                  if not walk or walk.group(1) == "0":
+                      problems.append("no declaration audited")
+                  print(f"{project}/{audit}: {walk.group(0) if walk else 'no report'}")
+              for p in problems:
+                  print("  " + p)
+              bad += len(problems)
+          sys.exit(1 if bad else 0)
+          PYTHON
+      - name: The kernel's checks replayed in Lean's kernel, NanoDa and con-ron
+        working-directory: qpp/lean
+        run: |
+          QppTests/kernels.sh QppTests.Resultant Qpp.Tests.res_member Qpp.Tests.res_product Qpp.Tests.res_loss
+          QppTests/kernels.sh QppTests.Farkas Qpp.Tests.lp_cover Qpp.Tests.box_bernstein
+          QppTests/kernels.sh QppTests.Sparse Qpp.Tests.sixty Qpp.Tests.alias_square
+      - name: bubblewrap, which lake comparator uses to sandbox the build it judges
+        # Ubuntu 24.04 restricts unprivileged user namespaces through AppArmor, which bwrap needs
+        run: |
+          sudo apt-get update -qq >/dev/null
+          sudo apt-get install -y -qq bubblewrap >/dev/null
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - name: lake comparator on the entry of lean/ (Lean's kernel, NanoDa and con-ron)
+        # The sandbox of lake comparator binds back the Lake project alone, so the kernel ../qpp/lean that lean/
+        # requires as a path package is copied into a staged copy of lean/ (.lake/path/qpp), with its path in
+        # lakefile.toml and lake-manifest.json rewritten; the packages of .lake/packages are hard links.
+        # The comparator registers the NanoDa and con-ron kernels of the toolchain, as Palomar's configuration does.
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, re, shutil, subprocess, sys, tempfile
+          from pathlib import Path
+          lean = Path("lean").resolve()
+          stage = Path(tempfile.mkdtemp(prefix="palomar-", dir=os.environ.get("RUNNER_TEMP"))) / "lean"
+          shutil.copytree(lean, stage, ignore=shutil.ignore_patterns(".lake"))
+          def link(src, dst):
+              try:
+                  os.link(src, dst)
+              except OSError:
+                  shutil.copy2(src, dst)
+          shutil.copytree(lean / ".lake" / "packages", stage / ".lake" / "packages", copy_function=link)
+          shutil.copytree((lean / "../qpp/lean").resolve(), stage / ".lake/path/qpp", ignore=shutil.ignore_patterns(".lake"))
+          (stage / "lakefile.toml").write_text((lean / "lakefile.toml").read_text().replace(
+              'path = "../qpp/lean"', 'path = ".lake/path/qpp"'))
+          (stage / "lake-manifest.json").write_text(re.sub(r'("dir":\s*)"\.\./qpp/lean"', r'\1".lake/path/qpp"',
+                                                          (lean / "lake-manifest.json").read_text()))
+          prefix = subprocess.run(["lean", "--print-prefix"], cwd=lean, capture_output=True, text=True,
+                                  check=True).stdout.strip()
+          config = {k: v for k, v in json.loads((lean / "comparator.json").read_text()).items() if k != "enable_nanoda"}
+          config["external_kernels"] = {"nanoda": [f"{prefix}/bin/nanoda_bin"],
+                                        "con-ron": [f"{prefix}/bin/con-ron", "--jobs=2"]}
+          path = stage.parent / "comparator.json"
+          path.write_text(json.dumps(config, indent=2))
+          proc = subprocess.run(["lake", "comparator", "--config", str(path)], cwd=stage, text=True,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          print(proc.stdout)
+          short = {n.rsplit(".", 1)[-1] for n in config["theorem_names"]}
+          challenge = (lean / (config["challenge_module"].replace(".", "/") + ".lean")).read_text().splitlines()
+          stated = {k for k, line in enumerate(challenge, 1)
+                    if (m := re.match(r"^\s*theorem\s+(\S+)", line)) and m.group(1) in short}
+          sorry = re.compile(r"warning: (?:\S*/)?([^/\s:]+\.lean):(\d+):\d+: declaration uses [`']sorry[`']")
+          stray = [f"{f}:{l}" for f, l in sorry.findall(proc.stdout)
+                   if not (f == Path(config["challenge_module"].replace(".", "/")).name + ".lean" and int(l) in stated)]
+          for s in stray:
+              print(f"{s}: declaration uses sorry, and is not a statement of comparator.json")
+          sys.exit(proc.returncode or (1 if stray else 0))
+          PYTHON

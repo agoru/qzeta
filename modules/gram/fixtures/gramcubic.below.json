@@ -1,0 +1,7 @@
+{"kind": "model", "note": "(1, 1) is lem:planeprog(typetwo) with the row 8 x >= 1, slack there", "rows": [
+ {"s": 1, "e": 1},
+ {"s": 2, "e": 1},
+ {"s": 1, "e": 0},
+ {"s": "5/2", "e": 2},
+ {"s": "1/3", "e": "1/2"}
+]}

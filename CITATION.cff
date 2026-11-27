@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use these sources, please cite the article."
+type: software
+title: "Formal sources of \"Zeta functions and monodromy of degenerate hypersurface singularities over the positive rationals: least action and spectrum as dual readings\""
+abstract: "The Q++ modules of the article, the generator of their Lean 4 statements and proofs, the generated Lean and the fixtures."
+authors:
+  - family-names: Russo
+    given-names: Agostino
+    orcid: "https://orcid.org/0009-0004-5240-9403"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+keywords:
+  - monodromy conjecture
+  - topological zeta function
+  - Igusa local zeta function
+  - Newton polyhedron
+  - positive rationals
+  - formal verification
+  - Lean 4
+preferred-citation:
+  type: article
+  title: "Zeta functions and monodromy of degenerate hypersurface singularities over the positive rationals: least action and spectrum as dual readings"
+  authors:
+    - family-names: Russo
+      given-names: Agostino
+      orcid: "https://orcid.org/0009-0004-5240-9403"
+  year: 2026
+  status: preprint
+  doi: "10.5281/zenodo.24569077"

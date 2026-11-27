@@ -1,0 +1,187 @@
+-- Q++ 0.2
+paper refusedlattice
+-- Cases of the coordinates of a tuple, of the sums over the lattice points of a box and of the sums over a range that
+-- the generator refuses, each with its reason. The constructs: x_(i) with i bound over the coordinates of the tuples
+-- it indexes (sum i, prod i, forall i, exists i), the index an index or the count it is, in a comparison or a term,
+-- x a tuple, a member a_(j) of a family of tuples or a row f_(iota) of a tuple of tuples (NN^n)^k; and
+-- sum u <= b, t over the points of NN^n under a tuple b of NN^n.
+
+section sec:refused Refused coordinates and boxes
+
+type Point(n) := (QQ>=0)^n
+type Grid(n) := NN^n
+type Rows(k, n) := (NN^n)^k
+type Cube(m, k, n) := ((NN^n)^k)^m
+
+-- The index of a binder over the coordinates is a count in a comparison and in a term, but a count
+-- read from it indexes nothing: not a member of a family over a range.
+lemma lem:cindex [a count read from a coordinate index as an index]
+  core: n, N in NN, a_(1..N) in QQ>=0, x in Point(n) : sum i, a_(i + 1) * x_(i) >= 0
+
+proof lem:cindex
+  "core" sum
+
+-- No numeral as a coordinate: a coordinate is read under a binder over the coordinates.
+lemma lem:cnumeral [a numeral coordinate]
+  core: x in Point(2) : x_(1) >= 0
+
+proof lem:cnumeral
+  "core" V
+
+-- A binder without a range runs over the coordinates of the tuples it indexes: here none.
+lemma lem:cnone [a binder that indexes no tuple]
+  core: n in NN, x in Point(n) : sum i, 1 >= 0
+
+proof lem:cnone
+  "core" sum
+
+-- One index runs over the coordinates of tuples of one length.
+lemma lem:ctwo [tuples of two lengths]
+  core: n, m in NN, x in Point(n), y in Point(m) : sum i, x_(i) * y_(i) >= 0
+
+proof lem:ctwo
+  "core" sum
+
+-- A box of lattice points has a corner in NN^n: not a point of (QQ>=0)^n.
+lemma lem:crational [a box with a rational corner]
+  core: n in NN, w in Point(n) : (sum u <= w, 1) >= 1
+
+proof lem:crational
+  "core" box
+
+-- Only a sum runs over the points of a box.
+lemma lem:cprod [a product over a box]
+  core: n in NN, b in Grid(n) : (prod u <= b, 2) >= 1
+
+proof lem:cprod
+  "core" V
+
+-- The rows of a cut compare forms in the coordinates without a difference.
+lemma lem:cdiff [a difference in a row]
+  core: n in NN, b in Grid(n) : (sum u <= b, iverson(sum i, u_(i) - 1 <= 2)) >= 0
+
+proof lem:cdiff
+  "core" box
+
+-- A quantifier over the coordinates whose body indexes no tuple.
+lemma lem:cquant [a quantifier over no coordinate]
+  core: n in NN, x in Point(n), (forall i : 1 <= 2) : sum i, x_(i) >= 0
+
+proof lem:cquant
+  "core" sum
+
+-- The coordinate of a member of a family of tuples is read under a binder over the coordinates, not over a range.
+lemma lem:crange [a coordinate of a member under a range]
+  core: n, r in NN, a_(1..r) in Grid(n), j in NN>=1 : (sum i in 1..n, a_(j)_(i)) >= 0
+
+proof lem:crange
+  "core" sum
+
+-- A family is indexed by a name of its range, not by an index over the coordinates of a tuple.
+lemma lem:cfamily [a family indexed by a coordinate]
+  core: n, r in NN, a_(1..r) in Grid(n), b in Grid(n) : sum i, b_(i) * a_(i)_(i) >= 0
+
+proof lem:cfamily
+  "core" sum
+
+-- A row of a tuple of tuples is a tuple, not a number.
+lemma lem:crow [a row as a number]
+  core: k, n in NN, f in Rows(k, n) : sum iota, f_(iota) >= 0
+
+proof lem:crow
+  "core" sum
+
+-- One level of tuples of tuples: the rows of a tuple of tuples of tuples are not read.
+lemma lem:ccube [a tuple of tuples of tuples]
+  core: m, k, n in NN, g in Cube(m, k, n) : sum l, (sum u <= g_(l)_(l), 1) >= 0
+
+proof lem:ccube
+  "core" sum
+
+-- A bundle is given to take by all its parts, with no default and no part that it does not have.
+type Prog(k, n) := {P, N in Rows(k, n), op in Grid(k)}
+
+lemma lem:cbundlemiss [a bundle without one of its parts]
+  core: k, n in NN : exists Pr in Prog(k, n) : forall iota : Pr.op_(iota) = 1
+
+proof lem:cbundlemiss
+  "core" take[Pr.P_(iota)_(i) := 2, Pr.op_(iota) := 1; V]
+
+lemma lem:cbundleextra [a part that the bundle does not have]
+  core: k, n in NN : exists Pr in Prog(k, n) : forall iota : Pr.op_(iota) = 1
+
+proof lem:cbundleextra
+  "core" take[Pr.P_(iota)_(i) := 2, Pr.N_(iota)_(i) := 0, Pr.op_(iota) := 1, Pr.om_(iota) := 0; V]
+
+-- A sum over a smaller range at most the sum over a larger range reads each bound of the ranges by its term or by a
+-- fact by name: here s <= N follows from 2 * s <= N by no term, and the generator does not search for it. The
+-- proof states it first, with[s <= N by V[h_2]; sum[V]].
+lemma lem:csubrange [a smaller range with a bound by no name]
+  core: N, s in NN, T_(1..N) in QQ>=0, 2 * s <= N : (sum c in 1..s, T_(c)) <= sum c in 1..N, T_(c)
+
+proof lem:csubrange
+  "core" sum[V]
+
+-- A sum over two consecutive ranges, a law of ranges, reads each bound by its term or by a fact by name: here
+-- s + 1 <= N + 1 follows from 2 * s <= N by no term, and the generator does not search for it (no omega). The proof
+-- states it first, with[s <= N by V[1 * h_2]; sum].
+lemma lem:crangelaw [a law of ranges with a bound by no name]
+  core: N, s in NN, T_(1..N) in QQ>=0, 2 * s <= N : (sum c in 1..N, T_(c)) = (sum c in 1..s, T_(c)) + (sum c in s + 1..N, T_(c))
+
+proof lem:crangelaw
+  "core" sum
+
+-- A clause of a cell compares by <, <=, =, >= or >: a cell is the meet of its clauses, and a complement or a union of
+-- cells is a sum of cell sums (by trichotomy), never a clause.
+lemma lem:ccellne [a clause by !=]
+  core: n, s in NN : (sum m in 1..n : m != s, 1) <= n
+
+proof lem:ccellne
+  "core" sum[V]
+
+lemma lem:ccellor [a clause by or]
+  core: n, s in NN : (sum m in 1..n : (m < s or s < m), 1) <= n
+
+proof lem:ccellor
+  "core" sum[V]
+
+lemma lem:ccellnot [a clause by not]
+  core: n, s in NN : (sum m in 1..n : not m = s, 1) <= n
+
+proof lem:ccellnot
+  "core" sum[V]
+
+lemma lem:ccellimp [a clause by =>]
+  core: n, s in NN : (sum m in 1..n : (m <= s => m = s), 1) <= n
+
+proof lem:ccellimp
+  "core" sum[V]
+
+-- No deficit in a clause: max(a - b, 0) <= c is two cells, a <= b and b < a with a <= b + c.
+lemma lem:ccelldeficit [a deficit in a clause]
+  core: n, s in NN : (sum m in 1..n : max(m - s, 0) <= 1, 1) <= n
+
+proof lem:ccelldeficit
+  "core" sum[V]
+
+-- A comparison of the point is a clause, never an iverson in the body.
+lemma lem:ccelliverson [an iverson of the point in the body]
+  core: n, s in NN : (sum m in 1..n : m <= n, iverson(m <= s)) <= n
+
+proof lem:ccelliverson
+  "core" sum[V]
+
+-- On the lattice the first clause bounds the content by a level, so that the cell is finite.
+lemma lem:ccelllevel [a lattice cell without its content clause]
+  core: n, L in NN, b in Grid(n) : (sum u : forall i : u_(i) <= b_(i), sum i, u_(i) <= L, 1) >= 0
+
+proof lem:ccelllevel
+  "core" V
+
+-- The weights of the content are at least 1 by their type: a weight 0 leaves its coordinate free and the cell
+-- infinite.
+lemma lem:ccellweight [weights of the content that may be 0]
+  core: n, L in NN, c in Grid(n) : (sum u : sum i, c_(i) * u_(i) <= L, 1) >= 0
+
+proof lem:ccellweight
+  "core" V

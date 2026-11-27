@@ -1,0 +1,75 @@
+-- Q++ 0.2
+module twist
+uses theory
+
+subsection sec:twist The twisted factor and the frame
+
+-- At an integral cost the two masses of a spoke exceed one another by a count. The twisted factor \(y\) sits with \(x=1/a\) in a block of three positive masses: \(y+x=1\) at the cost \(a=1+k\) (attached), and \(y=1+x\) at the cost \(b\) on the other side, \(x=1/b\) (detached). The factors of two costs that add to \(1\), \(1+k\) and \(k\) on the other side, multiply to \(1\) (pair).
+lemma lem:twist [the twisted factor of an integral cost]
+  (attached): a, k, x, y in QQ>0, a = 1 + k, x * a = 1, y * a = k : y + x = 1
+  fix (attached) twist.attached
+  neqfix (attached) twist.attached.nofactor
+  neqfix (attached) twist.attached.nocost
+  neqfix (attached) twist.attached.nomass
+  (detached): b, x, y in QQ>0, x * b = 1, y * b = b + 1 : y = 1 + x
+  fix (detached) twist.detached
+  neqfix (detached) twist.detached.nofactor
+  neqfix (detached) twist.detached.nomass
+  (pair): k, y, z in QQ>0, y * (1 + k) = k, z * k = k + 1 : y * z = 1
+  fix (pair) twist.pair
+  neqfix (pair) twist.pair.nofactor
+  neqfix (pair) twist.pair.noattached
+  origin: ?{\text{form proved: the twisted factor of an integral cost on the two sides of its block, and the pair law}}
+
+proof lem:twist
+  (attached) with[a * (y + x) = a * 1 by V[1 * h_1, 1 * h_2, 1 * h_3]; with[y + x = 1 by div[a]; V[1 * hw2]]]
+  (detached) with[b * y = b * (1 + x) by V[1 * h_2, 1 * h_1]; with[y = 1 + x by div[b]; V[1 * hw2]]]
+  (pair) with[k * (y * z) = k * 1 by V[1 * h_1, y * h_2]; with[y * z = 1 by div[k]; V[1 * hw2]]]
+
+-- Euclid's lemma from a B\'ezout witness, in two legs. When \(ac=be+1\) certifies that \(c\) and \(e\) have no common
+-- factor, a count \(x\) with \(cx+ey=ez\) is \(e\) times a count (detached); the same witness, read from the side of
+-- \(c\) as \(be+1=ac\), makes a count \(x\) with \(ex+cy=cz\) \(c\) times a count (attached). The count \(x\) is the
+-- third part of a block of counts whose two other parts are multiples of \(e\), \(x+e(bx+ay)=e\,az\), so it is \(e\)
+-- times their gap.
+lemma lem:euclid [Euclid's lemma from a B\'ezout witness]
+  (detached): c, e, a, b, x, y, z in NN>=1, a * c = b * e + 1, c * x + e * y = e * z : exists w in NN>=1 : x = e * w
+  fix (detached) euclid.detached
+  neqfix (detached) euclid.detached.nowitness
+  (attached): c, e, a, b, x, y, z in NN>=1, b * e + 1 = a * c, e * x + c * y = c * z : exists w in NN>=1 : x = c * w
+  fix (attached) euclid.attached
+  neqfix (attached) euclid.attached.nowitness
+  origin: ?{\text{classical (Euclid's lemma, \cite{HardyWright2008}), in the form of a B\'ezout witness, with the quotient read as the gap of two counts, \cref{fact:gap}}}
+
+-- The count \(x\) ties \(e(bx+ay)\) to \(e\,az\), so \(bx+ay<az\), and their gap \(k\) of \cref{fact:gap} gives \(x=ek\).
+-- This is Euclid's lemma \cite{HardyWright2008}, in the form of a B\'ezout witness.
+proof lem:euclid
+  (detached) with[x + e * (b * x + a * y) = e * (a * z) by V[a * h_2 | x * h_1]; with[e * (b * x + a * y) < e * (a * z) by V[1 * hw1, 1 * hp(x)]; with[b * x + a * y < a * z by div[e]; with[1 <= b * x + a * y by V[x * hp(b), 1 * hp(x), a * hp(y), 1 * hp(a)]; with[1 <= a * z by V[1 * hw3, 1 * hw4]; with[exists k in NN>=1 : b * x + a * y + k = a * z by fact:gap(core)[u := b * x + a * y, v := a * z]; logic[with[b * x + a * y + k = a * z by logic; take[w := k; V[1 * hw1 | e * hw7]]]]]]]]]]
+  (attached) with[x + c * (b * z) = c * (a * x + b * y) by V[x * h_1 | b * h_2]; with[c * (b * z) < c * (a * x + b * y) by V[1 * hw1, 1 * hp(x)]; with[b * z < a * x + b * y by div[c]; with[1 <= b * z by V[z * hp(b), 1 * hp(z)]; with[1 <= a * x + b * y by V[1 * hw3, 1 * hw4]; with[exists k in NN>=1 : b * z + k = a * x + b * y by fact:gap(core)[u := b * z, v := a * x + b * y]; logic[with[b * z + k = a * x + b * y by logic; take[w := k; V[1 * hw1 | c * hw7]]]]]]]]]]
+
+-- At the frame \(q=c/e\) the cost of a spoke is integral when \(qN\) is a count: \(qN=cj\) when \(N=je\) (multiple). Conversely, with the lowest terms of \(q\) certified by \(uc=ve+1\) and \(qN=m\), \(vNe+N=ume\) (tie), so the count \(j\) with \(j+vN=um\) gives \(N=je\) (converse), and such a count exists, by \cref{lem:euclid} (whole).
+lemma lem:frame [the integral costs at a frame]
+  (multiple): c, e, j, N in NN>=1, q in QQ>0, q * e = c, N = j * e : q * N = c * j
+  fix (multiple) frame.if
+  neqfix (multiple) frame.if.nomultiple
+  neqfix (multiple) frame.if.noframe
+  (tie): c, e, m, u, v, N in NN>=1, q in QQ>0, q * e = c, u * c = v * e + 1, q * N = m : v * N * e + N = u * m * e
+  fix (tie) frame.tie
+  neqfix (tie) frame.tie.nolowest
+  neqfix (tie) frame.tie.noframe
+  neqfix (tie) frame.tie.nointegral
+  (converse): c, e, j, m, u, v, N in NN>=1, q in QQ>0, q * e = c, u * c = v * e + 1, q * N = m, j + v * N = u * m : N = j * e
+  fix (converse) frame.onlyif
+  neqfix (converse) frame.onlyif.nolowest
+  neqfix (converse) frame.onlyif.noframe
+  neqfix (converse) frame.onlyif.nointegral
+  neqfix (converse) frame.onlyif.nocount
+  (whole): c, e, m, u, v, N in NN>=1, q in QQ>0, q * e = c, u * c = v * e + 1, q * N = m : exists j in NN>=1 : N = j * e
+  fix (whole) frame.whole
+  neqfix (whole) frame.whole.nolowest
+  origin: ?{\text{form proved: an integral cost at the frame}\ c/e\ \text{is a spoke with}\ e\mid N\text{, the lowest terms certified by B\'ezout}}
+
+proof lem:frame
+  (multiple) V[q * h_2, j * h_1]
+  (tie) V[u * N * h_1, N * h_2, (u * e) * h_3]
+  (converse) V[u * N * h_1, N * h_2, (u * e) * h_3, e * h_4]
+  (whole) with[1 <= m + 1 by V[1 * hp(m)]; with[exists w in NN>=1 : N = e * w by lem:euclid(detached)[c := c, e := e, a := u, b := v, x := N, y := 1, z := m + 1; c * N + e * 1 = e * (m + 1) by V[e * h_3 | N * h_1]]; logic[with[N = e * w by logic; take[j := w; V[1 * hw3]]]]]]

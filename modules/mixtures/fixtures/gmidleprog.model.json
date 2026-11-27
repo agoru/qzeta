@@ -1,0 +1,24 @@
+{
+ "kind": "model",
+ "rename": {
+  "alpha": "c"
+ },
+ "set": {
+  "a": 2
+ },
+ "note": "an emptied unit: one scale, a = 2, c = alpha",
+ "rows": [
+  {
+   "c": 1,
+   "a": 2
+  },
+  {
+   "c": "1/2",
+   "a": 2
+  },
+  {
+   "c": 3,
+   "a": 2
+  }
+ ]
+}

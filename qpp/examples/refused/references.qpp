@@ -1,0 +1,47 @@
+-- Q++ 0.2
+paper refusedreferences
+-- Side goals of a reference that the generator refuses, each with its reason; the three cited rules set up the cases.
+-- A side goal `HYP by W` is a hypothesis of the reference at the data, up to the names it binds.
+
+section sec:refusedreferences Refused side goals
+
+cit fact:constsum [a sum of equal terms]
+  mathlib: Finset.sum_const (Mathlib.Algebra.BigOperators.Group.Finset.Basic)
+  core: N in NN, c in QQ>=0 : (sum i in 1..N, c) = N * c
+
+cit fact:pigeon [the pigeonhole principle for sums]
+  mathlib: Finset.exists_lt_of_sum_lt (Mathlib.Algebra.Order.BigOperators.Group.Finset)
+  core: N in NN, f_(1..N), g_(1..N) in QQ>=0, (sum i in 1..N, f_(i)) < (sum i in 1..N, g_(i)) : exists i in NN>=1 : i <= N, f_(i) < g_(i)
+
+cit fact:termwise [a sum bounded term by term]
+  mathlib: Finset.sum_le_sum (Mathlib.Algebra.Order.BigOperators.Group.Finset)
+  core: N in NN, a_(1..N), b_(1..N) in QQ>=0, (forall i in NN>=1 : i <= N => a_(i) <= b_(i)) : (sum i in 1..N, a_(i)) <= (sum i in 1..N, b_(i))
+
+-- A bound name of the rule would capture the free i of the data: at the data the hypothesis is the sum of N copies of
+-- G_(i), not the sum of the family G.
+lemma lem:capture [a side goal that captures a free name of the data]
+  core: N in NN, i in NN>=1, g_(1..N), G_(1..N) in QQ>=0, (sum j in 1..N, g_(j)) > N * G_(i) : exists j in NN>=1 : j <= N, G_(i) < g_(j)
+
+proof lem:capture
+  "core" fact:pigeon[f_(j) := G_(i); (sum i in 1..N, G_(i)) < (sum i in 1..N, g_(i)) by fact:constsum[c := G_(i)]]
+
+-- The same side goal twice.
+lemma lem:twice [a side goal proved twice]
+  core: N in NN, g_(1..N), G in QQ>=0, (sum i in 1..N, g_(i)) > N * G : exists i in NN>=1 : i <= N, G < g_(i)
+
+proof lem:twice
+  "core" fact:pigeon[f_(i) := G; (sum i in 1..N, G) < (sum i in 1..N, g_(i)) by fact:constsum[c := G]; (sum k in 1..N, G) < (sum k in 1..N, g_(k)) by fact:constsum[c := G]]
+
+-- A side goal that is no hypothesis of the rule at the data (<= for <).
+lemma lem:nohyp [a side goal that is no hypothesis]
+  core: N in NN, g_(1..N), G in QQ>=0, (sum i in 1..N, g_(i)) > N * G : exists i in NN>=1 : i <= N, G < g_(i)
+
+proof lem:nohyp
+  "core" fact:pigeon[f_(i) := G; (sum i in 1..N, G) <= (sum i in 1..N, g_(i)) by fact:constsum[c := G]]
+
+-- A side goal with no word.
+lemma lem:noby [a side goal without by]
+  core: N in NN, g_(1..N), G in QQ>=0, (sum i in 1..N, g_(i)) > N * G : exists i in NN>=1 : i <= N, G < g_(i)
+
+proof lem:noby
+  "core" fact:pigeon[f_(i) := G; (sum i in 1..N, G) < (sum i in 1..N, g_(i)) fact:constsum[c := G]]

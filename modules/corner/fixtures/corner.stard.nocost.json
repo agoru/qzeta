@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "c = E + d * s", "note": "c is not the cost of the level below: the first row is carried from the counterexample nocost of the row (star) of thm:level, at d = 1; the second has d = 2 and the cost E + s of d = 1", "rows": [
+ {"E": "3/2", "s": "1/4", "c": "2", "m": "1/2", "d": "1"},
+ {"E": "4", "s": "1/2", "c": "9/2", "m": "2", "d": "2"}
+]}

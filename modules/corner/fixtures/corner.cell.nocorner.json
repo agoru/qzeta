@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "S = kappa * E + rho * (1 + k * s)", "note": "S is not the mass of the corner", "rows": [
+ {"k": "4", "kappa": "2", "rho": "1", "E": "1/7", "s": "3/4", "S": "37/7", "R": "8"}
+]}

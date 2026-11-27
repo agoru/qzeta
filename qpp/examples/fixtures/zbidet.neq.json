@@ -1,0 +1,21 @@
+{
+ "kind": "counterexample",
+ "drop": "bidetM(A) + k = bidetP(A)",
+ "note": "the halves of [[1, 2], [3, 4]] are (4, 6): without the tie the order fails",
+ "rows": [
+  {
+   "n": 2,
+   "A": [
+    [
+     1,
+     2
+    ],
+    [
+     3,
+     4
+    ]
+   ],
+   "k": 0
+  }
+ ]
+}

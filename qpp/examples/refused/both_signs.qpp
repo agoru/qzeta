@@ -1,0 +1,108 @@
+-- Q++ 0.2
+paper refusedsigns
+-- Cases of the forms of both signs that a positive source refuses, each with its reason: QQ and ZZ, a - b outside
+-- the deficit max(a - b, 0), -a, |a|, and the vocabulary names whose lines have one, in rows, givens and vocabulary
+-- lines.
+
+section sec:refused Refused forms of both signs
+
+-- Names of both signs, and positive types, that set up the cases below.
+word integer := ZZ
+type Point(n) := QQ^n
+type Pos(n) := (QQ>=0)^n
+type Cost(n) := Pos(n) -> QQ>=0
+define dif(x, y) := x - y
+relation (x #gap y) := x, y in QQ, x <= y
+word dip(K in Cost(n)) : Cost(n)
+
+-- Vocabulary lines of both signs: each is refused and reported.
+word rational := QQ
+type Coords(n) := QQ^n
+type Loss(n) := Point(n) -> QQ>=0
+define diff(x, y) := x - y
+define flip(x) := -x
+define size(x) := |x|
+define swapped(x, y) := max(0, x - y)
+define dip(K)(w) := K(w) + dif(K(w), 1)
+relation (x #near y) := x, y in QQ>=0, x - y <= 1
+context at(K in Loss(n))
+
+lemma lem:sbinder [a binder in QQ]
+  core: x in QQ : x * x >= 0
+
+proof lem:sbinder
+  "core" V
+
+lemma lem:sfamily [a family in QQ]
+  core: n in NN, a_(1..n) in QQ : (sum k in 1..n, a_(k) * a_(k)) >= 0
+
+proof lem:sfamily
+  "core" V
+
+lemma lem:sdiff [a difference]
+  core: a, b in QQ>0 : a - b <= a
+
+proof lem:sdiff
+  "core" V
+
+lemma lem:sneg [a minus]
+  core: a in QQ>0 : -a <= a
+
+proof lem:sneg
+  "core" V
+
+lemma lem:snum [a negative numeral]
+  core: a in QQ>0 : a >= -1
+
+proof lem:snum
+  "core" V
+
+lemma lem:sabs [an absolute value]
+  core: a in QQ>0 : |a| = a
+
+proof lem:sabs
+  "core" V
+
+lemma lem:sswap [the deficit only as max(a - b, 0)]
+  core: a, b in QQ>0 : max(0, a - b) <= a
+
+proof lem:sswap
+  "core" cases V
+
+lemma lem:sdefarg [a deficit with an argument of both signs]
+  core: a, b in QQ>0 : max(a - (b - a), 0) >= 0
+
+proof lem:sdefarg
+  "core" cases V
+
+lemma lem:sint [a set word of both signs]
+  core: x in integer : x * x >= 0
+
+proof lem:sint
+  "core" V
+
+lemma lem:spoint [a type of both signs]
+  core: n in NN, w in Point(n) : w = w
+
+proof lem:spoint
+  "core" V
+
+lemma lem:sdefine [a define of both signs]
+  core: a, b in QQ>0 : dif(a, b) <= a
+
+proof lem:sdefine
+  "core" V
+
+lemma lem:sgiven [a given of both signs: every row but core binds it]
+  given: x in QQ
+  (1): x * x >= 0
+
+proof lem:sgiven
+  (1) V
+
+lemma lem:srel [a relation of both signs in the given]
+  given: x, y in QQ>0, (x #gap y)
+  (1): x <= y
+
+proof lem:srel
+  (1) V

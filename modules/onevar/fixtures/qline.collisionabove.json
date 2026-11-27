@@ -1,0 +1,7 @@
+{"kind": "witness", "note": "letters above q: T = 3 at e = 1, T = 10 at e = 3; the marks of costs c and -c colliding on one fibre of a ruling of the split quadric, T = q^c at (q, c) = (5, 2), (7, 2), (5, 3): the fibre has the value e + 1 - 1/(u w), which is 155/36, 399/64 and 4680/961", "rows": [
+ {"e": "1", "T": "3", "U": "1/3", "u": "2", "w": "2/3", "x": "1"},
+ {"e": "3", "T": "10", "U": "1/10", "u": "3", "w": "3/10", "x": "2"},
+ {"e": "4", "T": "25", "U": "1/25", "u": "6", "w": "6/25", "x": "5"},
+ {"e": "6", "T": "49", "U": "1/49", "u": "8", "w": "8/49", "x": "7"},
+ {"e": "4", "T": "125", "U": "1/125", "u": "31", "w": "31/125", "x": "30"}
+]}

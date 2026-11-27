@@ -1,0 +1,92 @@
+-- Q++ 0.2
+module mixtures
+uses table
+
+subsection sec:mixtures Mixtures
+
+  -- A mixture of laws with masses of one sign, read through its moment form: every chart coordinate of the true atoms
+  -- is one row \(2c\ge1\) and every surplus unit is a block of its own, so the least costs of the blocks add
+  -- (\cref{thm:pivots}). A surplus unit is merged into a true atom, emptied, or kept at mass zero, the cheaper of the
+  -- two (\cref{lem:surplus}), and the powers of the level add over the blocks.
+
+-- One scale: the row \(av\ge1\) at the cost \(cv\) has the least cost \(\frac ca\), at the one point \(v=\frac1a\).
+-- A unit merged into a true atom of \(\Q^N\) is one scale, \(a=4\), \(c=N\); an emptied unit, \(a=2\), \(c=\alpha\).
+lemma lem:onescale [one scale]
+  (1): a, c in QQ>0 : prog(v in QQ>=0, a * v >= 1 : c * v) = (c / a, 1)
+  fix (1) gmpositiveprog.model
+  fix (1) gmidleprog.model
+  origin: ?{\text{elementary}}
+
+proof lem:onescale
+  (1) prog[c / a; v := 1 / a]
+
+-- Points of \(\Q^N\) with \(r\) true atoms and \(r(N+1)-1\) chart coordinates: each surplus unit goes to the cheapest
+-- block, merged, kept at mass zero or emptied, so the value is \(\frac{r(N+1)-1}2+(H-r)\min(\frac\alpha2,\frac N4)\).
+-- The bounds by blocks are stated here; that they are the content of the mixture is not.
+lemma lem:mixture [a mixture of points of \(\Q^N\)]
+  (out): N, alpha in QQ>0, B, p, z, i in NN, c in Point(B), w in Point(p), v0, w0 in Point(z), e in Point(i), (forall j : 2 * c_(j) >= 1), (forall j : 4 * w_(j) >= 1), (forall j : 2 * v0_(j) + 4 * w0_(j) >= 1), (forall j : 2 * e_(j) >= 1) : (sum j, c_(j)) + N * (sum j, w_(j)) + (sum j, (alpha * v0_(j) + N * w0_(j))) + alpha * (sum j, e_(j)) >= B / 2 + p * (N / 4) + z * min(alpha / 2, N / 4) + i * (alpha / 2)
+  fix (out) mixture.out
+  (vertex): N, alpha, cz in QQ>0, p, z, i in QQ>=0, min(alpha / 2, N / 4) <= cz : p * (N / 4) + z * cz + i * (alpha / 2) >= (p + z + i) * min(alpha / 2, N / 4)
+  fix (vertex) mixture.vertex
+  core values: r, E in QQ>0 : r + E / 4 = (3 * r + (r + E)) / 4, 3 * r / 2 + E / 2 = (2 * r + (r + E)) / 2; N, r, E in QQ>0 : r * (N + 1) / 2 + E / 2 = (N * r + (r + E)) / 2
+  fix core values mixture.values
+  origin: ?{\text{elementary}}
+
+proof lem:mixture
+  (out) with[(sum j, c_(j)) >= B * (1 / 2) by sum[V]; with[(sum j, w_(j)) >= p * (1 / 4) by sum[V]; with[(sum j, (alpha * v0_(j) + N * w0_(j))) >= z * min(alpha / 2, N / 4) by sum[with[0 <= min(alpha / 2, N / 4) by cases[alpha / 2 <= N / 4; V[0]; V[0]]; with[min(alpha / 2, N / 4) <= alpha / 2 by cases[alpha / 2 <= N / 4; V[0]; V[hn2]]; with[min(alpha / 2, N / 4) <= N / 4 by cases[alpha / 2 <= N / 4; V[hc3]; V[0]]; with[0 <= v0_(j) by V; with[0 <= w0_(j) by V; V]]]]]]; with[(sum j, e_(j)) >= i * (1 / 2) by sum[V]; V[hw1, hw3, N * hw2, alpha * hw9]]]]]
+  (vertex) with[min(alpha / 2, N / 4) <= alpha / 2 by cases[alpha / 2 <= N / 4; V[0]; V[hn1]]; with[min(alpha / 2, N / 4) <= N / 4 by cases[alpha / 2 <= N / 4; V[hc2]; V[0]]; V]]
+  "core values" (eq, eq); eq
+
+-- Location-scale mixtures: a unit of positive mass at a true atom pays the rows of \(x^2w^2+w^4+x^8\), the least cost
+-- \(\frac12\) on an edge. A unit of mass zero adds the size of its mass at the price \(\alpha\): emptied below
+-- \(\alpha=1\), kept above, and at \(\alpha=1\) the face is a triangle, as for \cref{lem:surplus}.
+lemma lem:lsunit [a unit of a location-scale mixture]
+  (positive): prog(vx, vw in QQ>=0, 2 * vx + 2 * vw >= 1, 4 * vw >= 1, 8 * vx >= 1 : vx + vw) = (1 / 2, 2)
+  fix (positive) lspositiveprog.model
+  (emptied): alpha in QQ>0, alpha < 1 : prog(ve, vx, vw in QQ>=0, 2 * ve + 2 * vx + 2 * vw >= 1, 2 * ve + 4 * vw >= 1, 2 * ve + 8 * vx >= 1 : alpha * ve + vx + vw) = (alpha / 2, 1)
+  fix (emptied) lszeroprog.below
+  (tie): alpha in QQ>0, alpha = 1 : prog(ve, vx, vw in QQ>=0, 2 * ve + 2 * vx + 2 * vw >= 1, 2 * ve + 4 * vw >= 1, 2 * ve + 8 * vx >= 1 : alpha * ve + vx + vw) = (1 / 2, 3)
+  fix (tie) lszeroprog.tie
+  neqfix (tie) lszeroprog.offtie
+  (kept): alpha in QQ>0, 1 < alpha : prog(ve, vx, vw in QQ>=0, 2 * ve + 2 * vx + 2 * vw >= 1, 2 * ve + 4 * vw >= 1, 2 * ve + 8 * vx >= 1 : alpha * ve + vx + vw) = (1 / 2, 2)
+  fix (kept) lszeroprog.above
+  origin: ?{\text{elementary}}
+
+-- The first row carries the price; the reduced costs are \(1-\alpha\) on the block below the threshold and
+-- \(\alpha-1\) on the mass above it, all zero at the threshold.
+proof lem:lsunit
+  (positive) prog[1 / 2, 0, 0; vx := 1 / 8, vw := 3 / 8; vx := 1 / 4, vw := 1 / 4]
+  (emptied) prog[alpha / 2, 0, 0; ve := 1 / 2]
+  (tie) prog[1 / 2, 0, 0; ve := 1 / 2; vx := 1 / 8, vw := 3 / 8; vx := 1 / 4, vw := 1 / 4]
+  (kept) prog[1 / 2, 0, 0; vx := 1 / 8, vw := 3 / 8; vx := 1 / 4, vw := 1 / 4]
+
+-- A block of three units at one true atom: its rungs of order four and five give the least cost \(\frac78\), and on the
+-- whole box of its shares, the shares zero included, the least cost is \(\min(\alpha,\frac78)\), with an edge at
+-- \(\alpha=\frac78\). The program is stated here; that it is the content of the type is not.
+lemma lem:lsthree [a block of three units]
+  (rung): E in QQ>0 : prog(vr, vy in QQ>=0, 6 * vr + 2 * vy >= 1, 8 * vr >= 1 : (3 + E) * vr + vy) = ((4 + E) / 8, 1)
+  fix (rung) lsrungprog.model
+  (rungtie): prog(vr, vy in QQ>=0, 6 * vr + 2 * vy >= 1, 8 * vr >= 1 : 3 * vr + vy) = (1 / 2, 2)
+  fix (rungtie) lsrungtieprog.model
+  (five): prog(vr, vy, vz in QQ>=0, 6 * vr + 2 * vy >= 1, 8 * vr + 2 * vz >= 1, 10 * vr >= 1 : 6 * vr + vy + vz) = (7 / 8, 1)
+  fix (five) lsrungfive.model
+  (below): t, alpha in QQ>0, alpha = 7 / 8 * (t / (1 + t)) : prog(vp, ve, vr, vb, vt in QQ>=0, vp <= 1 / 2, vp + vt >= 1 / 2, 2 * vp + 4 * ve + 12 * vr + 4 * vb + 3 * vt >= 3, vp + ve + 4 * vr + vt >= 1, ve + 3 * vr + vb >= vp, ve + 4 * vr >= vp : alpha * vp + alpha * ve + 3 * vr + vb + vt) = (7 / 8 * (t / (1 + t)), 1)
+  fix (below) lsthreeprog.low
+  fix (below) lsthreeprog.below
+  (tie): alpha in QQ>0, alpha = 7 / 8 : prog(vp, ve, vr, vb, vt in QQ>=0, vp <= 1 / 2, vp + vt >= 1 / 2, 2 * vp + 4 * ve + 12 * vr + 4 * vb + 3 * vt >= 3, vp + ve + 4 * vr + vt >= 1, ve + 3 * vr + vb >= vp, ve + 4 * vr >= vp : alpha * vp + alpha * ve + 3 * vr + vb + vt) = (7 / 8, 2)
+  fix (tie) lsthreeprog.tie
+  neqfix (tie) lsthreeprog.offtie
+  (above): t, alpha in QQ>0, alpha = 7 * (1 + t) / 8 : prog(vp, ve, vr, vb, vt in QQ>=0, vp <= 1 / 2, vp + vt >= 1 / 2, 2 * vp + 4 * ve + 12 * vr + 4 * vb + 3 * vt >= 3, vp + ve + 4 * vr + vt >= 1, ve + 3 * vr + vb >= vp, ve + 4 * vr >= vp : alpha * vp + alpha * ve + 3 * vr + vb + vt) = (7 / 8, 1)
+  fix (above) lsthreeprog.above
+  origin: ?{\text{elementary}}
+
+-- The rows of the orders three and four carry the prices of the rungs; below the wall \(\alpha=\frac78\) the prices are
+-- those of the wall scaled down, the mediant of the wall and of the zero prices at \(\alpha=0\), and above it those of
+-- the wall.
+proof lem:lsthree
+  (rung) face[V[1 / 2 * h_3, E / 8 * h_4]; vr := 1 / 8, vy := 1 / 8 by V[0], V[0], V[0], V[0], V[0]; 8 * vr = 1, 6 * vr + 2 * vy = 1 by (V[4 / E * h_3, 8 / E * h_5], V[1 * h_4]), (V[2 * h_5, E / 4 * h_4], V[1 * h_3])]
+  (rungtie) face[V[1 / 2 * h_3]; vr := 1 / 8, vy := 1 / 8 by V[0], V[0], V[0], V[0], V[0]; vr := 1 / 6 by V[0], V[0], V[0], V[0]; 6 * vr + 2 * vy = 1 by (V[2 * h_5], V[1 * h_3]); V[0]]
+  (five) face[V[1 / 2 * h_4, 3 / 8 * h_5, 1 / 4 * h_3]; vr := 1 / 8, vy := 1 / 8 by V[0], V[0], V[0], V[0], V[0], V[0]; 8 * vr = 1, 6 * vr + 2 * vy = 1, vz = 0 by (V[(8 / 3) * h_7, 4 / 3 * h_4, 8 / 3 * h_3], V[8 * h_7, 4 * h_4, 4 * h_5]), (V[2 * h_7, 3 / 4 * h_5, 1 / 2 * h_3], V[1 * h_4]), (V[4 * h_7, 2 * h_4, 3 / 2 * h_5], V[1 * h_3])]
+  (below) face[V[t / (4 * (1 + t)) * h_8, t / (8 * (1 + t)) * h_9, 3 * t / (8 * (1 + t)) * h_10, 3 / (1 + t) * h_4, (2 + t) / (2 * (1 + t)) * h_5, 1 / (1 + t) * h_6 | (vp + ve) * h_1]; vp := 1 / 2, ve := 1 / 2 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[1 * h_1]; vp = 1 / 2, ve = 1 / 2, vr = 0, vb = 0, vt = 0 by (V[1 * h_7], V[(1 + t) * h_13, (1 + t / 4) * h_8, t / 8 * h_9, 3 * t / 8 * h_10, 3 * h_4, (2 + t) / 2 * h_5 | (1 + t) * (vp + ve) * h_1]), (V[(1 + t + 1 / alpha) * h_13, (1 + t / 4) * h_8, t / 8 * h_9, 3 * t / 8 * h_10, (3 + 3 / alpha) * h_4, ((2 + t) / 2 + 1 / alpha) * h_5, 1 / alpha * h_6 | ((1 + t) * (vp + ve) + 1 / alpha) * h_1], V[1 * h_12, (7 + 7 * t) / 3 * h_13, (1 + 7 * t / 12) * h_8, 7 * t / 24 * h_9, 7 * t / 8 * h_10, 3 * h_4, 7 * (2 + t) / 6 * h_5, 4 / 3 * h_6 | 7 * (1 + t) / 3 * (vp + ve) * h_1]), (V[(1 + t) / 3 * h_13, t / 12 * h_8, t / 24 * h_9, t / 8 * h_10, (2 + t) / 6 * h_5, 1 / 3 * h_6 | (1 + t) / 3 * (vp + ve) * h_1], V[1 * h_4]), (V[(2 + 2 * t) / (2 + t) * h_13, t / (2 * (2 + t)) * h_8, t / (4 * (2 + t)) * h_9, 3 * t / (4 * (2 + t)) * h_10, 6 / (2 + t) * h_4, 2 / (2 + t) * h_6 | 2 * (1 + t) / (2 + t) * (vp + ve) * h_1], V[1 * h_5]), (V[(1 + t) * h_13, t / 4 * h_8, t / 8 * h_9, 3 * t / 8 * h_10, 3 * h_4, (2 + t) / 2 * h_5 | (1 + t) * (vp + ve) * h_1], V[1 * h_6])]
+  (tie) face[V[1 / 4 * h_8, 1 / 8 * h_9, 3 / 8 * h_10, 1 / 2 * h_5 | (vp + ve) * h_1]; vr := 1 / 8, vt := 1 / 2 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0]; vp := 1 / 2, ve := 1 / 2 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[1 * h_1]; ve = vp, vp + 4 * vr = 1 / 2, vb = 0, vp + vt = 1 / 2 by (V[8 * h_13, 2 * h_8, 6 * h_10, 8 * h_5 | 8 * (vp + ve) * h_1], V[16 * h_13, 4 * h_8, 3 * h_9, 3 * h_10, 4 * h_5 | 16 * (vp + ve) * h_1]), (V[(56 / 3) * h_13, 17 / 3 * h_8, 10 / 3 * h_9, 3 * h_10, 16 / 3 * h_5 | 56 / 3 * (vp + ve) * h_1], V[12 * h_13, 2 * h_8, 1 / 2 * h_9, 17 / 2 * h_10, 10 * h_5 | 12 * (vp + ve) * h_1]), (V[2 * h_13, 1 / 2 * h_8, 1 / 4 * h_9, 3 / 4 * h_10 | 2 * (vp + ve) * h_1], V[1 * h_5]), (V[4 * h_13, 1 / 2 * h_9, 3 / 2 * h_10, 2 * h_5 | 4 * (vp + ve) * h_1], V[1 * h_8]); V[0]]
+  (above) face[V[1 / 4 * h_8, 1 / 8 * h_9, 3 / 8 * h_10, 1 / 2 * h_5, 7 * t / 8 * h_2, 7 * t / 8 * h_3 | (vp + ve) * h_1]; vr := 1 / 8, vt := 1 / 2 by V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0], V[0]; vp = 0, ve = 0, vr = 1 / 8, vb = 0, vt = 1 / 2 by (V[(8 / (7 * t)) * h_13, 2 / (7 * t) * h_8, 1 / (7 * t) * h_9, 3 / (7 * t) * h_10, 4 / (7 * t) * h_5, 1 * h_3 | 8 / (7 * t) * (vp + ve) * h_1], V[1 * h_2]), (V[(8 / (7 * t)) * h_13, 2 / (7 * t) * h_8, 1 / (7 * t) * h_9, 3 / (7 * t) * h_10, 4 / (7 * t) * h_5, 1 * h_2 | 8 / (7 * t) * (vp + ve) * h_1], V[1 * h_3]), (V[(2 / 3) * h_13, 5 / 12 * h_8, 1 / 12 * h_9, 1 / 3 * h_5, 7 * t / 12 * h_2, (1 / 4 + 7 * t / 12) * h_3 | 2 / 3 * (vp + ve) * h_1], V[(1 + 2 / (7 * t)) * h_13, 1 / (14 * t) * h_8, (1 / 8 + 1 / (28 * t)) * h_9, (5 / 8 + 3 / (28 * t)) * h_10, (1 / 2 + 1 / (7 * t)) * h_5, (7 * t / 8 + 1 / 4) * h_2, 7 * t / 8 * h_3 | (1 + 2 / (7 * t)) * (vp + ve) * h_1]), (V[2 * h_13, 1 / 2 * h_8, 1 / 4 * h_9, 3 / 4 * h_10, 7 * t / 4 * h_2, 7 * t / 4 * h_3 | 2 * (vp + ve) * h_1], V[1 * h_5]), (V[4 * h_13, 1 / 2 * h_9, 3 / 2 * h_10, 2 * h_5, (7 * t / 2 + 1) * h_2, 7 * t / 2 * h_3 | 4 * (vp + ve) * h_1], V[1 * h_8, (8 / (7 * t)) * h_13, 2 / (7 * t) * h_8, 1 / (7 * t) * h_9, 3 / (7 * t) * h_10, 4 / (7 * t) * h_5, 1 * h_3 | 8 / (7 * t) * (vp + ve) * h_1])]

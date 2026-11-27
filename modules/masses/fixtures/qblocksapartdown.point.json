@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "y = zB * (a * b * tau * s) + zT * (a * b * sigma * t) + 1", "note": "the point dropped: at y = 2 the two terms tie, zB / zT = 4 / 21, on the masses", "rows": [{"N": 2, "tau": 3, "sigma": 1, "a": 1, "b": 1, "s": 1, "t": 1, "zB": 4, "zT": 21, "y": "2", "pN": "15", "ptau": "63", "psig": "3", "pa": "3", "pb": "3", "ps": "3", "pt": "3"}]}

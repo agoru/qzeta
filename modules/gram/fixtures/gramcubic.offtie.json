@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "s = 3", "note": "off the tie the face is one point: at s = 2 the pair is (11/6, 1), at s = 4 it is (21/8, 1), with e = 1", "rows": [
+ {"s": 2, "e": 1},
+ {"s": 4, "e": 1}
+]}

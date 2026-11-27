@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "13 <= X", "note": "X below 13", "rows": [
+ {"X": "1"}
+]}

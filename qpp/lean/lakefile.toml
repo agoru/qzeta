@@ -1,0 +1,10 @@
+name = "qpp"
+defaultTargets = ["QppKernel"]
+
+# The kernel of Q++: counts, masses, finite sums and the tactics that replay certificates. Lean core and Std only.
+[[lean_lib]]
+name = "QppKernel"
+
+# The checks of the kernel: identities replayed by the tactics (built by `lake build QppTests`).
+[[lean_lib]]
+name = "QppTests"

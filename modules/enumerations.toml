@@ -1,0 +1,73 @@
+[charts]
+"chartabove" = "the lattice points of a box: forall s in Exponent(r) : (forall X : s_(X) <= B_(X)), (sum X, c_(X) * s_(X)) <= (sum j, t_(j)), (forall u in Exponent(n) : (forall i : u_(i) <= b_(i)), G(u) <= e, S(u) = "
+"chartbelow" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), (forall i : lam_(i) < lam_(j) => u_(i) = w_(i)) => forall y in Exponent(n) : M(u) = "
+"levelsabove" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+
+[layers]
+"layers.facet" = "the numbers up to a bound: forall j in NN>=1 : j <= k => forall i in NN>=1 : i < j => a_(j) #minus b_(j) #apart a_(i) #minus b_(i)"
+"layers.facet.low" = "the numbers up to a bound: forall j in NN>=1 : j <= k => forall i in NN>=1 : i < j => a_(j) #minus b_(j) #apart a_(i) #minus b_(i)"
+"layers.facet.notie" = "the numbers up to a bound: forall j in NN>=1 : j <= k => forall i in NN>=1 : i < j => a_(j) #minus b_(j) #apart a_(i) #minus b_(i)"
+"layers.hdomain" = "the lattice points of a box: forall u in Exponent(r) : (forall X : u_(X) <= n) => (sum kappa, A.q_(kappa) * (prod X, binom(A.E_(kappa)_(X), u_(X)))) + (sum kappa, B.q_(kappa) * (prod X, binom(B.E_(kap"
+"layers.hinges" = "the numbers up to a bound: forall j in NN>=1 : j <= k => forall i in NN>=1 : i < j => a_(j) #minus b_(j) #apart a_(i) #minus b_(i)"
+"layers.hinges.associate" = "the lattice points of a box: forall u in Exponent(r) : (forall X : u_(X) <= j) => (forall X : 1 <= c_(X) => u_(X) = 0) => (sum X, u_(X)) <= j => (sum kappa, A.q_(kappa) * (prod X, binom(A.E_(kappa)_(X"
+"layers.hinges.inside" = "the numbers up to a bound: forall j in NN>=1 : j <= k => forall i in NN>=1 : i < j => a_(j) #minus b_(j) #apart a_(i) #minus b_(i)"
+"layers.hprime" = "the lattice points of a box: forall u in Exponent(r) : (forall X : u_(X) <= n) => (sum kappa, A.q_(kappa) * (prod X, binom(A.E_(kappa)_(X), u_(X)))) + (sum kappa, B.q_(kappa) * (prod X, binom(B.E_(kap"
+"layers.hproduct" = "the lattice points of a box: forall u in Exponent(r) : (forall X : u_(X) <= n) => (sum kappa, A.q_(kappa) * (prod X, binom(A.E_(kappa)_(X), u_(X)))) + (sum kappa, B.q_(kappa) * (prod X, binom(B.E_(kap"
+"layers.hquot" = "the lattice points of a box: forall u in Exponent(r) : (forall X : u_(X) <= n) => (sum kappa, A.q_(kappa) * (prod X, binom(A.E_(kappa)_(X), u_(X)))) + (sum kappa, B.q_(kappa) * (prod X, binom(B.E_(kap"
+
+[onevar]
+"onevaractiontie" = "the numbers up to a bound: forall M in NN>=1 : (sum i in 1..r, c_(i) * Z_(M + e_(i))) = (sum j in 1..s, d_(j) * Z_(M + f_(j)))"
+"onevaractiontie.notie" = "the numbers up to a bound: forall M in NN>=1 : (sum i in 1..r, c_(i) * Z_(M + e_(i))) = (sum j in 1..s, d_(j) * Z_(M + f_(j)))"
+
+[pivots]
+"cover" = "the lattice points of a box: forall s in Exponent(r) : (forall X : s_(X) <= B_(X)) => (sum u <= b, iverson(G(u) <= e, S(u) = s)) <= C * 2^(n * N) * (sum p in 1..P, W_(p)(s))"
+"out" = "the lattice points of a box: forall s in Exponent(r) : (forall X : s_(X) <= B_(X)) => (sum u <= b, iverson(G(u) <= e, S(u) = s)) <= C * 2^(n * N) / 2^(sum X, c_(X) * s_(X))"
+"pivots" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)), (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), G(u) <= 1 / 2^L, G(w) <= 1 / "
+"pivotsin" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)) => forall y in Exponent(n) : M"
+"weight" = "the lattice points of a box: forall s in Exponent(r) : (forall X : s_(X) <= B_(X)) => (sum u <= b, iverson(G(u) <= e, S(u) = s)) <= C * 2^(n * N) * w(s)"
+
+[regular]
+"binomial.chamberI" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"binomial.chamberII" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"regularabove" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)), (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), G(u) <= 1 / 2^L, G(w) <= 1 / "
+"regularbelow" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)) => forall y in Exponent(n) : M"
+"regularchain" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)), (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), G(u) <= 1 / 2^L, G(w) <= 1 / "
+"regularcount" = "the lattice points of a box: sum s <= b, iverson(s #feasible Pr #level L) / 2^(sum X, c_(X) * s_(X))"
+"regularspline" = "the lattice points of a box: forall u, w in Exponent(n) : (forall i : Ch.lam_(i) < Ch.lam_(j) => u_(i) = w_(i)), (forall i : u_(i) <= b_(i)), (forall i : w_(i) <= b_(i)), G(u) <= 1 / 2^L, G(w) <= 1 / "
+
+[root]
+"countabove" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"countbelow" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L, (sum i, c_(i) * u_(i)) <= kappa + K0) / 2^(sum i, c_(i) * u_(i))"
+"countpower" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"fibreabove" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"wordabove" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L) / 2^(sum i, c_(i) * u_(i))"
+"wordbelow" = "the lattice points of a box: sum u <= b, iverson(u #feasible Pr #level L, (sum i, c_(i) * u_(i)) <= kappa + K0) / 2^(sum i, c_(i) * u_(i))"
+
+[setsprog]
+"allsets.convex" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, J_(i)) = m => Z + (sum u in 1..k, d_(u) * S(sum i, A_(u)_(i) * J_(i))) >= m"
+"allsets.feasible" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, J_(i)) = m => Z + (sum u in 1..k, d_(u) * S(sum i, A_(u)_(i) * J_(i))) >= m"
+"allsets.list" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, J_(i)) = m => Z + (sum u in 1..k, d_(u) * S(sum i, A_(u)_(i) * J_(i))) >= m"
+"allsets.zero" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, J_(i)) = m => Z + (sum u in 1..k, d_(u) * S(sum i, A_(u)_(i) * J_(i))) >= m"
+"setbounds.prices" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, p_(i) * J_(i)) + (sum u in 1..k, B_(u) * d_(u)) <= (sum u in 1..k, d_(u) * S_(u)(sum i, A_(u)_(i) * J_(i))) + "
+"setbounds.prices.cover" = "the lattice points of a box: forall J in Exponent(n) : (forall i : J_(i) <= 1) => (sum i, p_(i) * J_(i)) + (sum u in 1..k, B_(u) * d_(u)) <= (sum u in 1..k, d_(u) * S_(u)(sum i, A_(u)_(i) * J_(i))) + "
+"settie.least" = "the lattice points of a box: forall X in Exponent(n) : (forall i : X_(i) <= 1) => Z + (sum u in 1..k, d_(u) * S_(u)(sum i, A_(u)_(i) * X_(i))) >= (sum i, p_(i) * X_(i))"
+
+[sidesrows]
+"levels.knots" = "the numbers up to a bound: forall p in NN : forall q in NN : p + q = N => p <= P => q <= Q => (sum m in 0..q, t_(m) / ((prod k in 1..p + 1, ((sum j in 1..k, L_(j)) + (sum j in 1..m, r_(j)))) * (prod g"
+"levels.knots.side" = "the numbers up to a bound: forall p in NN : forall q in NN : p + q = N => p <= P => q <= Q => (sum m in 0..q, t_(m) / ((prod k in 1..p + 1, ((sum j in 1..k, L_(j)) + (sum j in 1..m, r_(j)))) * (prod g"
+"moments.centre" = "the numbers up to a bound: forall b in NN : 2 * b <= l => (sum m in 0..D, p_(m) * d_(m)^(2 * b)) = (sum m in 0..D, q_(m) * d_(m)^(2 * b))"
+"moments.forms" = "the numbers up to a bound: forall b in NN : 2 * b <= l => (sum m in 0..D, p_(m) * d_(m)^(2 * b)) = (sum m in 0..D, q_(m) * d_(m)^(2 * b))"
+"sums.lagrange" = "the numbers up to a bound: forall i in NN : i <= l + 1 => (sum m in 0..D, p_(m) * choose(m, i)) = (sum m in 0..D, q_(m) * choose(m, i))"
+"sums.tails" = "the numbers up to a bound: forall i in NN : i <= l + 1 => (sum m in 0..D, p_(m) * choose(m, i)) = (sum m in 0..D, q_(m) * choose(m, i))"
+
+[site]
+"ladder.cover" = "the numbers up to a bound: exists J in NN : J * (J + 1) <= 2 * k, 2 * k <= (J + 1) * (J + 2)"
+"ladder.rung" = "the numbers up to a bound: exists J in NN : J * (J + 1) <= N, N + 1 <= (J + 1) * (J + 2)"
+
+[sizes]
+"size" = "the numbers up to a bound: exists x in NN : x <= B, m <= 1 / 2^x, x = B or 1 / 2^(x + 1) < m"
+
+[stages]
+"completion" = "the numbers up to a bound: exists l in NN>=1 : exists B in NN>=1 : exists k in NN>=1 : exists S in NN>=1 : exists E in NN>=1 : B = b^l, B = 1 + k, k * q = S, S + E = k, forall M in NN>=1 : (S * (1 + ("
+"completion.nointerval" = "the numbers up to a bound: exists l in NN>=1 : exists B in NN>=1 : exists k in NN>=1 : exists S in NN>=1 : exists E in NN>=1 : B = b^l, B = 1 + k, k * q = S, S + E = k, forall M in NN>=1 : (S * (1 + ("
+"completion.noprime" = "the numbers up to a bound: exists l in NN>=1 : exists B in NN>=1 : exists k in NN>=1 : exists S in NN>=1 : exists E in NN>=1 : B = b^l, B = 1 + k, k * q = S, S + E = k, forall M in NN>=1 : (S * (1 + ("

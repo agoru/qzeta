@@ -1,0 +1,43 @@
+% Three results in the LaTeX that latex2qpp reads (qpp/README.md, "The LaTeX form"), so that latex2qpp and
+% qpp2lean generate their Lean statements and proofs.
+\begin{lemma}[pins of matched crossings]\label{lem:pins}
+Divide by a mass after a positive combination.
+\begin{stmt}
+\sit{given}{\gamma,\eta,\eta',e,a,b,d\in\Q,\ \gamma>0,\ \gamma d\le a+b,\ a\le\eta,\ b\le\eta'+e}
+\sit{(1)}{d\le(\eta+\eta'+e)/\gamma}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq\circ\gEq[h_2+h_3+h_4]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[comparisons multiply]\label{lem:mul}
+\begin{stmt}
+\sit{given}{x,u,v,\kappa_1,\kappa_2\in\Q,\ \kappa_1>0,\ \kappa_1^{-1}u\le x\le\kappa_1u,\ \kappa_2^{-1}v\le u\le\kappa_2v}
+\sit{(1)}{(\kappa_1\kappa_2)^{-1}v\le x}
+\sit{(2)}{x\le\kappa_1\kappa_2v}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq[\kappa_1^{-1}h_4+h_2]}
+\eit{(2)}{\gEq[h_3+\kappa_1h_5]}
+\end{expr}
+\end{proof}
+
+\begin{lemma}[margins along a ladder]\label{lem:ladder}
+\begin{stmt}
+\sit{given}{W,W',A,C,\Delta,a,b\in\Q,\ W\ge0,\ C\ge0,\ a\le A,\ b\le\Delta,\ ACW+\Delta\le W'}
+\sit{(1)}{aCW+b\le W'}
+\end{stmt}
+\end{lemma}
+
+\begin{proof}
+\begin{expr}
+\eit{(1)}{\gEq\circ\gEq[aCW\le ACW]}
+\end{expr}
+\end{proof}

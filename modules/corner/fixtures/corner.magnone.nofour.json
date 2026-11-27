@@ -1,0 +1,4 @@
+{"kind": "counterexample", "drop": "6 <= X + 2 * k", "note": "n = 4, delta = 1 and D = 3 or 4: the two tuples left out of (M)", "rows": [
+ {"X": 2, "k": 1},
+ {"X": 3, "k": 1}
+]}

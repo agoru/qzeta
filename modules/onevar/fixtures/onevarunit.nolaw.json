@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "t^N = k * x^e", "note": "without the law of the monomials: t = 2, x = k = 1, the sides are 6 and 8", "rows": [{"N": 1, "e": 1, "t": "2", "x": "1", "k": "1"}]}

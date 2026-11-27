@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "S = kappa * E + rho * (1 + k * s)", "note": "carried from the row (wall) of thm:corner at kappa = k and rho = 1: a corner mass that is not the mass of the cell k e_t + e_u", "rows": [
+ {"k": 2, "kappa": 2, "rho": 1, "E": 7, "S": 15, "R": 4, "s": "1/2"}
+]}

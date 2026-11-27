@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "1 <= A + B", "note": "at A = B = 0 the block has no rate: every point is counted, and the count 225/64 exceeds (4 T + 2 k) / 2^k = 3/4", "rows": [{"A": 0, "B": 0, "M": 0, "T": 0, "k": 3, "b": 3, "c": 3}]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "1 / (2 * Y) < b", "note": "without the lower bound of the smaller mass, its scale 1/2 is no bound: 1 is not below twice 1/2", "rows": [
+ {"a": 1, "b": "1/8", "X": 1, "Y": "1/2"}
+]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "c + 1 <= kappa", "note": "c = kap: the factor of E is not positive", "rows": [
+ {"c": "1", "kappa": "1", "E": "5", "j": "1"}
+]}

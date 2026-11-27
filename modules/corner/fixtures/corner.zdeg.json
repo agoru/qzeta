@@ -1,0 +1,4 @@
+{"kind": "witness", "note": "the detached points of x^2 + y^2 z^3 + x(y^4 + z^4) + y^6 (k0 = 2, d = 3, m = 3) and of x^3 + y^4 z^3 + x(y^6 + z^6) + y^8 (k0 = 3, d = 4, m = 3), whose zeta functions (1 - t^2)(1 - t^16)(1 - t^18)/((1 - t^8)(1 - t^6)) and (1 - t^3)(1 - t^18)^4(1 - t^8)(1 - t^24)/(1 - t^9)^2, with the Milnor numbers 21 and 88, the formula for z_f gives and the formula on the Newton polyhedron of f confirms", "rows": [
+ {"k": "2", "k1": "1", "m": "3", "m1": "2", "D": "5", "g": "2", "gD": "2", "Nw": "18", "Nad": "6"},
+ {"k": "3", "k1": "2", "m": "3", "m1": "2", "D": "7", "g": "3", "gD": "1", "Nw": "24", "Nad": "24"}
+]}

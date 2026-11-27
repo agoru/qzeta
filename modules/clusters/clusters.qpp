@@ -1,0 +1,177 @@
+-- Q++ 0.2
+module clusters
+uses table
+
+subsection sec:clusters Cancelling clusters of degree three
+
+  -- A member of degree three in its last coordinate is held by pivots: a cluster of it that cancels twice makes its
+  -- remainder pivot deep, and the content of the cluster is read on that pivot. No member of degree two enters before
+  -- degree four.
+
+-- A member of degree three in its last coordinate \(s\), centred by its pivot \(y=3as+b\), is \(X=27a^2A=y^3+3Py+Q\)
+-- with the base members \(P\) and \(Q\) (centred). Its chain is \(W=y^2+P\), \(S=2Py+Q\) and \(D=Q^2+4P^3\), and the
+-- expansions that link them, \(X\) in \(W\) (remainder), \(W\) in \(S\) (centre), \(X\) in \(S\) (double) and \(D\) in
+-- \(X\) and \(W\) (relation), are identities of polynomials.
+lemma lem:cubicchain [the chain of a member of degree three]
+  centred: a, b, c, d, s in QQ>=0 : 27 * a^2 * (a * s^3 + b * s^2 + c * s + d) + 3 * b^2 * (3 * a * s + b) + 9 * a * b * c = (3 * a * s + b)^3 + 9 * a * c * (3 * a * s + b) + 27 * a^2 * d + 2 * b^3
+  eqfix centred cubicchain.centred
+  remainder: y, P, Q in QQ>=0 : y^3 + 3 * P * y + Q = y * (y^2 + P) + (2 * P * y + Q)
+  eqfix remainder cubicchain.remainder
+  centre: y, P, Q in QQ>=0 : 4 * P^2 * (y^2 + P) + 2 * Q * (2 * P * y + Q) = (2 * P * y + Q)^2 + (Q^2 + 4 * P^3)
+  eqfix centre cubicchain.centre
+  double: y, P, Q in QQ>=0 : 8 * P^3 * (y^3 + 3 * P * y + Q) + 3 * Q * (2 * P * y + Q)^2 + Q * (Q^2 + 4 * P^3) = (2 * P * y + Q)^3 + 3 * (Q^2 + 4 * P^3) * (2 * P * y + Q)
+  eqfix double cubicchain.double
+  relation: y, P, Q in QQ>=0 : Q^2 + 4 * P^3 + 2 * y * (y^2 + 3 * P) * (y * (y^2 + 3 * P) + Q) = (y * (y^2 + 3 * P) + Q)^2 + (y^2 + P)^2 * (y^2 + 4 * P)
+  eqfix relation cubic.expansion
+  origin: ?{\text{elementary: identities of polynomials; the chain is the remainder sequence of the cubic and its derivative under Euclidean division, up to factors in the base}}
+
+-- Each side expanded.
+proof lem:cubicchain
+  "centred" V
+  "remainder" V
+  "centre" V
+  "double" V
+  "relation" V
+
+-- On the sizes \(\xi,\omega,\sigma,d\) of \(X,W,S,D\) the least term of each expansion is held twice, so the content of
+-- a cluster at \(y\) is at least \(\xi-\frac12\min(\xi,d)\) in every pattern of the three ties, and no pattern is
+-- searched (depth). Below the wall \(d=\xi\) the cluster splits, held by the pivot \(S\) at the depth \(\frac d2\), and
+-- above it the parts merge at \(\frac\xi2\): the wall trades \(S^2\) against \(D\), as the surplus unit of
+-- \cref{lem:surplus} trades its weight against its position.
+lemma lem:cluster [a cancelling cluster of degree three]
+  depth: xi, d, s, w, c in QQ>=0, d >= min(xi, 2 * s), s >= min(xi, w), c + w >= xi, c >= w : 2 * c + min(xi, d) >= 2 * xi
+  fix depth cluster.depth
+  origin: ?{\text{proved here: a bound in the sizes of the members}\ X,W,S,D,\ \text{read from their identities, with no root}}
+
+-- Two cases of the least of each pair; in each the bound is a sum of the rows.
+proof lem:cluster
+  "depth" cases[xi <= d; V[1 * h_8, 1 * h_9]; cases[xi <= 2 * s; V[1 * h_8, 1 * h_9, 1 * h_6]; cases[xi <= w; V[1 * h_8, 1 * h_9, 1 * h_6, 2 * h_7]; V[2 * h_8, 1 * h_6, 2 * h_7]]]]
+
+-- The bound is attained: the cluster split at the wall's lower side, the pivot \(S\) at the depth \(\frac d2\), and
+-- merged at its upper side, at \(\frac\xi2\).
+lemma lem:clusterprog [the programs of a cluster]
+  split: d, e in QQ>=0 : prog(s, w, c in QQ>=0, w = s, 2 * s <= d + e, 2 * s <= d, c + w >= d + e, c >= w : c) = (d / 2 + e, 1)
+  fix split cluster.split
+  merge: xi, e in QQ>=0 : prog(s, w, c in QQ>=0, w = s, 2 * s <= xi, 2 * s <= xi + e, c + w >= xi, c >= w : c) = (xi / 2, 1)
+  fix merge cluster.merge
+  origin: ?{\text{proved here; elementary}}
+
+-- The prices of the rows; the points are the split and the merged cluster.
+proof lem:clusterprog
+  "split" prog[-1, 0, 1 / 2, 1, 0; s := d / 2, w := d / 2, c := d / 2 + e]
+  "merge" prog[-1, 1 / 2, 0, 1, 0; s := xi / 2, w := xi / 2, c := xi / 2]
+
+-- Three losses with a cluster of degree three, its coordinate last so that no order makes it a pivot: \(K=X^2+D^4\)
+-- (cubic), and the square of the discriminant of \(s^4+ps^2+qs+r\), with \(r\) last, where \(e=8p^3+27q^2\) is deep
+-- (edge) or \(q\) is deep (curve). Each program is one pattern and lies inside the rows of \cref{lem:cluster}(depth),
+-- which hold in every pattern (\cref{lem:outer}), so its pattern attains the least value and no pattern is searched.
+lemma lem:clusters [three losses with a cluster of degree three]
+  cubic: prog(s_d, s_x, s_s, s_w, c_q, c_y in QQ>=0, 2 * s_x >= 1, 4 * s_d >= 1, s_w = s_s, 2 * s_s <= s_x, 2 * s_s <= s_d, c_q >= s_d, c_y + s_w >= s_x, c_y >= s_w : c_q + c_y) = (5 / 8, 1)
+  fix cubic clusters.cubic
+  without: prog(s_d, s_x, s_s, s_w, c_q, c_y in QQ>=0, 2 * s_x >= 1, 4 * s_d >= 1, s_w = s_s, s_s <= s_x, c_q >= s_d, c_y + s_w >= s_x, c_y >= s_w : c_q + c_y) = (1 / 2, 1)
+  fix without clusters.without
+  edge: prog(s_e, s_x, s_s, s_w, c_q, c_r in QQ>=0, 2 * s_x >= 1, s_w = s_s, 2 * s_s <= s_x, 2 * s_s <= 3 * s_e, c_q >= s_e, c_r + s_w >= s_x, c_r >= s_w : c_q + c_r) = (5 / 12, 1)
+  fix edge clusters.edge
+  curve: prog(v_q, s_x, s_s, s_w, c_q, c_r in QQ>=0, 2 * s_x >= 1, s_w = s_s, 2 * s_s <= s_x, 2 * s_s <= 2 * v_q, c_q >= v_q, c_r + s_w >= s_x, c_r >= s_w : c_q + c_r) = (1 / 2, 2)
+  fix curve clusters.curve
+  origin: ?{\text{computed here; over the reals the pairs}\ (\tfrac5{12},1)\ \text{and}\ (\tfrac12,2)\ \text{are those of the squares of a cusp and of two crossing lines: the growth index}\ r\ \text{of the sublevel sets and its multiplicity}\ i\ \text{of \cite[Theorem~1.5]{Greenblatt2010}, as}\ (\tfrac r2,i+1)}
+
+-- Prices and points of each program; on the curve the face is the segment of the split clusters \(v_q\le\frac14\).
+proof lem:clusters
+  "cubic" prog[1 / 2, 1 / 8, -1, 0, 1 / 2, 1, 1, 0; s_d := 1 / 4, s_x := 1 / 2, s_s := 1 / 8, s_w := 1 / 8, c_q := 1 / 4, c_y := 3 / 8]
+  "without" prog[1 / 4, 1 / 4, 0, 0, 1, 1 / 2, 1 / 2; s_d := 1 / 4, s_x := 1 / 2, s_s := 1 / 4, s_w := 1 / 4, c_q := 1 / 4, c_y := 1 / 4]
+  "edge" prog[5 / 12, -1, 1 / 6, 1 / 3, 1, 1, 0; s_e := 1 / 6, s_x := 1 / 2, s_s := 1 / 4, s_w := 1 / 4, c_q := 1 / 6, c_r := 1 / 4]
+  "curve" prog[1 / 2, -1, 0, 1 / 2, 1, 1, 0; s_x := 1 / 2, c_r := 1 / 2; v_q := 1 / 4, s_x := 1 / 2, s_s := 1 / 4, s_w := 1 / 4, c_q := 1 / 4, c_r := 1 / 4]
+
+-- The centred member \(X\) of \cref{lem:cubicchain} where \(W\) cancels, under the loss \(X^{2k}+D^{2l}\), with the
+-- rows \(s_x\ge a=\frac1{2k}\) and \(s_d\ge b=\frac1{2l}\). In every pattern of its nine ties the content is at least
+-- \(\max(a+\frac b2,\frac a3+\frac{5b}6)\) (\cref{lem:outer}), each form attained by the program of one pattern on its
+-- chamber of \((a,b)\); on the walls \(b=a\) and \(b=2a\) the member \(D\) trades with one term of (relation), and the
+-- face is a segment, \(m=2\), below \(b=2a\) and a point on the wall and past it.
+lemma lem:cubicloss [the reduced cubic over the exponents of its loss]
+  away: a, b in QQ>0, b <= a : prog(s_w, s_x, s_d, c_p, c_q in QQ>=0, s_d = 2 * s_w, s_x >= s_d, s_x >= a, s_d >= b, c_p >= s_w, c_q >= s_x, c_q >= s_d : c_p + c_q) = (a + b / 2, 1)
+  fix away cubicloss.away
+  awaydeep: a, b in QQ>0, a <= b : prog(s_w, s_x, s_d, c_p, c_q in QQ>=0, s_x = 2 * s_w, s_d >= s_x, s_x >= a, s_d >= b, c_p >= s_w, c_q >= s_x, c_q >= s_d : c_p + c_q) = (a / 2 + b, 1)
+  fix awaydeep cubicloss.awaydeep
+  corner: b, e in QQ>0 : prog(v_u, s_w, s_x, s_d, c_u, c_p, c_q in QQ>=0, s_w >= 2 * v_u, s_x >= 3 * v_u, s_d >= 6 * v_u, s_d = 2 * s_w + 2 * v_u, 3 * v_u + s_x >= s_d, 2 * s_x >= s_d, s_x >= b / 2 + e, s_d >= b, c_u >= v_u, c_p >= 2 * v_u, c_p >= s_w, c_q >= 3 * v_u, c_q >= s_x, 3 * v_u + c_q >= s_d : c_u + c_p + c_q) = (b + e, 2)
+  fix corner cubicloss.corner
+  cornerdeep: a, b in QQ>0, 2 * a <= b : prog(v_u, v_p, v_q, s_d, c_u, c_p, c_q in QQ>=0, v_p >= 2 * v_u, v_q >= 3 * v_u, 2 * v_q = 3 * v_p, s_d >= 2 * v_q, s_d >= 6 * v_u, 3 * v_u >= a, s_d >= b, c_u >= v_u, c_p >= v_p, c_p >= 2 * v_u, c_q >= v_q, c_q >= 3 * v_u, v_q + c_q >= s_d : c_u + c_p + c_q) = (a / 3 + 5 * b / 6, 1)
+  fix cornerdeep cubicloss.cornerdeep
+  origin: ?{\text{computed here}}
+
+-- The prices of each program are those of one sample of its chamber and hold on all of it; the corner is read at the
+-- distance \(e\) from its wall, where its segment shrinks to a point as \(e\) does.
+proof lem:cubicloss
+  "away" prog[-1 / 2, 0, 1, 1 / 2, 1, 1, 0; s_w := b / 2, s_x := a, s_d := b, c_p := b / 2, c_q := a]
+  "awaydeep" prog[-1 / 2, 0, 1 / 2, 1, 1, 0, 1; s_w := a / 2, s_x := a, s_d := b, c_p := a / 2, c_q := b]
+  "corner" prog[0, 0, 0, -1 / 2, 0, 0, 1, 1 / 2, 1, 0, 1, 0, 1, 0; v_u := b^2 / (6 * b + 6 * e), s_w := b * (2 * b + 3 * e) / (6 * b + 6 * e), s_x := b / 2 + e, s_d := b, c_u := b^2 / (6 * b + 6 * e), c_p := b * (2 * b + 3 * e) / (6 * b + 6 * e), c_q := b / 2 + e; v_u := b / 6, s_w := b / 3, s_x := b / 2 + e, s_d := b, c_u := b / 6, c_p := b / 3, c_q := b / 2 + e]
+  "cornerdeep" prog[0, 0, -1 / 3, 1 / 6, 0, 1 / 3, 5 / 6, 1, 1, 0, 0, 0, 1; v_u := a / 3, v_p := b / 3, v_q := b / 2, s_d := b, c_u := a / 3, c_p := b / 3, c_q := b / 2]
+
+-- No rational has the square \(2\).
+cit fact:sqrttwo [two is no square of a rational]
+  doi: 10.1093/oso/9780199219858.001.0001
+  stmt: Theorem 43
+  mathlib: Rat.isSquare_ofNat_iff (Mathlib.Data.Rat.Lemmas)
+  (1): c in QQ>=0 : c^2 != 2
+  fix (1) sqrttwo
+
+-- A rational pivot leaves a gap in the cluster of \(y^2\) and \(2x^2\): with \(u+cx=y\) for a mass \(c\),
+-- \(y^2=u(u+2cx)+c^2x^2\), and \(c^2x^2\) never ties \(2x^2\) since no rational has the square \(2\) (pivot,
+-- \cref{fact:sqrttwo}); the same holds with the coordinates in the other order (swap).
+lemma lem:ratgap [a rational pivot leaves a gap]
+  pivot: c, x in QQ>0 : c^2 * x^2 != 2 * x^2
+  fix pivot ratgap.pivot
+  swap: c, y in QQ>0 : 2 * c^2 * y^2 != y^2
+  fix swap ratgap.swap
+  origin: ?{\text{elementary}}
+
+-- The cited fact at \(c\), and at \(2c\) for the other order, since \((2c)^2=2\cdot2c^2\).
+proof lem:ratgap
+  "pivot" with[c^2 != 2 by fact:sqrttwo(1)[c := c]; V]
+  "swap" with[(2 * c)^2 != 2 by fact:sqrttwo(1)[c := 2 * c]; V]
+
+-- At degree four a cluster that cancels twice can need a member of degree two: in \(K=Y^2+x^6\) with \(Y+2x^2=y^2\),
+-- the parts of the cluster of \(Y\) have a ratio whose square is \(2\), so every rational pivot leaves a gap
+-- (\cref{lem:ratgap}) and closes at one point (rational). The member \(Y\), with its chain \(2y\), carries the
+-- multiplicity on a segment (pair), and the content is at least \(\frac12\) in every pattern (\cref{lem:outer}), which
+-- (pair) attains.
+lemma lem:keymember [a member of degree two at degree four]
+  rational: prog(v_x, s_u, c_x, c_u in QQ>=0, s_u >= v_x, 4 * v_x >= 1, c_x >= v_x, c_u >= s_u : c_x + c_u) = (1 / 2, 1)
+  fix rational keymember.rational
+  pair: prog(v_x, v_y, s_y, c_x, c_y in QQ>=0, v_y = v_x, s_y >= 2 * v_y, 6 * v_x >= 1, 2 * s_y >= 1, c_x >= v_x, c_y >= v_y, v_y + c_y >= s_y : c_x + c_y) = (1 / 2, 2)
+  fix pair keymember.pair
+  origin: ?{\text{computed here; over the reals the pair}\ (\tfrac12,2)\ \text{of this loss is}\ (r,i+1)\ \text{for the growth index}\ r=\tfrac12\ \text{of its sublevel sets and its multiplicity}\ i=1\ \text{of \cite[Theorem~1.5]{Greenblatt2010}}}
+
+-- The prices of the rows; the rational pivot closes at one point, the member of degree two at the two ends of a
+-- segment.
+proof lem:keymember
+  "rational" prog[1, 1 / 2, 1, 1; v_x := 1 / 4, s_u := 1 / 4, c_x := 1 / 4, c_u := 1 / 4]
+  "pair" prog[-1, 0, 0, 1 / 2, 1, 0, 1; v_x := 1 / 4, v_y := 1 / 4, s_y := 1 / 2, c_x := 1 / 4, c_y := 1 / 4; v_x := 1 / 6, v_y := 1 / 6, s_y := 1 / 2, c_x := 1 / 6, c_y := 1 / 3]
+
+-- The outer half of each loss of this section: in every pattern of its ties the content is at least the value of its
+-- programs, each row read from the least terms of a few ties by their cases, so no pattern is searched. The bounds are
+-- \cref{lem:cluster}(depth) for \cref{lem:clusters}, the two forms \(\max(a+\frac b2,\frac a3+\frac{5b}6)\) for
+-- \cref{lem:cubicloss}, which agree on the wall \(b=2a\), and the tie \(Y+2x^2=y^2\) alone for \cref{lem:keymember}.
+lemma lem:outer [every pattern of the losses of degree three and four]
+  cubic: xi, d, s, w, cq, cy in QQ>=0, 2 * xi >= 1, 4 * d >= 1, d >= min(xi, 2 * s), s >= min(xi, w), cq >= d, cy + w >= xi, cy >= w : 8 * (cq + cy) >= 5
+  fix cubic outer.cubic
+  edge: xi, e, s, w, cq, cr in QQ>=0, 2 * xi >= 1, 3 * e >= min(xi, 2 * s), s >= min(xi, w), cq >= e, cr + w >= xi, cr >= w : 12 * (cq + cr) >= 5
+  fix edge outer.edge
+  curve: xi, v, s, w, cq, cr in QQ>=0, 2 * xi >= 1, 2 * v >= min(xi, 2 * s), s >= min(xi, w), cq >= v, cr + w >= xi, cr >= w : 2 * (cq + cr) >= 1
+  fix curve outer.curve
+  corner: vu, vp, vq, sw, mt, mf, xi, d, cu, cp, cq in QQ>=0, 2 * vu >= min(sw, vp), vp >= min(sw, mf), vu + mt >= min(xi, vq), 2 * sw + mf >= min(d, vu + mt + xi, 2 * xi), cu >= vu, cp >= vp, cp >= sw, cp >= mt, cp >= mf, cq >= vq, cq >= xi, vq + cq >= d : 2 * (cu + cp + cq) >= 2 * xi + d
+  fix corner outer.corner
+  cornerdeep: vu, vp, vq, sw, mt, mf, xi, d, cu, cp, cq in QQ>=0, 2 * vu >= min(mt, vp), vu + mt >= min(xi, vq), 3 * vp >= min(d, 2 * vq), 2 * sw + mf >= min(d, vu + mt + xi, 2 * xi), cu >= vu, cp >= vp, cp >= sw, cp >= mt, cp >= mf, cq >= vq, cq >= xi, vq + cq >= d : 6 * (cu + cp + cq) >= 2 * xi + 5 * d
+  fix cornerdeep outer.cornerdeep
+  pair: vx, vy, sy, cx, cy in QQ>=0, 2 * vx >= min(sy, 2 * vy), 6 * vx >= 1, 2 * sy >= 1, cx >= vx, cy >= vy, vy + cy >= sy : 2 * (cx + cy) >= 1
+  fix pair outer.pair
+  origin: ?{\text{proved here}}
+
+-- By the cases of each least.
+proof lem:outer
+  "cubic" with[2 * cy + min(xi, d) >= 2 * xi by lem:cluster(depth)[xi := xi, d := d, s := s, w := w, c := cy]; cases[xi <= d; V[4 * h_7, 1 * h_8, 8 * h_11, 4 * h_12, 4 * h_13, 4 * hc1]; V[4 * h_7, 1 * h_8, 8 * h_11, 4 * hw1]]]
+  "edge" with[2 * cr + min(xi, 3 * e) >= 2 * xi by lem:cluster(depth)[xi := xi, d := 3 * e, s := s, w := w, c := cr]; cases[xi <= 3 * e; V[5 * h_7, 12 * h_10, 6 * h_11, 6 * h_12, 4 * hc1]; V[5 * h_7, 12 * h_10, 2 * h_11, 2 * h_12, 4 * hw1]]]
+  "curve" with[2 * cr + min(xi, 2 * v) >= 2 * xi by lem:cluster(depth)[xi := xi, d := 2 * v, s := s, w := w, c := cr]; cases[xi <= 2 * v; V[1 * h_7, 2 * h_10, 1 * h_11, 1 * h_12, 1 * hc1]; V[1 * h_7, 2 * h_10, 1 * hw1]]]
+  "corner" cases[xi <= vq; V[2 * h_16, 2 * h_19, 1 * h_21, 1 * h_23, 2 * h_14]; cases[vu + mt + xi <= 2 * xi; cases[d <= vu + mt + xi; with[d <= min(vu + mt + xi, 2 * xi) by V[1 * hc3]; cases[sw <= vp; V[2 * h_16, 1 * h_18, 1 * h_20, 2 * h_22, 1 * h_15, 1 * h_12]; cases[sw <= mf; V[2 * h_16, 1 * h_18, 1 * h_20, 2 * h_22, 1 * h_15, 1 * h_12, 1 * h_13]; V[2 * h_16, 2 * h_18, 2 * h_22, 1 * h_15, 1 * h_12, 1 * h_13]]]]; with[min(vu + mt + xi, 2 * xi) < d by V[1 * hn3]; cases[sw <= vp; V[2 * h_16, 1 * h_18, 1 * h_20, 1 * h_22, 1 * h_23, 1 * h_14, 1 * h_15, 1 * h_12]; cases[sw <= mf; V[2 * h_16, 1 * h_18, 1 * h_20, 1 * h_22, 1 * h_23, 1 * h_14, 1 * h_15, 1 * h_12, 1 * h_13]; V[2 * h_16, 2 * h_18, 1 * h_22, 1 * h_23, 1 * h_14, 1 * h_15, 1 * h_12, 1 * h_13]]]]]; V[2 * h_16, 2 * h_19, 1 * h_22, 1 * h_23, 1 * h_14, 1 * hn2]]]
+  "cornerdeep" cases[mt <= vp; cases[xi <= vq; cases[d <= 2 * vq; V[6 * h_16, 6 * h_17, 3 * h_21, 3 * h_23, 2 * h_12, 2 * h_13, 2 * h_14]; V[6 * h_16, 6 * h_17, 1 * h_21, 5 * h_23, 2 * h_12, 2 * h_13, 2 * h_14]]; cases[vu + mt + xi <= 2 * xi; cases[d <= vu + mt + xi; with[d <= min(vu + mt + xi, 2 * xi) by V[1 * hc5]; V[6 * h_16, 2 * h_18, 3 * h_19, 1 * h_20, 2 * h_22, 4 * h_23, 1 * h_12, 4 * h_13, 1 * h_15]]; with[min(vu + mt + xi, 2 * xi) < d by V[1 * hn5]; V[6 * h_16, 2 * h_18, 3 * h_19, 1 * h_20, 1 * h_22, 5 * h_23, 1 * h_12, 5 * h_13, 1 * h_15]]]; V[6 * h_16, 6 * h_19, 1 * h_22, 5 * h_23, 5 * h_13, 1 * hn4]]]; cases[d <= 2 * vq; V[6 * h_16, 6 * h_17, 2 * h_21, 2 * h_22, 2 * h_23, 3 * h_12, 3 * h_14]; cases[vu + mt + xi <= 2 * xi; cases[d <= vu + mt + xi; with[d <= min(vu + mt + xi, 2 * xi) by V[1 * hc8]; V[6 * h_16, 3 * h_17, 2 * h_18, 1 * h_20, 2 * h_22, 4 * h_23, 3 * h_12, 2 * h_14, 1 * h_15]]; with[min(vu + mt + xi, 2 * xi) < d by V[1 * hn8]; V[6 * h_16, 3 * h_17, 2 * h_18, 1 * h_20, 1 * h_22, 5 * h_23, (7 / 2) * h_12, 1 * hn1, (5 / 2) * h_14, 1 * h_15]]]; V[6 * h_16, 5 * h_17, 1 * h_19, 1 * h_22, 5 * h_23, (5 / 2) * h_12, (5 / 2) * h_14, 1 * hn7]]]]
+  "pair" cases[sy <= 2 * vy; V[1 * h_8, 2 * h_9, 1 * h_10, 1 * h_11, 1 * h_6]; V[1 * h_8, 2 * h_9, 2 * h_11, 1 * h_6]]

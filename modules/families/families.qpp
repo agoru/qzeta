@@ -1,0 +1,65 @@
+-- Q++ 0.2
+module families
+uses table
+
+subsection sec:families A coefficient of a family
+
+  -- A coefficient is a mass whose size is a parameter of the rows. Its side is the form of the tie that the row
+  -- writes, given and never decided. Its zero is no wall: the wall is the size at which its term leaves the least
+  -- terms, and the zero lies beyond it.
+
+-- The family \(f=y^k+ax^p\pm x^q\), \(q=p+d\), under the loss row \(s_f\ge r\), with the coefficient \(a\) a mass of
+-- size \(t\) whose side is given and never decided. With \cref{lem:everyside} the value is \(\frac rk+\frac td+\frac
+-- ep\) above the wall, read at \(r=\frac{qt}d+e\), and \(\frac rk+\frac rq\) beyond it, on every side and both
+-- quadrants; the side changes only the multiplicity, \(2\) on the segment of the cross at \(k=p=2\) (cross) and \(1\)
+-- otherwise (tie, branch). At \((k,p,q)=(2,2,3)\), a unit coefficient and \(r=\frac12\): \((\frac12,1)\),
+-- \((\frac12,2)\), and \((\frac5{12},1)\) at \(a=0\).
+lemma lem:coefficient [a coefficient of a family]
+  above: k', p' in NN, d' in NN, t, e in QQ>=0 : prog(v_x, v_y, c_x, c_y in QQ>=0, (2 + k') * v_y >= (3 + p' + d') * t / (1 + d') + e, t + (2 + p') * v_x >= (3 + p' + d') * t / (1 + d') + e, (3 + p' + d') * v_x >= (3 + p' + d') * t / (1 + d') + e, c_x >= v_x, c_y >= v_y : c_x + c_y) = (((3 + p' + d') * t / (1 + d') + e) / (2 + k') + t / (1 + d') + e / (2 + p'), 1)
+  fix above coefficient.above
+  below: k', p' in NN, d' in NN, r in QQ>0, e in QQ>=0 : prog(v_x, v_y, c_x, c_y in QQ>=0, (2 + k') * v_y >= r, (1 + d') * r / (3 + p' + d') + e + (2 + p') * v_x >= r, (3 + p' + d') * v_x >= r, c_x >= v_x, c_y >= v_y : c_x + c_y) = (r / (2 + k') + r / (3 + p' + d'), 1)
+  fix below coefficient.below
+  absent: k', p' in NN, d' in NN, r in QQ>0 : prog(v_x, v_y, c_x, c_y in QQ>=0, (2 + k') * v_y >= r, (3 + p' + d') * v_x >= r, c_x >= v_x, c_y >= v_y : c_x + c_y) = (r / (2 + k') + r / (3 + p' + d'), 1)
+  fix absent coefficient.absent
+  cross: d' in NN, t in QQ>=0, e in QQ>0 : prog(v_x, v_y, s_f, c_x, c_y in QQ>=0, t + 2 * v_x = 2 * v_y, (1 + d') * v_x >= t, s_f >= 2 * v_y, s_f >= (3 + d') * t / (1 + d') + e, c_x >= v_x, c_y >= v_y, v_y + c_y >= s_f : c_x + c_y) = (2 * t / (1 + d') + t / 2 + e, 2)
+  fix cross coefficient.cross
+  tie: k', p' in NN, d' in NN, t, e in QQ>=0, 1 / (2 + k') + 1 / (2 + p') < 1 : prog(v_x, v_y, s_f, c_x, c_y in QQ>=0, t + (2 + p') * v_x = (2 + k') * v_y, (1 + d') * v_x >= t, s_f >= (2 + k') * v_y, s_f >= (3 + p' + d') * t / (1 + d') + e, c_x >= v_x, c_y >= v_y, (1 + k') * v_y + c_y >= s_f : c_x + c_y) = (((3 + p' + d') * t / (1 + d') + e) / (2 + k') + t / (1 + d') + e / (2 + p'), 1)
+  fix tie coefficient.tie
+  crossdeep: k', p' in NN, d' in NN, r in QQ>0, e in QQ>=0 : prog(v_x, v_y, c_x, c_y in QQ>=0, (2 + k') * v_y >= r, (3 + p' + d') * v_x >= r, (1 + d') * v_x <= (1 + d') * r / (3 + p' + d') + e, c_x >= v_x, c_y >= v_y : c_x + c_y) = (r / (2 + k') + r / (3 + p' + d'), 1)
+  fix crossdeep coefficient.crossdeep
+  branch: k', p' in NN, d' in NN, t, e in QQ>=0 : prog(v_x, v_y, s_f, c_x, c_y in QQ>=0, (3 + p' + d') * v_x = (2 + k') * v_y, (1 + d') * v_x <= t, s_f >= (2 + k') * v_y, s_f >= (3 + p' + d') * t / (1 + d') + e, c_x >= v_x, c_y >= v_y, (1 + k') * v_y + c_y >= s_f : c_x + c_y) = ((5 + k' + p' + d') * t / ((2 + k') * (1 + d')) + e, 1)
+  fix branch coefficient.branch
+  branchdeep: k', p' in NN, d' in NN, r in QQ>0, e in QQ>=0 : prog(v_x, v_y, s_f, c_x, c_y in QQ>=0, (3 + p' + d') * v_x = (2 + k') * v_y, (1 + d') * v_x <= (1 + d') * r / (3 + p' + d') + e, s_f >= (2 + k') * v_y, s_f >= r, c_x >= v_x, c_y >= v_y, (1 + k') * v_y + c_y >= s_f : c_x + c_y) = (r / (2 + k') + r / (3 + p' + d'), 1)
+  fix branchdeep coefficient.branchdeep
+  cusptie: k', p' in NN, d' in NN, r in QQ>0 : prog(v_x, v_y, s_f, c_x, c_y in QQ>=0, (3 + p' + d') * v_x = (2 + k') * v_y, s_f >= (2 + k') * v_y, s_f >= r, c_x >= v_x, c_y >= v_y, (1 + k') * v_y + c_y >= s_f : c_x + c_y) = (r / (2 + k') + r / (3 + p' + d'), 1)
+  fix cusptie coefficient.cusptie
+  origin: ?{\text{computed here; at a fixed coefficient the Newton polygon of the member has one compact edge, which meets the diagonal at the Newton distance}\ \delta\ge1,\ \text{and the zeros of its edge polynomial off the axes are simple; so over the reals the growth index of the sublevel sets of}\ f\ \text{is}\ \tfrac1\delta\ \text{with multiplicity}\ i=0,\ \text{or}\ i=1\ \text{exactly where}\ \delta\ \text{is the order of such a zero, the two crossing lines at}\ k=p=2,\ \text{and the pair at}\ r=\tfrac12\ \text{is}\ (\tfrac1{2\delta},i+1)\ \text{\cite[Theorem~1.5]{Greenblatt2010}}}
+
+-- The prices and points of each program; the segment of (cross) is the depth of \(x\) from \(\frac td\) to
+-- \(\frac td+\frac e2\).
+proof lem:coefficient
+  "above" prog[1 / (2 + k'), 1 / (2 + p'), 0, 1, 1; v_x := t / (1 + d') + e / (2 + p'), v_y := ((3 + p' + d') * t / (1 + d') + e) / (2 + k'), c_x := t / (1 + d') + e / (2 + p'), c_y := ((3 + p' + d') * t / (1 + d') + e) / (2 + k')]
+  "below" prog[1 / (2 + k'), 0, 1 / (3 + p' + d'), 1, 1; v_x := r / (3 + p' + d'), v_y := r / (2 + k'), c_x := r / (3 + p' + d'), c_y := r / (2 + k')]
+  "absent" prog[1 / (2 + k'), 1 / (3 + p' + d'), 1, 1; v_x := r / (3 + p' + d'), v_y := r / (2 + k'), c_x := r / (3 + p' + d'), c_y := r / (2 + k')]
+  "cross" prog[1 / 2, 0, 0, 1, 1, 0, 1; v_x := t / (1 + d'), v_y := t / 2 + t / (1 + d'), s_f := (3 + d') * t / (1 + d') + e, c_x := t / (1 + d'), c_y := t / 2 + t / (1 + d') + e; v_x := t / (1 + d') + e / 2, v_y := t / 2 + t / (1 + d') + e / 2, s_f := (3 + d') * t / (1 + d') + e, c_x := t / (1 + d') + e / 2, c_y := t / 2 + t / (1 + d') + e / 2]
+  "tie" prog[1 / (2 + p'), 0, 0, 1 / (2 + k') + 1 / (2 + p'), 1, (k' + p' + k' * p') / ((2 + k') * (2 + p')), 1 / (2 + k') + 1 / (2 + p'); v_x := t / (1 + d') + e / (2 + p'), v_y := ((3 + p' + d') * t / (1 + d') + e) / (2 + k'), s_f := (3 + p' + d') * t / (1 + d') + e, c_x := t / (1 + d') + e / (2 + p'), c_y := ((3 + p' + d') * t / (1 + d') + e) / (2 + k')]
+  "crossdeep" prog[1 / (2 + k'), 1 / (3 + p' + d'), 0, 1, 1; v_x := r / (3 + p' + d'), v_y := r / (2 + k'), c_x := r / (3 + p' + d'), c_y := r / (2 + k')]
+  "branch" prog[(1 + k') / (2 + k'), (1 + 2 * k' + p' + d' + k' * p' + k' * d') / ((2 + k') * (1 + d')), 0, 1, 1, 0, 1; v_x := t / (1 + d'), v_y := (3 + p' + d') * t / ((2 + k') * (1 + d')), s_f := (3 + p' + d') * t / (1 + d') + e, c_x := t / (1 + d'), c_y := (3 + p' + d') * t / ((2 + k') * (1 + d')) + e]
+  "branchdeep" prog[1 / (3 + p' + d'), 0, 0, 1 / (2 + k') + 1 / (3 + p' + d'), 1, (1 + 2 * k' + p' + d' + k' * p' + k' * d') / ((2 + k') * (3 + p' + d')), 1 / (2 + k') + 1 / (3 + p' + d'); v_x := r / (3 + p' + d'), v_y := r / (2 + k'), s_f := r, c_x := r / (3 + p' + d'), c_y := r / (2 + k')]
+  "cusptie" prog[1 / (3 + p' + d'), 0, 1 / (2 + k') + 1 / (3 + p' + d'), 1, (1 + 2 * k' + p' + d' + k' * p' + k' * d') / ((2 + k') * (3 + p' + d')), 1 / (2 + k') + 1 / (3 + p' + d'); v_x := r / (3 + p' + d'), v_y := r / (2 + k'), s_f := r, c_x := r / (3 + p' + d'), c_y := r / (2 + k')]
+
+-- The outer half of \cref{lem:coefficient} on every side: with \(\mu\) the size of the member \(h=a\pm x^d\), two ties
+-- give \(t\ge\min(\mu,dv_x)\) and \(pv_x+\mu\ge\min(kv_y,s_f)\) in every pattern, and with the shells of \(x\), \(h\)
+-- and \(y\) the content has the two forms of the value (face, cusp). The zero of \(h\) enters by its shell and never
+-- attains.
+lemma lem:everyside [every pattern of every side of the coefficient]
+  face: k', p' in NN, d' in NN, t, r, vx, mu, vy, sf, cx, cy in QQ>=0, t >= min(mu, (1 + d') * vx), (2 + p') * vx + mu >= min((2 + k') * vy, sf), sf >= r, cx >= vx, cx + (1 + d') * vx >= vx + mu, cy >= vy, (1 + k') * vy + cy >= sf : (2 + k') * (2 + p') * (cx + cy) + (2 + k') * t >= (4 + k' + p') * r
+  fix face everyside.face
+  cusp: k', p' in NN, d' in NN, r, vx, mu, vy, sf, cx, cy in QQ>=0, (2 + p') * vx + mu >= min((2 + k') * vy, sf), sf >= r, cx >= vx, cx + (1 + d') * vx >= vx + mu, cy >= vy, (1 + k') * vy + cy >= sf : (2 + k') * (3 + p' + d') * (cx + cy) >= (5 + k' + p' + d') * r
+  fix cusp everyside.cusp
+  origin: ?{\text{proved here}}
+
+-- Each row of the given times its price, a formula in the counts; then the cases of each least.
+proof lem:everyside
+  "face" with[(2 + k') * cx >= (2 + k') * vx by mono; with[(2 + k') * (1 + p') * cx >= (2 + k') * (1 + p') * vx by mono; with[(2 + k') * (cx + (1 + d') * vx) >= (2 + k') * (vx + mu) by mono; with[(2 + k') * t >= (2 + k') * min(mu, (1 + d') * vx) by mono; with[(2 + k') * ((2 + p') * vx + mu) >= (2 + k') * min((2 + k') * vy, sf) by mono; with[(k' + p' + k' * p') * cy >= (k' + p' + k' * p') * vy by mono; with[(4 + k' + p') * ((1 + k') * vy + cy) >= (4 + k' + p') * sf by mono; with[(4 + k' + p') * sf >= (4 + k' + p') * r by mono; with[(2 + p') * (1 + k') * cy >= (2 + p') * (1 + k') * vy by mono; with[(2 + p') * ((1 + k') * vy + cy) >= (2 + p') * sf by mono; cases[mu <= (1 + d') * vx; cases[(2 + k') * vy <= sf; V[1 * hw1, 1 * hw2, 1 * hw4, 1 * hw5, 1 * hw6, 1 * hw7, 1 * hw8]; V[1 * hw1, 1 * hw2, 1 * hw4, 1 * hw5, 1 * hw8, 1 * hw9, 1 * hw10]]; cases[(2 + k') * vy <= sf; V[1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5, 1 * hw6, 1 * hw7, 1 * hw8]; V[1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5, 1 * hw8, 1 * hw9, 1 * hw10]]]]]]]]]]]]]
+  "cusp" with[(2 + k') * (2 + p' + d') * cx >= (2 + k') * (2 + p' + d') * vx by mono; with[(2 + k') * (cx + (1 + d') * vx) >= (2 + k') * (vx + mu) by mono; with[(2 + k') * ((2 + p') * vx + mu) >= (2 + k') * min((2 + k') * vy, sf) by mono; with[(1 + 2 * k' + p' + d' + k' * p' + k' * d') * cy >= (1 + 2 * k' + p' + d' + k' * p' + k' * d') * vy by mono; with[(5 + k' + p' + d') * ((1 + k') * vy + cy) >= (5 + k' + p' + d') * sf by mono; with[(5 + k' + p' + d') * sf >= (5 + k' + p' + d') * r by mono; with[(3 + p' + d') * (1 + k') * cy >= (3 + p' + d') * (1 + k') * vy by mono; with[(3 + p' + d') * ((1 + k') * vy + cy) >= (3 + p' + d') * sf by mono; cases[(2 + k') * vy <= sf; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw4, 1 * hw5, 1 * hw6]; V[1 * hw1, 1 * hw2, 1 * hw3, 1 * hw6, 1 * hw7, 1 * hw8]]]]]]]]]]

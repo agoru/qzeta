@@ -1,0 +1,21 @@
+{
+ "kind": "counterexample",
+ "drop": "s = dl + dr",
+ "note": "the two distances added once more: s x = 3 against y + z = 2",
+ "rows": [
+  {
+   "x": 1,
+   "y": 1,
+   "z": 1,
+   "u": 1,
+   "s": 3,
+   "dl": 1,
+   "dr": 1,
+   "K": 1,
+   "K1": 1,
+   "l": 1,
+   "R": 1,
+   "R1": 1
+  }
+ ]
+}

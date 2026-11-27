@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x = j", "note": "the half is no whole turn, and the cycle of two shares fixes no share", "rows": [
+ {"N": 2, "j": 1, "x": "1/2"}
+]}

@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "alpha_R + g * alpha_V = g * (1 + b)", "note": "b is not the share of delta - n, and the law fails", "rows": [
+ {"g": "2", "alpha_R": "1/2", "alpha_V": "1/2", "b": "1", "u": "1/2", "v": "3/2"}
+]}

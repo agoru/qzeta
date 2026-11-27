@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "n < m", "note": "at q = 1 the share of the complement is 0, no count", "bounds": {"l": 2, "B": 10, "k": 9, "S": 9, "E": 9, "M": 3}, "rows": [
+ {"b": 10, "m": 3, "n": 3, "q": 1, "u": 7, "v": 2}
+]}

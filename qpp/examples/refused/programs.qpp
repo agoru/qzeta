@@ -1,0 +1,135 @@
+-- Q++ 0.2
+paper refusedprograms
+-- Cases of the program form prog(DECLS, ROWS : COST) = P and of its word prog[PRICES; POINTS] that the generator
+-- refuses, each with its reason. The atom has its scales in QQ>=0, rows affine in the scales, a cost linear in the
+-- scales and a pair on the right; the word refuses a sign it cannot read from the given, and a pair its prices and
+-- points do not prove.
+
+section sec:refused Refused programs
+
+type Pair := pair
+
+-- The form: prog(...) only on the left of an atom with a pair.
+lemma lem:pterm [a program inside a sum]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, v >= 1 : alpha * v) + (1, 1) = (alpha + 1, 1)
+
+proof lem:pterm
+  (1) prog[alpha; v := 1]
+
+lemma lem:pscale [a scale in QQ>0]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>0, v >= 1 : alpha * v) = (alpha, 1)
+
+proof lem:pscale
+  (1) prog[alpha; v := 1]
+
+lemma lem:prow [a row that is not affine]
+  given: alpha in QQ>0
+  (1): prog(v, w in QQ>=0, v * w >= 1 : alpha * v + alpha * w) = (2 * alpha, 1)
+
+proof lem:prow
+  (1) prog[alpha; v := 1, w := 1]
+
+lemma lem:pcost [a cost with a constant term]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, v >= 1 : alpha * v + 1) = (alpha + 1, 1)
+
+proof lem:pcost
+  (1) prog[alpha; v := 1]
+
+-- A constant term inside a product is seen where the statement is built, before any word.
+lemma lem:pproduct [a constant term inside a product]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, v >= 1 : (v + 1) * alpha) = (2 * alpha, 1)
+
+proof lem:pproduct
+  (1) prog[alpha; v := 1]
+
+-- A scale with the name of a parameter is refused where the statement is built: in a given no word runs.
+lemma lem:pshadow [a scale with the name of a parameter, in a given]
+  given: alpha in QQ>0, p in Pair, prog(alpha in QQ>=0, alpha >= 1 : 2 * alpha) = p
+  (1): alpha <= alpha + alpha
+
+proof lem:pshadow
+  (1) V
+
+-- The word: a sign the given does not decide is named (the reduced cost eta - alpha of w), so that the author
+-- splits the case into two items.
+lemma lem:pundec [a reduced cost of undecided sign]
+  given: alpha, eta in QQ>0
+  (1): prog(v, w in QQ>=0, v + w >= 1 : alpha * v + eta * w) = (alpha, 1)
+
+proof lem:pundec
+  (1) prog[alpha; v := 1]
+
+-- A reduced cost the given shows only at least zero (eta in QQ>=0) bounds nothing from above: the face may be the
+-- segment (at eta = 0), and the refusal names it.
+lemma lem:pweak [a reduced cost at least zero only]
+  given: alpha in QQ>0, eta in QQ>=0
+  (1): prog(v, w in QQ>=0, v + w >= 1 : alpha * v + (alpha + eta) * w) = (alpha, 1)
+
+proof lem:pweak
+  (1) prog[alpha; v := 1]
+
+-- A wrong order is refused, never stated: at the tie the face is a segment, and one point bounds it by 0 only.
+lemma lem:porder [an order the points do not reach]
+  given: alpha, N in QQ>0, N = 2 * alpha
+  (1): prog(v, w in QQ>=0, 2 * v + 4 * w >= 1 : alpha * v + N * w) = (alpha / 2, 1)
+
+proof lem:porder
+  (1) prog[alpha / 2; v := 1 / 2]
+
+lemma lem:pvalue [a value the prices do not give]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, 2 * v >= 1 : alpha * v) = (alpha, 1)
+
+proof lem:pvalue
+  (1) prog[alpha / 2; v := 1 / 2]
+
+lemma lem:pname [a pair by a name]
+  given: alpha in QQ>0, p in Pair
+  (1): prog(v in QQ>=0, v >= 1 : alpha * v) = p
+
+proof lem:pname
+  (1) prog[alpha; v := 1]
+
+lemma lem:pnodata [the word without data]
+  given: alpha in QQ>0
+  (1): prog(v in QQ>=0, v >= 1 : alpha * v) = (alpha, 1)
+
+proof lem:pnodata
+  (1) prog
+
+-- The reading of a program row at a point, REF[DATA; at v := t, ...]: the row read is a program row with a
+-- literal pair, and the point gives every scale of its program and no other name. The rows of lem:pread set up the
+-- cases and are generated.
+lemma lem:pread [a program row and a row that is no program]
+  given: N in QQ>0
+  (1): prog(v, w in QQ>=0, 4 * v + 2 * w >= 1 : N * v + N * w) = (N / 4, 1)
+  (2): N / 8 <= N / 4
+
+proof lem:pread
+  (1) prog[N / 4; v := 1 / 4]
+  (2) V
+
+lemma lem:preadmiss [a point without every scale]
+  given: N, a in QQ>0, 1 <= 4 * a
+  (1): N / 4 <= N * a
+
+proof lem:preadmiss
+  (1) lem:pread(1)[N := N; at v := a]
+
+lemma lem:preadnot [a name that is no scale of the program]
+  given: N, a, b in QQ>0, 1 <= 4 * a + 2 * b
+  (1): N / 4 <= N * a + N * b
+
+proof lem:preadnot
+  (1) lem:pread(1)[N := N; at v := a, u := b]
+
+lemma lem:preadrow [the reading of a row that is no program]
+  given: N, a in QQ>0
+  (1): N / 8 <= N * a + N / 4
+
+proof lem:preadrow
+  (1) lem:pread(2)[N := N; at v := a]

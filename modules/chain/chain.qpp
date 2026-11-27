@@ -1,0 +1,140 @@
+-- Q++ 0.2
+module chain
+uses table
+
+subsection sec:chain The chain of order one
+
+  -- The chain of order one: \(k\) units at one site, with a law of order \(\eta\) on each side of it. On a chamber
+  -- the slopes \(S_j\) of the gaps are partial sums of the weights; a slope that does not vanish at the true weights
+  -- is loud, and one that vanishes is silent, a coordinate of the program. Each gap is one block of the program.
+
+-- The chain of order one, with the orders \(\eta\) and \(\eta'\) on the two sides of the site, is the site at \(J=0\),
+-- \(k'=1\), \(D=2\) (\cref{lem:site}): the rows of \(c_0\) and \(g_1\) cost one half each, and every gap
+-- \(\frac1{3+\eta}\) on its side (loud). At a site of mass zero the \(k=n+2\) units cancel, and the cluster costs the
+-- least of \(\frac n3\) and \(\frac{n+1}{3+\eta}\), which tie at the wall \(n\eta=3\) (below, wall, above, value).
+theorem thm:chain [the chain of order one]
+  (loud): eta in NN : prog(v_e, s_N in QQ>=0, (1 + eta) * v_e + 2 * s_N >= 1, v_e >= s_N : v_e) = (1 / (3 + eta), 1)
+  fix (loud) stratumpoint.core
+  (below): n, eta in QQ>=0, n * eta < 3 : prog(delta, y in QQ>=0, (3 + eta) * y >= n, 3 * y + n * eta * delta >= n : delta + y) = (n / 3, 1)
+  fix (below) below
+  (wall): n in QQ>0, eta in QQ>=0, eta = 3 / n : prog(delta, y in QQ>=0, (3 + eta) * y >= n, 3 * y + n * eta * delta >= n : delta + y) = (n / 3, 2)
+  fix (wall) wall
+  (above): n, eta in QQ>0, 3 < n * eta : prog(delta, y in QQ>=0, (3 + eta) * y >= n, 3 * y + n * eta * delta >= n : delta + y) = ((n + 1) / (3 + eta), 1)
+  fix (above) above
+  (value): k', eta in QQ>=0 : min(1 + (1 + k') / (3 + eta), (3 + k') / 3) = 1 + min(k' / 3, (1 + k') / (3 + eta)), (1 + (1 + k') / (3 + eta) = (3 + k') / 3 <=> eta * k' = 3)
+  fix (value) cancel.core
+  core vertex: v_N, v_P, v_A, v_0, v_1, v_O in QQ>=0, eta in NN : 2 * v_N + v_N + eta * v_A + 3 * v_P = 2 * v_P + v_P + eta * v_A + 3 * v_N, 2 * v_N + (1 + eta) * v_N + (3 + eta) * v_P = 2 * v_P + (1 + eta) * v_P + (3 + eta) * v_N, 2 * v_N + v_O + 2 * v_P = 2 * v_P + v_O + 2 * v_N, v_N + eta * v_A + v_P = v_P + eta * v_A + v_N, v_N + eta * v_0 + v_0 + (1 + eta) * v_1 = v_N + (1 + eta) * v_1 + (1 + eta) * v_0; v in QQ>0, eta in NN, 2 * v = 1 : (3 + eta) * v > 1
+  fix core vertex vertex.core
+  core blocks: b, s, l in QQ>=0, l = b + s : 1 / 2 + 1 / 2 * l = b / 2 + 1 / 2 * (1 + s); h in NN, F, i in QQ>=0, f_(1..h), g_(1..h) in QQ>=0 : F + (sum j in 1..h, f_(j)) + (h + i) / 2 + (sum j in 1..h, g_(j)) = (sum j in 1..h, g_(j)) + i / 2 + F + (sum j in 1..h, (f_(j) + 1 / 2))
+  fix core blocks blocks.core
+  core dipole: eta, k_1', k_2' in NN : 2 * 0 + (3 + eta) * (1 / (3 + eta)) >= 1, 2 * (1 / (3 + eta)) + (1 + eta) * (1 / (3 + eta)) = 1, 3 * (1 / (3 + eta)) + eta * (1 / (3 + eta)) = 1, 1 / 2 + 1 / 2 + 0 + (1 + 1 + k_1' + k_2') * (1 / (3 + eta)) = 1 + (2 + k_1' + k_2') / (3 + eta)
+  fix core dipole dipole.core
+  core silentchains: k, s, t, z_1, z_2 in NN, z_1 <= s, z_2 <= t, s + t + 1 <= k : z_1 + z_2 + 1 <= k
+  fix core silentchains silentchains.core
+  core head: b in QQ>0, eta in NN, b >= 1 : b * (1 / (3 + eta)) + 1 / 2 = 1 / 2 + b / (3 + eta), b / 2 + 1 / (3 + eta) >= 1 / 2 + b / (3 + eta); b in QQ>0, eta in NN, b >= 2 : b / 2 + 1 / (3 + eta) > 1 / 2 + b / (3 + eta); b in QQ>0, b >= 2 : b * (1 / 3) + 1 / 2 + 1 / 2 = (b + 1) / 3 + 1 / 3 + 1 / 3, b / 2 >= (b + 1) / 3; b in QQ>0, b >= 3 : b / 2 > (b + 1) / 3; c in QQ>0, x, x' in QQ>=0, c >= 3, x < x', x' <= 1 / 2 : c * x + 1 / 2 + x' + x' < c * x' + 1 / 2 + x + x; c in QQ>0, x, x' in QQ>=0, c >= 3, x < x', x <= 1 / 2, 1 / 2 <= x' : c * x + 1 / 2 + x' < c * x' + x + x
+  fix core head head.core
+  core tower: f, s, g, q in QQ>=0, f = s + g + q : f >= s; lambda, S, F in QQ>0, lambda <= S, S <= F, F = lambda : S = lambda; eta in NN : 1 + 1 / (3 + eta) > 1, 1 > 1 / 2
+  fix core tower tower.core
+  core pattern: v_1, v_2, a_1, a_2 in QQ>=0, eta in NN, v_1 <= v_2, a_1 <= a_2 : v_1 + eta * a_1 <= v_2 + eta * a_2
+  fix core pattern pattern.core
+  core tree: c_1, C, u, t in QQ>0, bP, bN in QQ>=0 : (C * u + t * bN) + (c_1 * u + t * bP) = (c_1 + C) * u + t * bP + t * bN, c_1 * (C * u + t * bN) + C * t * bN + (c_1 + C) * t * bP = C * (c_1 * u + t * bP) + c_1 * t * bP + (c_1 + C) * t * bN; c_1, C, u, t in QQ>0, bP, bN in QQ>=0, t * bP + t * bN < c_1 * u, t * bP + t * bN < C * u : C * u + t * bN > t * bP, c_1 * u + t * bP > t * bN
+  fix core tree tree.core
+  core treechart: x, y, a, b in QQ>=0, eta in NN, x <= y, a <= b : a^eta * x * x^2 <= b^eta * y * x^2; x, y, z in QQ>=0, eta in NN, x <= y, y <= z, z <= 1 : y^(1 + eta) * x^2 <= z^(1 + eta) * z^2 = z^(3 + eta) <= z^2
+  fix core treechart treechart.core
+  core cancelling: r in NN, P_(0..r), N_(0..r), d_(1..r) in QQ>=0 : (sum h in 0..r, P_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) + (sum g in 1..r, (sum h in 0..r, iverson(h < g) * N_(h)) * d_(g)) = (sum h in 0..r, N_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) + (sum g in 1..r, (sum h in 0..r, iverson(h < g) * P_(h)) * d_(g)); k in NN>=1 : 1 / 2 * (2 + 2 / 3 * k) = (k + 1) / 3 + 2 / 3; n in NN>=1, l_(1..n) in NN, y_(1..n) in QQ>0, y_(1) >= 1 / 3 : (l_(1) / 3 + y_(1)) + (sum i in 2..n, (l_(i) / 3 + y_(i))) >= 1 / 3 * (1 + l_(1) + (sum i in 2..n, l_(i))); n in NN>=1, l_(1..n) in NN, y_(1..n) in QQ>0, y_(1) >= 1 / 3, (l_(1) / 3 + y_(1)) + (sum i in 2..n, (l_(i) / 3 + y_(i))) = 1 / 3 * (1 + l_(1) + (sum i in 2..n, l_(i))) : n = 1, y_(1) = 1 / 3
+  fix core cancelling zeromass.core
+  core charttie: sP, sN in {0, 1}, theta_1, theta_2, sigma_1, sigma_2, c, s, r, Z in QQ>=0, sP + sN = 1, sigma_1 + sigma_2 + s = c, Z + sP * theta_1 * sigma_1 + sN * theta_2 * sigma_2 = r + sN * theta_1 * sigma_1 + sP * theta_2 * sigma_2 : sP * Z + sN * r + theta_1 * c = sP * r + sN * Z + theta_1 * s + (theta_1 + theta_2) * sigma_2
+  fix core charttie treechart.tie
+  core nodeid: r in NN, muP_(1..r), e_(1..r), s_(1..r), mP_(1..r) in QQ>=0 : (sum i in 1..r, (muP_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) + mP_(i))) = (sum l in 1..r, (sum i in 1..r, iverson(l <= i) * muP_(i)) * e_(l)) + (sum l in 1..r, (mP_(l) + (sum i in 1..r, iverson(l < i) * muP_(i)) * s_(l))); r in NN, muN_(1..r), e_(1..r), s_(1..r), mN_(1..r) in QQ>=0 : (sum i in 1..r, (muN_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) + mN_(i))) = (sum l in 1..r, (sum i in 1..r, iverson(l <= i) * muN_(i)) * e_(l)) + (sum l in 1..r, (mN_(l) + (sum i in 1..r, iverson(l < i) * muN_(i)) * s_(l)))
+  fix core nodeid nodeid.core
+  origin: ?{\text{new: the values of the programs of the chain in closed form over the chambers and the orders, with their certificates (with \cref{lem:site}); its shape follows \cite{Mustata2006,Teitler2008,KostaWindisch2026}; their reading as the pair of the model, in coordinates adapted along the tie}\ g_1\ \text{in the sense of \cite[Theorem~1.1]{CollinsGreenleafPramanik2013}, where the existence of such coordinates and the value as an infimum over them are theirs, waits for its way in}}
+
+-- Each program at its prices and its point, with the two points of the edge on the wall.
+proof thm:chain
+  (loud) prog[1 / (3 + eta), 2 / (3 + eta); v_e := 1 / (3 + eta), s_N := 1 / (3 + eta)]
+  (below) face[V[1 / 3 * h_7, 1 / 3 * delta * h_3]; y := n / 3 by V[0], V[0], V[0], V[0]; delta = 0, 3 * y + n * eta * delta = n by with[(3 - n * eta) * delta = 0 by (V[3 * h_8, 1 * h_7], V[delta * h_3]); V[1 / (3 - n * eta) * hw1]], (V[3 * h_8, delta * h_3], V[1 * h_7])]
+  (wall) face[V[1 / 3 * h_6, n / 3 * delta * h_2]; y := n / 3 by V[0], V[0], V[0], V[0]; delta := 1 / (3 + eta), y := n / (3 + eta) by V[0], V[0], V[0], V[0], V[| n / (3 * (3 + eta)) * h_2]; 3 * y + n * eta * delta = n by (V[3 * h_7, n * delta * h_2], V[1 * h_6]); V[0]]
+  (above) face[V[1 / (n * eta * (3 + eta)) * h_4 * h_1, 1 / (n * eta) * h_5]; delta := 1 / (3 + eta), y := n / (3 + eta) by V[0], V[0], V[0], V[0], V[0]; (3 + eta) * delta = 1, (3 + eta) * y = n by (V[1 * h_4, (3 + eta) * h_6], V[(3 + eta) / (n * eta - 3) * h_5, 3 * (3 + eta) / (n * eta - 3) * h_6]), (V[n * eta * (3 + eta) / (n * eta - 3) * h_6, (3 + eta) / (n * eta - 3) * h_5], V[1 * h_4])]
+  (value) (with[(3 + k') / 3 = 1 + k' / 3 by eq; cases[k' / 3 <= (1 + k') / (3 + eta); with[(3 + k') / 3 <= 1 + (1 + k') / (3 + eta) by V[1 * hc1 | 1 * hw1]; V[1 * hw1]]; with[(1 + k') / (3 + eta) <= k' / 3 by V[1 * hn1]; with[1 + (1 + k') / (3 + eta) <= (3 + k') / 3 by V[1 * hw1, 1 * hw3]; V]]]], (V[| (3 * (3 + eta)) * hi1], V[| (1 / (3 * (3 + eta))) * hi2]))
+  "core vertex" (V[0], V, V[0], V[0], V); V
+  "core blocks" V; ind
+  "core dipole" (V, V, V, V)
+  "core silentchains" V[1 * h_1, 1 * h_2, 1 * h_3]
+  "core head" (V[0], V[((1 + eta) / (2 * (3 + eta))) * h_1]); V[((1 + eta) / (2 * (3 + eta))) * h_2]; (V[0], V[1/6 * h_3]); V[1/6 * h_4]; V[h_7 * h_8, 1 * h_8]; V[h_12 * h_13, 1 * h_13, 1 * h_15]
+  "core tower" V[1 * h_3, 1 * h_4 | 1 * h_5]; V; (V, V[0])
+  "core pattern" V
+  "core tree" (V[0], V[0]); (V, V)
+  "core treechart" mono; mono, I, mono
+  "core cancelling" with[(sum h in 0..r, P_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) = sum g in 1..r, (sum h in 0..r, iverson(h < g) * P_(h)) * d_(g) by with[(sum h in 0..r, P_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) = sum h in 0..r, sum g in 1..r, P_(h) * (iverson(h < g) * d_(g)) by sum[sum[V]]; with[(sum h in 0..r, sum g in 1..r, P_(h) * (iverson(h < g) * d_(g))) = sum g in 1..r, (sum h in 0..r, iverson(h < g) * P_(h)) * d_(g) by sum[sum[V[0]]]; V[1 * hw2, 1 * hw3]]]; with[(sum h in 0..r, N_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) = sum g in 1..r, (sum h in 0..r, iverson(h < g) * N_(h)) * d_(g) by with[(sum h in 0..r, N_(h) * (sum g in 1..r, iverson(h < g) * d_(g))) = sum h in 0..r, sum g in 1..r, N_(h) * (iverson(h < g) * d_(g)) by sum[sum[V]]; with[(sum h in 0..r, sum g in 1..r, N_(h) * (iverson(h < g) * d_(g))) = sum g in 1..r, (sum h in 0..r, iverson(h < g) * N_(h)) * d_(g) by sum[sum[V[0]]]; V[1 * hw5, 1 * hw6]]]; V[1 * hw1, 1 * hw4]]]; V[0]; with[(sum i in 2..n, (l_(i) / 3 + y_(i))) = (sum i in 2..n, l_(i) / 3) + (sum i in 2..n, y_(i)) by sum[V]; with[(sum i in 2..n, l_(i) / 3) = 1 / 3 * (sum i in 2..n, l_(i)) by sum[V[0]]; with[0 <= sum i in 2..n, y_(i) by sum[V[0]]; V]]]; with[(sum i in 2..n, (l_(i) / 3 + y_(i))) = (sum i in 2..n, l_(i) / 3) + (sum i in 2..n, y_(i)) by sum[V]; with[(sum i in 2..n, l_(i) / 3) = 1 / 3 * (sum i in 2..n, l_(i)) by sum[V[0]]; with[0 <= sum i in 2..n, y_(i) by sum[V[0]]; cases[2 <= n; with[0 < y_(n) by V; with[y_(n) <= sum i in 2..n, y_(i) by term[n]; (V, V)]]; (V, V)]]]]
+  "core charttie" cases[sN = 0; with[sP = 1 by V[1 * h_11, 1 * hc1]; eq]; with[sN = 1 by logic; with[sP = 0 by V[1 * h_11, 1 * hw2]; eq]]]
+  "core nodeid" with[(sum i in 1..r, (muP_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) + mP_(i))) = (sum i in 1..r, muP_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l)))) + (sum i in 1..r, mP_(i)) by sum[V]; with[(sum i in 1..r, muP_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l)))) = (sum i in 1..r, sum l in 1..r, muP_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) by sum[sum[V]]; with[(sum i in 1..r, sum l in 1..r, muP_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) = (sum l in 1..r, sum i in 1..r, muP_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) by sum[V]; with[(sum l in 1..r, sum i in 1..r, muP_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) = (sum l in 1..r, sum i in 1..r, (iverson(l <= i) * muP_(i)) * e_(l)) + (sum l in 1..r, sum i in 1..r, (iverson(l < i) * muP_(i)) * s_(l)) by sum[sum[V[0]]]; with[(sum l in 1..r, (sum i in 1..r, iverson(l <= i) * muP_(i)) * e_(l)) = (sum l in 1..r, sum i in 1..r, (iverson(l <= i) * muP_(i)) * e_(l)) by sum[sum[V]]; with[(sum l in 1..r, (sum i in 1..r, iverson(l < i) * muP_(i)) * s_(l)) = (sum l in 1..r, sum i in 1..r, (iverson(l < i) * muP_(i)) * s_(l)) by sum[sum[V]]; with[(sum l in 1..r, (mP_(l) + (sum i in 1..r, iverson(l < i) * muP_(i)) * s_(l))) = (sum l in 1..r, mP_(l)) + (sum l in 1..r, (sum i in 1..r, iverson(l < i) * muP_(i)) * s_(l)) by sum[V]; V]]]]]]]; with[(sum i in 1..r, (muN_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) + mN_(i))) = (sum i in 1..r, muN_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l)))) + (sum i in 1..r, mN_(i)) by sum[V]; with[(sum i in 1..r, muN_(i) * (sum l in 1..r, (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l)))) = (sum i in 1..r, sum l in 1..r, muN_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) by sum[sum[V]]; with[(sum i in 1..r, sum l in 1..r, muN_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) = (sum l in 1..r, sum i in 1..r, muN_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) by sum[V]; with[(sum l in 1..r, sum i in 1..r, muN_(i) * (iverson(l <= i) * e_(l) + iverson(l < i) * s_(l))) = (sum l in 1..r, sum i in 1..r, (iverson(l <= i) * muN_(i)) * e_(l)) + (sum l in 1..r, sum i in 1..r, (iverson(l < i) * muN_(i)) * s_(l)) by sum[sum[V[0]]]; with[(sum l in 1..r, (sum i in 1..r, iverson(l <= i) * muN_(i)) * e_(l)) = (sum l in 1..r, sum i in 1..r, (iverson(l <= i) * muN_(i)) * e_(l)) by sum[sum[V]]; with[(sum l in 1..r, (sum i in 1..r, iverson(l < i) * muN_(i)) * s_(l)) = (sum l in 1..r, sum i in 1..r, (iverson(l < i) * muN_(i)) * s_(l)) by sum[sum[V]]; with[(sum l in 1..r, (mN_(l) + (sum i in 1..r, iverson(l < i) * muN_(i)) * s_(l))) = (sum l in 1..r, mN_(l)) + (sum l in 1..r, (sum i in 1..r, iverson(l < i) * muN_(i)) * s_(l)) by sum[V]; V]]]]]]]
+
+-- At a site with no true weight, the rows near the site that a certificate reads are small programs with the order
+-- \(\eta\) as a parameter, its atoms; each case of the site sums its atoms and the loud or silent block of every other
+-- gap. The site, the junction B1, the step G2 and the chain of two units take the same pair at every order.
+lemma lem:atoms [the atoms of a site]
+  (site): prog(c in QQ>=0, 2 * c >= 1 : c) = (1 / 2, 1)
+  fix (site) atomsite
+  (B1): prog(c, d in QQ>=0, 2 * c >= 1, d >= c : c + d) = (1, 1)
+  fix (B1) atomB1
+  (G2): prog(g, y in QQ>=0, 2 * g >= 1, y >= g : y) = (1 / 2, 1)
+  fix (G2) atomG2
+  (two): prog(g, c, d in QQ>=0, 2 * g >= 1, c + d >= g : c + d) = (1 / 2, 2)
+  fix (two) atomtwo
+  core vertexkinds: y in QQ>=0, 2 * y >= 1 : y >= 1 / 2; z, l in QQ>=0, 2 * z + l >= 1 : z >= 1 / 2 * max(1 - l, 0); l in QQ>=0 : 2 * (1 / 2) * max(1 - l, 0) + l >= 1
+  fix core vertexkinds vertexkinds.core
+  origin: ?{\text{elementary}}
+
+proof lem:atoms
+  (site) prog[1 / 2; c := 1 / 2]
+  (B1) prog[1, 1; c := 1 / 2, d := 1 / 2]
+  (G2) prog[1 / 2, 1; g := 1 / 2, y := 1 / 2]
+  (two) prog[1 / 2, 1; g := 1 / 2, c := 1 / 2; g := 1 / 2, d := 1 / 2]
+  "core vertexkinds" V[1/2 * h_2]; cases[1 <= l; V[h_3]; V[1/2 * h_5]]; cases[1 <= l; V[hc2]; V[0]]
+
+-- The two gaps beside the site at their node: below the wall \(\eta=1\) the least is \(\frac12\), at one point, and
+-- above it \(\frac2{3+\eta}\), each gap at \(\frac1{3+\eta}\); on the wall the face is the edge between the two points.
+lemma lem:atomB [the atom B2]
+  (1): eta in QQ>=0, eta < 1 : prog(x, y, s in QQ>=0, 2 * s + (1 + eta) * x >= 1, 2 * s + (1 + eta) * y >= 1, x >= s : x + y) = (1 / 2, 1)
+  fix (1) atomB.below
+  (2): eta in QQ>=0, eta = 1 : prog(x, y, s in QQ>=0, 2 * s + (1 + eta) * x >= 1, 2 * s + (1 + eta) * y >= 1, x >= s : x + y) = (1 / 2, 2)
+  fix (2) atomB.wall
+  (3): eta in QQ>0, 1 < eta : prog(x, y, s in QQ>=0, 2 * s + (1 + eta) * x >= 1, 2 * s + (1 + eta) * y >= 1, x >= s : x + y) = (2 / (3 + eta), 1)
+  fix (3) atomB.above
+  origin: ?{\text{elementary}}
+
+proof lem:atomB
+  (1) prog[0, 1 / 2, 1; x := 1 / 2, s := 1 / 2]
+  (2) prog[0, 1 / 2, 1; x := 1 / 2, s := 1 / 2; x := 1 / 4, y := 1 / 4, s := 1 / 4]
+  (3) prog[(eta - 1) / ((1 + eta) * (3 + eta)), 1 / (1 + eta), 4 / (3 + eta); x := 1 / (3 + eta), y := 1 / (3 + eta), s := 1 / (3 + eta)]
+
+-- The two gaps beyond the site, each pivoting over the shared slope \(d\): the same pairs as B2.
+lemma lem:atomG [the atom G3]
+  (1): eta in QQ>=0, eta < 1 : prog(x, s, x', s', d in QQ>=0, 2 * s + (1 + eta) * x >= 1, x + d >= s, 2 * s' + (1 + eta) * x' >= 1, x' + d >= s' : x + x' + d) = (1 / 2, 1)
+  fix (1) atomG.below
+  (2): eta in QQ>=0, eta = 1 : prog(x, s, x', s', d in QQ>=0, 2 * s + (1 + eta) * x >= 1, x + d >= s, 2 * s' + (1 + eta) * x' >= 1, x' + d >= s' : x + x' + d) = (1 / 2, 2)
+  fix (2) atomG.wall
+  (3): eta in QQ>0, 1 < eta : prog(x, s, x', s', d in QQ>=0, 2 * s + (1 + eta) * x >= 1, x + d >= s, 2 * s' + (1 + eta) * x' >= 1, x' + d >= s' : x + x' + d) = (2 / (3 + eta), 1)
+  fix (3) atomG.above
+  origin: ?{\text{elementary}}
+
+proof lem:atomG
+  (1) prog[1 / 4, 1 / 2, 1 / 4, 1 / 2; s := 1 / 2, s' := 1 / 2, d := 1 / 2]
+  (2) prog[1 / 4, 1 / 2, 1 / 4, 1 / 2; s := 1 / 2, s' := 1 / 2, d := 1 / 2; x := 1 / 4, s := 1 / 4, x' := 1 / 4, s' := 1 / 4]
+  (3) prog[1 / (3 + eta), 2 / (3 + eta), 1 / (3 + eta), 2 / (3 + eta); x := 1 / (3 + eta), s := 1 / (3 + eta), x' := 1 / (3 + eta), s' := 1 / (3 + eta)]
+
+-- The moment \(g_1\) with its pivot over the slope, the gap at the site and the gap beyond it: the least is \(1\) below
+-- the wall and \(\frac12+\frac2{3+\eta}\) above it.
+lemma lem:atomH [the atom H]
+  (1): eta in QQ>=0, eta < 1 : prog(g, d, x, c, z, s, y, r, q in QQ>=0, 2 * g >= 1, c + d >= g, c >= x, z >= x + d, 2 * s + (1 + eta) * x >= 1, y >= s, y >= z, 2 * r + (1 + eta) * q >= 1, q + d >= r : c + d + y + q) = (1, 1)
+  fix (1) atomH.below
+  (2): eta in QQ>=0, eta = 1 : prog(g, d, x, c, z, s, y, r, q in QQ>=0, 2 * g >= 1, c + d >= g, c >= x, z >= x + d, 2 * s + (1 + eta) * x >= 1, y >= s, y >= z, 2 * r + (1 + eta) * q >= 1, q + d >= r : c + d + y + q) = (1, 2)
+  fix (2) atomH.wall
+  (3): eta in QQ>0, 1 < eta : prog(g, d, x, c, z, s, y, r, q in QQ>=0, 2 * g >= 1, c + d >= g, c >= x, z >= x + d, 2 * s + (1 + eta) * x >= 1, y >= s, y >= z, 2 * r + (1 + eta) * q >= 1, q + d >= r : c + d + y + q) = (1 / 2 + 2 / (3 + eta), 1)
+  fix (3) atomH.above
+  origin: ?{\text{elementary}}
+
+proof lem:atomH
+  (1) prog[1 / 2, 1, 0, 1 / 2, 1 / 4, 1 / 2, 1 / 2, 1 / 4, 1 / 2; g := 1 / 2, d := 1 / 2, z := 1 / 2, s := 1 / 2, y := 1 / 2, r := 1 / 2]
+  (2) prog[1 / 2, 1, 0, 1 / 2, 1 / 4, 1 / 2, 1 / 2, 1 / 4, 1 / 2; g := 1 / 2, d := 1 / 2, z := 1 / 2, s := 1 / 2, y := 1 / 2, r := 1 / 2; g := 1 / 2, x := 1 / 4, c := 1 / 2, z := 1 / 4, s := 1 / 4, y := 1 / 4, r := 1 / 4, q := 1 / 4]
+  (3) prog[1 / 2, 1, 0, (1 + eta) / (3 + eta), 1 / (3 + eta), 2 / (3 + eta), (1 + eta) / (3 + eta), 1 / (3 + eta), 2 / (3 + eta); g := 1 / 2, c := 1 / 2, x := 1 / (3 + eta), z := 1 / (3 + eta), s := 1 / (3 + eta), y := 1 / (3 + eta), r := 1 / (3 + eta), q := 1 / (3 + eta)]

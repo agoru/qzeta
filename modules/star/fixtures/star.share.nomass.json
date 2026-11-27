@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "x * a = 1", "note": "D_4 with x = 2, not 1/a = 1: C = 4, and C a is not p = 5", "rows": [
+ {"k": 3, "m": 3, "a": 1, "x": 2, "C": 4, "p": 5, "n": [2, 2, 2], "s": [2, 2, 2]}
+]}

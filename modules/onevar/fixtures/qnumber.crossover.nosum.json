@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "v * e + 1 = T * U", "note": "v is not the mass of TU", "rows": [
+ {"e": "1", "T": "3", "U": "1/2", "u": "2", "w": "1/2", "v": "1"}
+]}

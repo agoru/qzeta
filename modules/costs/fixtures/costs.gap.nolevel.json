@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "(forall k : (sum i, w_(i) * z_(k)_(i)) = M + e_(k))", "note": "the ray (12,1,1) raises B by 3, not 0: 54 is not 3 * 17", "rows": [
+ {"n": 3, "r": 3, "z": [[0, 0, 17], [1, 2, 6], [1, 3, 2]], "c": [1, 1, 1], "e": [0, 0, 0], "p": [2, 5, 25], "w": [12, 1, 1], "M": 17, "t": 3}
+]}

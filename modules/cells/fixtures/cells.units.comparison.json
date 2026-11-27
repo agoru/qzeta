@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "two rows of the units part: b = beta_0, Q = |sum_h u_h a0_h|, P = |sum_h u_h a_h|, R = |sum_h u_h (a_h - a0_h)|, d_h = |a_h - a0_h|", "rows": [{"k": 3, "b": 1, "P": 3, "Q": 3, "R": 0, "d": ["1/6", "1/6", 0]}, {"k": 2, "b": 1, "P": "5/4", "Q": "3/2", "R": "1/4", "d": [0, "1/4"]}]}

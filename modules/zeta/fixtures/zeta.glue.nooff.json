@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "E_1 = O_1 + Z_1", "note": "E_1 = 3 is no cluster on O_1 = Z_1 = 1: 3 + 2 + 1/2 is not 3 + 3/2", "rows": [
+ {"x": "1/2", "y": "1/2", "Z_1": 1, "E_1": 3, "O_1": 1, "Z_2": 1, "E_2": 2, "O_2": 1}
+]}

@@ -1,0 +1,100 @@
+-- Q++ 0.2
+module sizes
+uses theory
+
+subsection sec:sizes The block and its sizes
+
+-- A block \(a=b+c\) of positive masses has its tie as its largest part. Of the six orders of its three parts, only the
+-- identity and the swap \(a=c+b\) keep a tie; each of the other four would make a part the sum of a larger one.
+lemma lem:swap [the one symmetry of a block]
+  (swap): a, b, c in QQ>0, a = b + c : a = c + b, b < c + a, c < a + b
+  fix (swap) swap.swap
+  neqfix (swap) swap.notie
+  origin: ?{\text{elementary}}
+
+proof lem:swap
+  (swap) (V[| 1 * h_1], V[| 1 * h_1], V[| 1 * h_1])
+
+-- The size of a mass \(a\) is a scale \(X\) with \(1/(2X)<a\le1/X\), such as its dyadic level \(X=2^x\). A larger
+-- mass has a scale below twice the other (least). At a tie \(a=b+c\) a term has a scale below four times that of the
+-- sum (twice), so in a tie of three terms the least scale is attained twice up to that factor (sides); at the dyadic
+-- levels the factors are one level. At the depth \(N\) each level has a window of counts (window).
+lemma lem:rules [sizes at an identity]
+  core weigh: K, l in NN, l <= K : 1 / 2^K <= 1 / 2^l
+  sum: a, b, c in QQ>0, a = b + c, c <= b : b <= a, c <= a, a <= 2 * b
+  least: X, Y, a, b in QQ>0, b <= a, a <= 1 / X, 1 / (2 * Y) < b : X < 2 * Y
+  fix least least
+  neqfix least least.nolower
+  twice: X, Y, Z, a, b, c in QQ>0, a = b + c, Y <= Z, 1 / (2 * X) < a, b <= 1 / Y, c <= 1 / Z : Y < 4 * X
+  fix twice twice
+  neqfix twice twice.nolower
+  size: m in QQ>=0, B in NN, m <= 1 : exists x in NN : x <= B, m <= 1 / 2^x, (x = B or 1 / 2^(x + 1) < m)
+  fix size size
+  several: r in NN, M, D in QQ>=0, m in Point(r), M <= (sum i, m_(i)), (forall i : m_(i) <= D) : M <= r * D
+  fix several several
+  sides: a, b, c, X, Y, Z in QQ>0, (a = b + c or b = a + c or c = a + b), X <= Y, Y <= Z, 1 / (2 * X) < a, a <= 1 / X, 1 / (2 * Y) < b, b <= 1 / Y, 1 / (2 * Z) < c, c <= 1 / Z : Y < 4 * X
+  fix sides sides
+  core scale: N, s, p, W in NN, N = s + 1 + p, W + 1 = 2^p : 2^N = 2 * 2^s * (W + 1)
+  window: N, s, W, v in NN, f in QQ>=0, 2^N = 2 * 2^s * (W + 1), 2^N * f = W + 2 + v, v <= W : 1 / 2^(s + 1) < f, f <= 1 / 2^s
+  origin: ?{\text{elementary, proved here: moduli of a sum}}
+
+-- A sum lies between its larger term and twice it; scales compare through the bounds of their masses.
+proof lem:rules
+  "core weigh" mono
+  "sum" (V[| 1 * h_1], V[| 1 * h_1], V[1 * h_1, 1 * h_2])
+  "least" V[(2 * X * Y) * h_1, (2 * X * Y) * h_2, (2 * X * Y) * h_3]
+  "twice" V[(2 * X * Y) * h_1, (2 * X / Z) * h_2, (2 * X * Y) * h_3, (2 * X * Y) * h_4, (2 * X * Y) * h_5]
+  "size" cases[m <= 1 / 2^B; take[x := B; (V[0], V, logic)]; with[exists z in NN : 1 / 2^(z + 1) < m, m <= 1 / 2^z by dyadic; logic[take[x := z; (cases[z <= B; V[1 * hc2]; with[B + 1 <= z by V; with[1 / 2^z <= 1 / 2^(B + 1) by lem:rules(core weigh)[K := z, l := B + 1]; V]]], V, logic)]]]]
+  "several" with[(sum i, m_(i)) <= r * D by sum; V[1 * h_3, 1 * hw1]]
+  "sides" cases[a = b + c; lem:rules(twice)[X := X, Y := Y, Z := Z, a := a, b := b, c := c]; cases[b = a + c; with[a <= b by V[| 1 * hc2]; with[Y < 2 * X by lem:rules(least)[X := Y, Y := X, a := b, b := a]; V[1 * hw2]]]; with[c = a + b by logic; with[a <= c by V[| 1 * hw3]; with[Z < 2 * X by lem:rules(least)[X := Z, Y := X, a := c, b := a]; V[1 * h_3, 1 * hw5]]]]]]
+  "core scale" with[2^N = 2 * 2^s * 2^p by eq; V[hw1, 2 * 2^s * h_2]]
+  "window" with[2 * 2^s * (W + 1) * f = W + 2 + v by V; with[1 / 2^(s + 1) * (2 * 2^s * (W + 1)) = W + 1 by eq; with[1 / 2^s * (2 * 2^s * (W + 1)) = 2 * W + 2 by eq; with[0 < 2 * 2^s * (W + 1) by V; (cases[1 / 2^(s + 1) < f; V; with[f <= 1 / 2^(s + 1) by V; with[2 * 2^s * (W + 1) * f <= 2 * 2^s * (W + 1) * (1 / 2^(s + 1)) by mono; V]]], cases[f <= 1 / 2^s; V; with[1 / 2^s < f by V; with[2 * 2^s * (W + 1) * (1 / 2^s) < 2 * 2^s * (W + 1) * f by mono; V]]])]]]]
+
+-- The digit counts of a product in a base \(b\ge2\): when \(b^A\le bX<b^{A+1}\), \(b^C\le bY<b^{C+1}\) and
+-- \(b^E\le bXY<b^{E+1}\), the counts \(A\) and \(C\) of the digits of the two factors add up to the count \(E\) of the
+-- product, or exceed it by the carry one, \(E\le A+C\le E+1\) (product). As \(A\ge1\), \(X\ge1\): the row reads masses
+-- at least one, and a mass below one enters through its inverse.
+lemma lem:carry [the carry of a product]
+  (product): b, A, C, E in NN>=1, X, Y in QQ>0, 2 <= b, b^A <= b * X, b * X < b^(A + 1), b^C <= b * Y, b * Y < b^(C + 1), b^E <= b * (X * Y), b * (X * Y) < b^(E + 1) : A + C <= E + 1, E <= A + C
+  fix (product) carry.product
+  neqfix (product) carry.product.noupper
+  origin: ?{\text{elementary, proved here: the carry of the digits of a product in a base}}
+
+-- The product times \(b^2\) lies between \(b^{A+C}\) and \(b^{A+C+2}\), and the powers of \(b\) grow.
+proof lem:carry
+  (product) (cases[A + C <= E + 1; logic; with[E + 2 <= A + C by V[1 * hn1]; with[b^(E + 2) <= b^(A + C) by mono; with[b^A * b^C <= b * X * (b * Y) by mono; with[b^(A + C) = b^A * b^C by eq; with[b * b^(E + 1) <= b * (b * (X * Y)) by V[1 * hw2, 1 * hw3, 1 * hw4]; with[b^(E + 1) <= b * (X * Y) by div[b]; logic]]]]]]], cases[E <= A + C; logic; with[A + C + 1 <= E by V[1 * hn2]; with[b^(A + C + 1) <= b^E by mono; with[b * X * (b * Y) < b^(A + 1) * b^(C + 1) by mono; with[b^(A + 1) * b^(C + 1) = b * b^(A + C + 1) by eq; with[b * (b * (X * Y)) < b * b^E by V[1 * hw9, 1 * hw10, b * hw8]; with[b * (X * Y) < b^E by div[b]; logic]]]]]]])
+
+-- Scales multiply on products up to the factor four: the scale \(Z\) of \(ab\) has \(XY<2Z\) and \(Z<4XY\). At the
+-- dyadic levels this is \(x+y\le z\le x+y+1\): sizes are logarithms in base two up to one, a product adds them and a
+-- sum takes the least, so chambers are linear in sizes.
+lemma lem:sizeproduct [the size of a product]
+  (1): a, b, X, Y, Z in QQ>0, 1 / (2 * X) < a, a <= 1 / X, 1 / (2 * Y) < b, b <= 1 / Y, 1 / (2 * Z) < a * b, a * b <= 1 / Z : X * Y < 2 * Z, Z < 4 * X * Y
+  fix (1) sizeproduct
+  neqfix (1) sizeproduct.nolower
+  origin: ?{\text{elementary, proved here: moduli of a product}}
+
+proof lem:sizeproduct
+  (1) (V[(2 * X * Z) * h_2, (2 * X * Y * Z * a) * h_4, (2 * X * Y * Z) * h_5], V[(4 * X * Y * Z) * h_6, (4 * X * Y * Z * b) * h_1, (2 * Y * Z) * h_3])
+
+-- Sizes in base two add up to one on products \cref{lem:sizeproduct}, and the one cannot be removed: an integral size
+-- \(t\) of \(3\), exact up to a bound \(C\) on its powers, puts \(3^{3C+1}\) between \(2^{(3C+1)t-C}\) and
+-- \(2^{(3C+1)t+C}\), where the gaps \(2<3<4\) leave no room, by \(16^C<27^C<32^C\) (low, high): at \(t\ge2\) the power
+-- \(2^{(3C+1)t}\) exceeds \(2^C3^{3C+1}\), and at \(t=1\) the power \(3^{3C+1}\) exceeds \(2^C2^{3C+1}\) (bound).
+lemma lem:sizegap [the carry of sizes is forced]
+  (low): C in NN>=1 : (2^C)^4 < (3^C)^3
+  fix (low) sizegap.low
+  (high): C in NN>=1 : (3^C)^3 < (2^C)^5
+  fix (high) sizegap.high
+  (bound): C, t in NN>=1, 3^(3 * C + 1) <= 2^C * 2^((3 * C + 1) * t) : 2^C * 3^(3 * C + 1) < 2^((3 * C + 1) * t)
+  fix (bound) sizegap.bound
+  neqfix (bound) sizegap.bound.noupper
+  origin: ?{\text{form proved over}\ \Q\text{: no integral size of the powers of}\ 3\ \text{in base}\ 2\ \text{is exact up to a bounded carry, by the gaps}\ 2<3<4}
+
+-- Each gap grows by the factor of its bases; the bound compares the two sides through them.
+proof lem:sizegap
+  (low) ind[C; V[0]; with[(2^C)^4 < (3^C)^3 by logic; with[(2^(C + 1))^4 = 16 * (2^C)^4 by eq; with[(3^(C + 1))^3 = 27 * (3^C)^3 by eq; V[16 * hw1, 1 * hw2, 1 * hw3]]]]]
+  (high) ind[C; V[0]; with[(3^C)^3 < (2^C)^5 by logic; with[(3^(C + 1))^3 = 27 * (3^C)^3 by eq; with[(2^(C + 1))^5 = 32 * (2^C)^5 by eq; V[27 * hw1, 1 * hw2, 1 * hw3]]]]]
+  (bound) with[(2^C)^4 < (3^C)^3 by lem:sizegap(low)[C := C]; with[(3^C)^3 < (2^C)^5 by lem:sizegap(high)[C := C]; with[3^(3 * C + 1) = 3 * (3^C)^3 by eq; with[2^C * 2^(3 * C + 1) = 2 * (2^C)^4 by eq; cases[2 <= t; with[2 * (3 * C + 1) <= (3 * C + 1) * t by V[(3 * C + 1) * hc1]; with[2^(2 * (3 * C + 1)) <= 2^((3 * C + 1) * t) by mono; with[2^(2 * (3 * C + 1)) = 4 * (2^C)^6 by eq; V[1 * hw6, (3 * 2^C) * hw2, 2^C * hw3 | 1 * hw7]]]]; with[(3 * C + 1) * t <= 3 * C + 1 by V[(3 * C + 1) * hn1]; with[2^((3 * C + 1) * t) <= 2^(3 * C + 1) by mono; with[2^C * 2^((3 * C + 1) * t) <= 2^C * 2^(3 * C + 1) by mono; with[3 * (3^C)^3 <= 2 * (2^C)^4 by V[1 * h_1, 1 * hw10, 1 * hw4 | 1 * hw3]; with[(3^C)^3 <= (2^C)^4 by V[(1 / 2) * hw11]; logic]]]]]]]]]]
+
+-- Sizes capped at \(B\): each modulus lies in the dyadic interval of its size, or below it at the cap.
+relation (y #sized s #cap B) := r in NN, y in Point(r), s, B in Exponent(r), (forall X : s_(X) <= B_(X)), (forall X : y_(X) <= 1 / 2^(s_(X))), (forall X : s_(X) = B_(X) or 1 / 2^(s_(X) + 1) < y_(X))

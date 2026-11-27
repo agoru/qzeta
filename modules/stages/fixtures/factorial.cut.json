@@ -1,0 +1,3 @@
+{"kind": "witness", "note": "3/2 below the cell 16/6 of e at depth 3, 8/3 below 65/24 at depth 4, 11/4 above 326/120 at depth 5, 19/7 below 109601/40320 at depth 8", "rows": [
+ {"K": 1, "n": 3}, {"K": 2, "n": 8}, {"K": 3, "n": 11}, {"K": 6, "n": 19}
+]}

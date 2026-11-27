@@ -1,0 +1,8 @@
+{
+ "kind": "model",
+ "note": "the word dyad at a point: the witness s counts the k in 1..B_j with u_j * 2^k <= 2^N",
+ "rows": [
+  {"n": 2, "N": 3, "B": [3, 3], "u": [2, 3], "s": [2, 1]},
+  {"n": 2, "N": 2, "B": [1, 4], "u": [0, 1], "s": [1, 2]}
+ ]
+}

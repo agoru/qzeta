@@ -1,0 +1,1 @@
+{"kind": "witness", "note": "positive tuples bounded term by term: the slack of each coordinate at most the slack of the sum", "rows": [{"n": 1, "a": ["1/2"], "b": ["3/4"]}, {"n": 2, "a": [1, 2], "b": ["3/2", 2]}, {"n": 3, "a": ["1/3", 1, 2], "b": [1, 1, "5/2"]}]}

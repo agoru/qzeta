@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "r * r + 1 = t * r", "note": "2 + 1/2 is not the whole tie 3", "rows": [
+ {"c": 2, "e": 1, "u": 1, "v": 1, "t": 3, "r": 2}
+]}

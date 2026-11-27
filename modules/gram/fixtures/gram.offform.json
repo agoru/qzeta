@@ -1,0 +1,5 @@
+{"kind": "counterexample", "drop": "1 < k + s", "note": "at k = 1, s = 0 the radius runs on an edge, so the order is two; at k = 1/2, s = 1/4 the radius leaves zero and the value is below", "rows": [
+ {"k": 1, "s": 0, "e": 1},
+ {"k": 1, "s": 0, "e": 0},
+ {"k": "1/2", "s": "1/4", "e": 1}
+]}

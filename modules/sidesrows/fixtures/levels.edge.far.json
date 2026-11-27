@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "Da <= D", "note": "the span of the one neighbour above the span of the window: the lower bound fails", "rows": [{"k": 1, "c": 10, "ca": 10, "e": 1, "D": 1, "Da": 10, "Ts": 2, "To": 1, "Tas": 2, "Tao": 1}]}

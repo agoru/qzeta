@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "1 <= y", "note": "below the level 1 the rest of a product is larger: y = 1/2, the sides are 5/16 and 17/64", "rows": [{"m": 1, "k": 1, "c": "1", "d": "1", "T": "2", "U": "2", "y": "1/2", "X": "1/2", "Y": "1/2"}]}

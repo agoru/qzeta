@@ -1,0 +1,1 @@
+{"kind": "counterexample", "drop": "(forall i : a_(i) <= b_(i))", "rows": [{"n": 2, "a": [2, 1], "b": [1, 3]}]}

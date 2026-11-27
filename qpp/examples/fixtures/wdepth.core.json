@@ -1,0 +1,8 @@
+{
+ "kind": "model",
+ "note": "the word halve at a point: the witness y = u / 2^N",
+ "rows": [
+  {"n": 2, "N": 3, "u": [1, 6], "y": ["1/8", "3/4"]},
+  {"n": 1, "N": 0, "u": [5], "y": ["5"]}
+ ]
+}

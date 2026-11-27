@@ -1,0 +1,5 @@
+{"kind": "witness", "note": "the only count below the whole that is the point up to a multiple of the whole", "rows": [
+ {"B": 10, "k": 9, "M": 1, "S": 3, "E": 6, "D": 67, "c": 6, "q": "1/3"},
+ {"B": 7, "k": 6, "M": 1, "S": 5, "E": 1, "D": 9, "c": 1, "q": "5/6"},
+ {"B": 4, "k": 3, "M": 2, "S": 1, "E": 2, "D": 43, "c": 2, "q": "1/3"}
+]}

@@ -1,0 +1,353 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4: the Palomar metadata of the Lake project lean/. Its entry is the module
+# modules/corner/corner.qpp: qpp/modlean.py --palomar generates the Challenge, the Solution and comparator.json from
+# the generated Lean of the module. The workflow palomar.yml validates this file with Palomar's own code. The fields on
+# authorship, automation and review are declarations of the author: check them before any submission.
+version: "v0.4"
+
+project:
+  name: "Formal sources of \"Zeta functions and monodromy of degenerate hypersurface singularities over the positive rationals: least action and spectrum as dual readings\""
+  description: >-
+    Q++ is the expression language of the article, over the counts (the
+    positive integers) and the masses (the positive rationals). Its kernel
+    has three symbols, 1, + and /. There is no zero: NN and QQ>=0 add an
+    absent value to the counts and the masses, and a difference is the
+    deficit max(a - b, 0), absent when a <= b. The kernel builds the counts
+    as an inductive type and the masses as pairs of counts, on Lean core
+    alone; a bridge shows them equivalent to Mathlib's positive naturals and
+    rationals. Each module of the article is written in Q++, and its rows
+    are generated in Lean, each proved over Mathlib and stated again over
+    the kernel. The Palomar entry is the module modules/corner/corner.qpp:
+    its 61 rows, stated over Mathlib's rationals and naturals.
+  authors:
+    - name: "Agostino Russo"
+      orcid: "0009-0004-5240-9403"
+      github: "agoru"
+  # The repository root licence, LICENSE.
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - name: "Agostino Russo"
+      orcid: "0009-0004-5240-9403"
+      github: "agoru"
+
+classification:
+  arxiv: ["math.AG", "math.NT", "math.LO"]
+  msc2020: ["14B05", "11S40", "32S40", "03B35", "68V15"]
+
+sources:
+  - title: "Zeta functions and monodromy of degenerate hypersurface singularities over the positive rationals: least action and spectrum as dual readings"
+    authors:
+      - "Agostino Russo"
+    type: "paper"
+    id: "doi:10.5281/zenodo.24569077"
+    location: "https://doi.org/10.5281/zenodo.24569077"
+    relationship: "formalizes"
+    license: "CC-BY-4.0"
+    author_endorsement: "participated"
+
+related_formalizations: []
+
+status:
+  scope: >-
+    Comparator checks the 61 rows of modules/corner/corner.qpp: thm:corner (40), lem:mark (2), cor:cornermonodromy (1), thm:level (4), cor:levelmonodromy (2), cor:towerreach (1), thm:strata (1), thm:contact (8), cor:contactmonodromy (2).
+    Each row is a closed statement over the positive rationals and the
+    counts (an identity, an inequality, or the value of a pole or of its
+    residue), stated over Mathlib's rationals and naturals with the
+    hypotheses that the row names. The geometric statements that the article
+    reads on these rows (the zeta functions of a polynomial on a resolution,
+    the monodromy of its Milnor fibre, the number of points of a reduction at
+    a good prime) rest on the cited facts of the module (fact:zetatop,
+    fact:acampo, fact:suspension and the others), which are not formalized.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude (Anthropic)"]
+      framework: "Claude Code"
+      tool_setup: >-
+        Claude Code sessions in cloud containers with Lean 4, writing the
+        kernel, the generator and the Q++ modules from the author's
+        instructions; the Lean kernel, NanoDa, con-ron and an axiom audit
+        check the results.
+      cost:
+        wall_time: "not tracked"
+        spend_usd: "not tracked"
+        hardware: "cloud containers"
+      prompting_notes: "n/a"
+  spend_usd: "not tracked"
+  notes: >-
+    The author set the goals and the constraints (a discrete, positive theory
+    over Q, a kernel on Lean core) and directed AI agents that wrote the
+    kernel, the generator and the modules; every proof is checked by Lean.
+
+fidelity:
+  divergences: >-
+    None in the rows: the Lean statements are generated from the Q++ source by
+    qpp/kernel.py. The article states each row under the hypotheses of its
+    item, in words; the Lean statement of a row takes the hypotheses that the
+    row names and no other.
+
+review:
+  status: "not independently reviewed"
+  reviewers: []
+  notes: >-
+    No human referee has reviewed the formalization. The Challenge repeats the
+    statement of each row as the library defines it, verbatim, and Comparator
+    checks that the Solution proves the same statements with propext,
+    Quot.sound and Classical.choice only.
+
+alignment:
+  namespace: "QppMathlib"
+  statements:
+    - source: "thm:corner(split)"
+      lean: "QppMathlib.thm_corner_split"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(chain)"
+      lean: "QppMathlib.thm_corner_chain"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(square)"
+      lean: "QppMathlib.thm_corner_square"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(corner)"
+      lean: "QppMathlib.thm_corner_corner"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qtie)"
+      lean: "QppMathlib.thm_corner_qtie"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qcorner)"
+      lean: "QppMathlib.thm_corner_qcorner"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qcornersum)"
+      lean: "QppMathlib.thm_corner_qcornersum"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(cornercount)"
+      lean: "QppMathlib.thm_corner_cornercount"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qcell)"
+      lean: "QppMathlib.thm_corner_qcell"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(odd)"
+      lean: "QppMathlib.thm_corner_odd"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(even)"
+      lean: "QppMathlib.thm_corner_even"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(cell)"
+      lean: "QppMathlib.thm_corner_cell"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(edge)"
+      lean: "QppMathlib.thm_corner_edge"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(wpos)"
+      lean: "QppMathlib.thm_corner_wpos"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qstep)"
+      lean: "QppMathlib.thm_corner_qstep"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qincr)"
+      lean: "QppMathlib.thm_corner_qincr"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(qone)"
+      lean: "QppMathlib.thm_corner_qone"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(bz)"
+      lean: "QppMathlib.thm_corner_bz"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core ratio)"
+      lean: "QppMathlib.thm_corner_core_ratio"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core twice)"
+      lean: "QppMathlib.thm_corner_core_twice"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(sign)"
+      lean: "QppMathlib.thm_corner_sign"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(rstar)"
+      lean: "QppMathlib.thm_corner_rstar"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(rneg)"
+      lean: "QppMathlib.thm_corner_rneg"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(phi)"
+      lean: "QppMathlib.thm_corner_phi"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(chiz)"
+      lean: "QppMathlib.thm_corner_chiz"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core ratio4)"
+      lean: "QppMathlib.thm_corner_core_ratio4"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core sq)"
+      lean: "QppMathlib.thm_corner_core_sq"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(magn)"
+      lean: "QppMathlib.thm_corner_magn"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(magnone)"
+      lean: "QppMathlib.thm_corner_magnone"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(chiodd)"
+      lean: "QppMathlib.thm_corner_chiodd"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(quarter)"
+      lean: "QppMathlib.thm_corner_quarter"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(law)"
+      lean: "QppMathlib.thm_corner_law"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(three)"
+      lean: "QppMathlib.thm_corner_three"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(four)"
+      lean: "QppMathlib.thm_corner_four"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core bone)"
+      lean: "QppMathlib.thm_corner_core_bone"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core bten)"
+      lean: "QppMathlib.thm_corner_core_bten"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core btwo)"
+      lean: "QppMathlib.thm_corner_core_btwo"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(core mzero)"
+      lean: "QppMathlib.thm_corner_core_mzero"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(mup)"
+      lean: "QppMathlib.thm_corner_mup"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:corner(mupsix)"
+      lean: "QppMathlib.thm_corner_mupsix"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "lem:mark(off)"
+      lean: "QppMathlib.lem_mark_off"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "lem:mark(whole)"
+      lean: "QppMathlib.lem_mark_whole"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:cornermonodromy(layer)"
+      lean: "QppMathlib.cor_cornermonodromy_layer"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:level(stard)"
+      lean: "QppMathlib.thm_level_stard"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:level(qstar)"
+      lean: "QppMathlib.thm_level_qstar"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:level(qshelld)"
+      lean: "QppMathlib.thm_level_qshelld"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:level(bracket)"
+      lean: "QppMathlib.thm_level_bracket"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:levelmonodromy(liftd)"
+      lean: "QppMathlib.cor_levelmonodromy_liftd"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:levelmonodromy(lct)"
+      lean: "QppMathlib.cor_levelmonodromy_lct"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:towerreach(tower)"
+      lean: "QppMathlib.cor_towerreach_tower"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:strata(stair)"
+      lean: "QppMathlib.thm_strata_stair"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(wallray)"
+      lean: "QppMathlib.thm_contact_wallray"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(contactd)"
+      lean: "QppMathlib.thm_contact_contactd"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(detached)"
+      lean: "QppMathlib.thm_contact_detached"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(qtube)"
+      lean: "QppMathlib.thm_contact_qtube"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(node)"
+      lean: "QppMathlib.thm_contact_node"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(qnode)"
+      lean: "QppMathlib.thm_contact_qnode"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(qcontact)"
+      lean: "QppMathlib.thm_contact_qcontact"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "thm:contact(qslope)"
+      lean: "QppMathlib.thm_contact_qslope"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:contactmonodromy(wedge)"
+      lean: "QppMathlib.cor_contactmonodromy_wedge"
+      module: "QppModules.Corner"
+      status: "proved"
+    - source: "cor:contactmonodromy(zdeg)"
+      lean: "QppMathlib.cor_contactmonodromy_zdeg"
+      module: "QppModules.Corner"
+      status: "proved"
+
+acknowledgements: >-
+  Lean 4; Mathlib, which proves the rows behind the bridge; the Palomar
+  template (PalomarRegistry/PalomarTemplate) for the layout of the Challenge,
+  the Solution and comparator.json.

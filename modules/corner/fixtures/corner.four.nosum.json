@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "g = kappa + c", "note": "g is not kap + c", "rows": [
+ {"g": "1", "c": "1", "kappa": "10", "rho": "1", "j": "1", "D": "51", "k1": "9"}
+]}

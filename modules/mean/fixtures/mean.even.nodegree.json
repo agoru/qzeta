@@ -1,0 +1,3 @@
+{"kind": "counterexample", "drop": "forall i : b_(i) = (sum j, P_(i)_(j))", "note": "two cells that meet once at the weights a half and two: the string (2, 1) is not even", "rows": [
+ {"n": 2, "P": [[0, 1], [1, 0]], "b": ["1/2", 2], "x": [2, 1]}
+]}
